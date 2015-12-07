@@ -6,8 +6,8 @@ if PYDEV_SOURCE_DIR not in sys.path:
     sys.path.append(PYDEV_SOURCE_DIR)
  
 import pydevd
- 
-pydevd.settrace()
+#uncomment this line to start debugging with ecplise 
+#pydevd.settrace()
  
 bling = "start debugging"
 print(bling)
