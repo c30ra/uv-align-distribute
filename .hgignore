@@ -1,0 +1,8 @@
+syntax: glob
+
+__pycache__\
+
+
+syntax: regexp
+
+.*\.blend[0-9]+
