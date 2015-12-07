@@ -1,4 +1,4 @@
-# -Blender-Add-on-uv-align-distribute
+# [Blender Add-on]uv-align-distribute
 This add-on help align and distribute uv island in the uv space
 
 
