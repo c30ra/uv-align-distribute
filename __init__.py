@@ -41,7 +41,7 @@ else:
     from . import match_islands
 
 import bpy    
-from . import debug
+#from . import debug
 #for d in sys.path:
     #print(d)
         
