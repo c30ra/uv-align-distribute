@@ -19,8 +19,8 @@
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (2, 0),
-    "blender": (2, 7, 3),
+    "version": (2, 1),
+    "blender": (2, 7, 7),
     "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\distribution",
     "warning": "",
@@ -33,18 +33,20 @@ if "bpy" in locals():
     imp.reload(distribution_operations)
     imp.reload(ui)
     imp.reload(match_islands)
+    imp.reload(copy_paste_uv)
+    
 else:
     from . import align_operations
-    #from align_operations import *
     from . import distribution_operations
     from . import ui
     from . import match_islands
+    from . import copy_paste_uv
 
-import bpy    
+import bpy
 #from . import debug
 #for d in sys.path:
     #print(d)
-        
+
 
 # classes = (
 #     IMAGE_PT_align_distribute,
@@ -84,4 +86,4 @@ def unregister():
 
 
 if __name__ == "__main__":
-    register()    
+    register()

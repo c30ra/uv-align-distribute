@@ -60,7 +60,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         row.operator("uv.distribute_tedges_vertically", "TEdges")
         row.operator("uv.distribute_center_vertically", "VCenters")
         row.operator("uv.distribute_bedges_vertically", "BEdges")
-                
+
         row = layout.row(True)
         row.operator("uv.equalize_horizontal_gap", "Eq. HGap")
         row.operator("uv.equalize_vertical_gap", "Eq. VGap")
@@ -68,10 +68,13 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         #wip
         #row = layout.row(True)
         #row.operator("uv.remove_overlaps", "Remove Overlaps")
-        
+
+        #TODO organize these
         layout.separator()
         layout.label("Others:")
         row = layout.row()
         layout.operator("uv.snap_islands")
         row = layout.row()
         layout.operator("uv.match_islands")
+        row = layout.row()
+        layout.operator("uv.copy_paste_uv")
