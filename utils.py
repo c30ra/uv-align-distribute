@@ -3,14 +3,15 @@ import bmesh
 from . import global_def
 import mathutils
 import math
+import networkx
 
 def InitBMesh():
-    
-    
+
+
     global_def.bm = bmesh.from_edit_mesh(bpy.context.edit_object.data)
     global_def.bm.faces.ensure_lookup_table()
     #uvlayer = bm.loops.layers.uv.active
-    
+
     global_def.uvlayer = global_def.bm.loops.layers.uv.verify()
     global_def.bm.faces.layers.tex.verify()  # currently blender needs both layers.
 
@@ -155,7 +156,7 @@ def snapIsland(active, threshold, selectedIslands):
         for loop in face.loops:
             selectedUVvert = loop[global_def.bm.loops.layers.uv.active]
             uvList = []
-            
+
             for active_face_id in active:
                 active_face = global_def.bm.faces[active_face_id]
 
@@ -164,39 +165,39 @@ def snapIsland(active, threshold, selectedIslands):
 
                     dist = vectorDistance(selectedUVvert.uv, activeUVvert)
                     uvList.append((dist, active_loop[global_def.bm.loops.layers.uv.active]))
-            
-            #for every vert in uvList take the ones with the shortest distnace from ref              
-            minDist = uvList[0][0]
-            bestMatcher = 0  
 
-            #1st pass get lower dist   
+            #for every vert in uvList take the ones with the shortest distnace from ref
+            minDist = uvList[0][0]
+            bestMatcher = 0
+
+            #1st pass get lower dist
             for bestDist in uvList:
-                if bestDist[0] <= minDist:                
+                if bestDist[0] <= minDist:
                     minDist = bestDist[0]
 
-            #2nd pass get the only ones with a match 
+            #2nd pass get the only ones with a match
             for bestVert in uvList:
-                if bestVert[0] <= minDist:                  
-                    bestMatcherList.append((bestVert[0], selectedUVvert, bestVert[1].uv))              
-            
+                if bestVert[0] <= minDist:
+                    bestMatcherList.append((bestVert[0], selectedUVvert, bestVert[1].uv))
+
     for bestMatcher in bestMatcherList:
         if bestMatcher[0] <= threshold:
-            bestMatcher[1].uv = bestMatcher[2]        
+            bestMatcher[1].uv = bestMatcher[2]
 
 def snapToUnselected(islands, threshold, selectedIslands):
     bestMatcherList = []
     print(islands)
     islands.remove(selectedIslands)
     print(islands)
-    
+
     for face_id in selectedIslands:
         face = global_def.bm.faces[face_id]
-    
-        for loop in face.loops:                   
+
+        for loop in face.loops:
             selectedUVvert = loop[global_def.bm.loops.layers.uv.active]
             uvList = []
-            
-            for targetIsland in islands: 
+
+            for targetIsland in islands:
                 for targetFace_id in targetIsland:
                     targetFace = global_def.bm.faces[targetFace_id]
                     for targetLoop in targetFace.loops:
@@ -204,29 +205,29 @@ def snapToUnselected(islands, threshold, selectedIslands):
                         targetUvVert = targetLoop[global_def.bm.loops.layers.uv.active].uv
                         #print(targetLoop.vert.index, targetLoop[global_def.bm.loops.layers.uv.active])
                         #get a selected vert and calc it's distance from the ref
-                        #add it to uvList                             
+                        #add it to uvList
                         dist = round(vectorDistance(selectedUVvert.uv, targetUvVert), 10)
                         uvList.append((dist, targetLoop[global_def.bm.loops.layers.uv.active]))
-                                
-            #print(loop.vert.index,  loop[global_def.bm.loops.layers.uv.active]) 
-            #for every vert in uvList take the ones with the shortest distnace from ref              
-            minDist = uvList[0][0]
-            bestMatcher = 0  
 
-            #1st pass get lower dist   
-            for bestDist in uvList:                  
-                if bestDist[0] <= minDist:                
+            #print(loop.vert.index,  loop[global_def.bm.loops.layers.uv.active])
+            #for every vert in uvList take the ones with the shortest distnace from ref
+            minDist = uvList[0][0]
+            bestMatcher = 0
+
+            #1st pass get lower dist
+            for bestDist in uvList:
+                if bestDist[0] <= minDist:
                     minDist = bestDist[0]
-            
-            #2nd pass get the only ones with a match 
+
+            #2nd pass get the only ones with a match
             for bestVert in uvList:
-                if bestVert[0] <= minDist:                  
-                    bestMatcherList.append((bestVert[0], selectedUVvert, bestVert[1].uv))              
-            
+                if bestVert[0] <= minDist:
+                    bestMatcherList.append((bestVert[0], selectedUVvert, bestVert[1].uv))
+
     for bestMatcher in bestMatcherList:
         if bestMatcher[0] <= threshold:
-            bestMatcher[1].uv = bestMatcher[2]  
-  
+            bestMatcher[1].uv = bestMatcher[2]
+
 def _sortCenter(list):
 
     scambio  = True
@@ -238,18 +239,18 @@ def _sortCenter(list):
             print(round(list[i][0].x, 2), round(list[i+1][0].x, 2))
             if (list[i][0].x <= list[i+1][0].x) and (list[i][0].y > list[i+1][0].y):
                 list[i], list[i+1] = list[i+1], list[i]
-            
+
                 scambio = True
     return list
 
 def _sortVertex(vertexList, BBCenter):
-    
+
     anglesList = []
     for v in vertexList:
         #atan2(P[i].y - M.y, P[i].x - M.x)
         angle = math.atan2(v.uv.y - BBCenter.y, v.uv.x - BBCenter.x )
         anglesList.append((v, angle))
-               
+
     vertsAngle = sorted(anglesList, key=lambda coords: coords[0].uv)
     #vertsAngle = sorted(anglesList, key=lambda angle: angle[1])
     print('sort')
@@ -258,7 +259,7 @@ def _sortVertex(vertexList, BBCenter):
     newList = []
     for i in vertsAngle:
         newList.append(i[0])
-        
+
     return newList
 
 def sortFaces(faceList):
@@ -275,13 +276,13 @@ def sortFaces(faceList):
             #print(angle)
         #for i in perFaceVertsAngle:
             #print(i[0])
-            
+
         perFaceVertsAngle2 = sorted(perFaceVertsAngle, key=lambda angle: angle[1])
 #        for i, j in zip(perFaceVertsAngle, perFaceVertsAngle2):
 #                print(i[0].uv, j[0].uv)
-        
+
         anglesList.append(perFaceVertsAngle2)
-    
+
     newList = []
 #    for data in faceList:
 #        uvData = []
@@ -290,27 +291,27 @@ def sortFaces(faceList):
 #            #print(data[0], vert[0])
 #            newList.append(vert[0])
     for data in anglesList:
-        for vert in data: 
-            print(vert)     
+        for vert in data:
+            print(vert)
             newList.append(vert[0])
-        
+
     for i in newList:
         print(i.uv)
-        
+
     return newList
 
 def islandVertexOrder(island):
     uvData = []
     faceData = []
     for face_id in island:
-        face = global_def.bm.faces[face_id]   
-        uvList = []                
+        face = global_def.bm.faces[face_id]
+        uvList = []
         for loop in face.loops:
-           
-            loopData = loop[global_def.bm.loops.layers.uv.active]                  
+
+            loopData = loop[global_def.bm.loops.layers.uv.active]
             uvData.append(loopData)
             uvList.append(loopData)
-        
+
         faceCenter = 0
         vX = 0
         vY = 0
@@ -327,44 +328,44 @@ def islandVertexOrder(island):
 
     faceData2 = sortFaces(faceData)
     #faceData = _sortCenter(faceData)
-    #print(uvData,'second') 
+    #print(uvData,'second')
     counter = 0
     print('sorting')
- 
-    return faceData2         
-                
-def matchIslands(active, selectedIslands):  
+
+    return faceData2
+
+def matchIslands(active, selectedIslands):
 #    activeIslandUVData = islandVertexOrder(active)
 
 #    for island in selectedIslands:
 #        selectedIslandUVData = islandVertexOrder(island)
-#        
+#
 #        for active ,selected in zip(activeIslandUVData,  selectedIslandUVData):
-#            selected.uv = active.uv 
+#            selected.uv = active.uv
     uvData = []
     for face_id in active:
-        face = global_def.bm.faces[face_id]                
+        face = global_def.bm.faces[face_id]
         for loop in face.loops:
-           
-            loopData = loop[global_def.bm.loops.layers.uv.active]                  
+
+            loopData = loop[global_def.bm.loops.layers.uv.active]
             uvData.append(loopData)
-            
-    activeUV = _sortVertex(uvData, BBoxCenter(active))   
-    
+
+    activeUV = _sortVertex(uvData, BBoxCenter(active))
+
     uvData = []
     for island in selectedIslands:
         for face_id in island:
-            face = global_def.bm.faces[face_id]                
+            face = global_def.bm.faces[face_id]
             for loop in face.loops:
-               
-                loopData = loop[global_def.bm.loops.layers.uv.active]                  
+
+                loopData = loop[global_def.bm.loops.layers.uv.active]
                 uvData.append(loopData)
-                
-        selUV = _sortVertex(uvData, BBoxCenter(island)) 
+
+        selUV = _sortVertex(uvData, BBoxCenter(island))
         for active ,selected in zip(activeUV,  selUV):
-            selected.uv = active.uv 
-                
-                                   
+            selected.uv = active.uv
+
+
 def getTargetPoint(context, islands):
     if context.scene.relativeItems == 'UV_SPACE':
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
@@ -425,13 +426,37 @@ def islandSize(island):
 
 def determinant(vec1, vec2):
     return vec1.x * vec2.y - vec1.y * vec2.x;
- 
-def edgeIntersection(vec_a, vec_b, vec_c, vec_d):   
+
+def edgeIntersection(vec_a, vec_b, vec_c, vec_d):
     #one edge is a-b, the other is c-d
     det = determinant(vec_b - vec_a, vec_c - vec_d);
     t   = determinant(vec_c - vec_a, vec_c - vec_d) / det;
     u   = determinant(vec_b - vec_a, vec_c - vec_a) / det;
     if ((t < 0) or (u < 0) or (t > 1) or (u > 1)):
         return False
-    else: 
+    else:
         return True
+
+
+def graphFromIsland(island):
+
+    vertexList = set()
+
+    for face_id in island:
+        face = global_def.bm.faces[face_id]
+        for vert in face.verts:
+            vertexList.add(vert)
+
+    vertexList = sorted(vertexList, key=lambda data: data.index)
+    numOfVertex = len(vertexList)
+
+    edgeVertex = set()
+    for face_id in island:
+        face = global_def.bm.faces[face_id]
+        for edges in face.edges:
+            edgeVert = (edges.verts[0].index, edges.verts[1].index)
+            edgeVertex.add(tuple(sorted(edgeVert, key=lambda data: data)))
+
+    g = networkx.Graph(tuple(edgeVertex))
+
+    return g
