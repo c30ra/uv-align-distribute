@@ -3,7 +3,6 @@ import bmesh
 from . import global_def
 import mathutils
 import math
-import networkx
 
 def InitBMesh():
 
@@ -404,27 +403,3 @@ def edgeIntersection(vec_a, vec_b, vec_c, vec_d):
         return False
     else:
         return True
-
-
-def graphFromIsland(island):
-
-    vertexList = set()
-
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for vert in face.verts:
-            vertexList.add(vert)
-
-    vertexList = sorted(vertexList, key=lambda data: data.index)
-    numOfVertex = len(vertexList)
-
-    edgeVertex = set()
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for edges in face.edges:
-            edgeVert = (edges.verts[0].index, edges.verts[1].index)
-            edgeVertex.add(tuple(sorted(edgeVert, key=lambda data: data)))
-
-    g = networkx.Graph(tuple(edgeVertex))
-
-    return g
