@@ -1,6 +1,6 @@
 
 import bpy
-
+from . import global_def
 
 ##############
 #   UI
@@ -21,6 +21,9 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
     def draw(self, context):
         scn = context.scene
         layout = self.layout
+        pcoll = global_def.preview_collections["main"]
+        #load icons ID
+
         layout.prop(scn, "relativeItems")
         layout.prop(scn, "selectionAsGroup")
 
@@ -29,16 +32,24 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
 
         box = layout.box()
         row = box.row(True)
-        row.operator("uv.align_left_margin", "Left")
-        row.operator("uv.align_vertical_axis", "VAxis")
-        row.operator("uv.align_right_margin", "Right")
+        row.operator("uv.align_left_margin", "Left",
+                     icon_value= pcoll["align_left"].icon_id)
+        row.operator("uv.align_vertical_axis", "VCenter",
+                     icon_value=pcoll["align_center_hor"].icon_id)
+        row.operator("uv.align_right_margin", "Right",
+                     icon_value=pcoll["align_right"].icon_id)
+
         row = box.row(True)
-        row.operator("uv.align_top_margin", "Top")
-        row.operator("uv.align_horizontal_axis", "HAxis")
-        row.operator("uv.align_low_margin", "Low")
+        row.operator("uv.align_top_margin", "Top",
+                     icon_value=pcoll["align_top"].icon_id)
+        row.operator("uv.align_horizontal_axis", "HCenter",
+                     icon_value=pcoll["align_center_ver"].icon_id)
+        row.operator("uv.align_low_margin", "Bottom",
+                     icon_value=pcoll["align_bottom"].icon_id)
 
         row = layout.row()
-        row.operator("uv.align_rotation", "Rotation")
+        row.operator("uv.align_rotation", "Rotation",
+                     icon_value=pcoll["align_rotation"].icon_id)
         row.operator("uv.equalize_scale", "Eq. Scale")
 
         layout.separator()
@@ -48,22 +59,28 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         box = layout.box()
 
         row = box.row(True)
-        row.operator("uv.distribute_ledges_horizontally", "LEdges")
+        row.operator("uv.distribute_ledges_horizontally", "Left",
+                     icon_value=pcoll["distribute_left"].icon_id)
 
-        row.operator("uv.distribute_center_horizontally",
-                     "HCenters")
+        row.operator("uv.distribute_center_horizontally", "Center",
+                     icon_value=pcoll["distribute_hcentre"].icon_id)
 
-        row.operator("uv.distribute_redges_horizontally",
-                     "RCenters")
+        row.operator("uv.distribute_redges_horizontally", "Right",
+                     icon_value=pcoll["distribute_right"].icon_id)
 
         row = box.row(True)
-        row.operator("uv.distribute_tedges_vertically", "TEdges")
-        row.operator("uv.distribute_center_vertically", "VCenters")
-        row.operator("uv.distribute_bedges_vertically", "BEdges")
+        row.operator("uv.distribute_tedges_vertically", "TEdges",
+                     icon_value=pcoll["distribute_top"].icon_id)
+        row.operator("uv.distribute_center_vertically", "VCenters",
+                     icon_value=pcoll["distribute_vcentre"].icon_id)
+        row.operator("uv.distribute_bedges_vertically", "BEdges",
+                     icon_value=pcoll["distribute_bottom"].icon_id)
 
         row = layout.row(True)
-        row.operator("uv.equalize_horizontal_gap", "Eq. HGap")
-        row.operator("uv.equalize_vertical_gap", "Eq. VGap")
+        row.operator("uv.equalize_horizontal_gap", "Eq. HGap",
+                     icon_value=pcoll["distribute_hdist"].icon_id)
+        row.operator("uv.equalize_vertical_gap", "Eq. VGap",
+                     icon_value=pcoll["distribute_vdist"].icon_id)
 
         #wip
         #row = layout.row(True)

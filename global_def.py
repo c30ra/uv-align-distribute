@@ -17,3 +17,5 @@ bpy.types.Scene.selectionAsGroup = BoolProperty(
 
 bm = None
 uvlayer = None
+
+preview_collections = {}
