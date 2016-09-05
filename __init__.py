@@ -19,8 +19,8 @@
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (2, 0),
-    "blender": (2, 7, 3),
+    "version": (2, 1),
+    "blender": (2, 7, 7),
     "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\distribution",
     "warning": "",
@@ -33,55 +33,61 @@ if "bpy" in locals():
     imp.reload(distribution_operations)
     imp.reload(ui)
     imp.reload(match_islands)
+    imp.reload(global_def)
 else:
     from . import align_operations
     #from align_operations import *
     from . import distribution_operations
     from . import ui
     from . import match_islands
+    from . import global_def
 
-import bpy    
-#from . import debug
-#for d in sys.path:
-    #print(d)
-        
-
-# classes = (
-#     IMAGE_PT_align_distribute,
-#     AlignSXMargin,
-#     AlignRxMargin,
-#     AlignVAxis,
-#     AlignTopMargin,
-#     AlignLowMargin,
-#     AlignHAxis,
-#     AlignRotation,
-#     DistributeLEdgesH,
-#     DistributeCentersH,
-#     DistributeREdgesH,
-#     DistributeTEdgesV,
-#     DistributeCentersV,
-#     DistributeBEdgesV,
-#     #RemoveOverlaps,
-#     EqualizeHGap,
-#     EqualizeVGap,
-#     EqualizeScale,
-#     SnapIsland,
-#     MatchIsland)
+import bpy
+import os
 
 
 def register():
-    #for item in classes:
-        bpy.utils.register_module(__name__)
-    # bpy.utils.register_manual_map(add_object_manual_map)
-    # bpy.types.INFO_MT_mesh_add.append(add_object_button)
 
+    # importing icons
+    import bpy.utils.previews
+    pcoll = bpy.utils.previews.new()
+
+    # path to the folder where the icon is
+    # the path is calculated relative to this py file inside the addon folder
+    my_icons_dir = os.path.join(os.path.dirname(__file__), "icons")
+
+    # load a preview thumbnail of a file and store in the previews collection
+    pcoll.load("align_left", os.path.join(my_icons_dir, "al_left_in.png"), 'IMAGE')
+    pcoll.load("align_right", os.path.join(my_icons_dir, "al_right_in.png"), 'IMAGE')
+    pcoll.load("align_top", os.path.join(my_icons_dir, "al_top_in.png"), 'IMAGE')
+    pcoll.load("align_bottom", os.path.join(my_icons_dir, "al_bottom_in.png"), 'IMAGE')
+    pcoll.load("align_center_hor", os.path.join(my_icons_dir, "al_center_hor.png"), 'IMAGE')
+    pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), 'IMAGE')
+
+    pcoll.load("align_rotation", os.path.join(my_icons_dir, "ink_transform_rotate.png"), 'IMAGE')
+    # pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), 'IMAGE')
+
+    pcoll.load("distribute_bottom", os.path.join(my_icons_dir, "distribute_bottom.png"), 'IMAGE')
+    pcoll.load("distribute_hcentre", os.path.join(my_icons_dir, "distribute_hcentre.png"), 'IMAGE')
+    pcoll.load("distribute_left", os.path.join(my_icons_dir, "distribute_left.png"), 'IMAGE')
+    pcoll.load("distribute_right", os.path.join(my_icons_dir, "distribute_right.png"), 'IMAGE')
+    pcoll.load("distribute_top", os.path.join(my_icons_dir, "distribute_top.png"), 'IMAGE')
+    pcoll.load("distribute_vcentre", os.path.join(my_icons_dir, "distribute_vcentre.png"), 'IMAGE')
+    pcoll.load("distribute_hdist", os.path.join(my_icons_dir, "distribute_hdist.png"), 'IMAGE')
+    pcoll.load("distribute_vdist", os.path.join(my_icons_dir, "distribute_vdist.png"), 'IMAGE')
+
+    global_def.preview_collections["main"] = pcoll
+
+    bpy.utils.register_module(__name__)
 
 def unregister():
-    #for item in classes:
-        bpy.utils.unregister_module(__name__)
-    # bpy.utils.unregister_manual_map(add_object_manual_map)
-    # bpy.types.INFO_MT_mesh_add.remove(add_object_button)
+
+    for pcoll in preview_collections.values():
+        bpy.utils.previews.remove(pcoll)
+    preview_collections.clear()
+
+    bpy.utils.unregister_module(__name__)
 
 
 if __name__ == "__main__":
-    register()    
+    register()
