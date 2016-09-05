@@ -334,38 +334,6 @@ def islandVertexOrder(island):
 
     return faceData2
 
-def matchIslands(active, selectedIslands):
-#    activeIslandUVData = islandVertexOrder(active)
-
-#    for island in selectedIslands:
-#        selectedIslandUVData = islandVertexOrder(island)
-#
-#        for active ,selected in zip(activeIslandUVData,  selectedIslandUVData):
-#            selected.uv = active.uv
-    uvData = []
-    for face_id in active:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-
-            loopData = loop[global_def.bm.loops.layers.uv.active]
-            uvData.append(loopData)
-
-    activeUV = _sortVertex(uvData, BBoxCenter(active))
-
-    uvData = []
-    for island in selectedIslands:
-        for face_id in island:
-            face = global_def.bm.faces[face_id]
-            for loop in face.loops:
-
-                loopData = loop[global_def.bm.loops.layers.uv.active]
-                uvData.append(loopData)
-
-        selUV = _sortVertex(uvData, BBoxCenter(island))
-        for active ,selected in zip(activeUV,  selUV):
-            selected.uv = active.uv
-
-
 def getTargetPoint(context, islands):
     if context.scene.relativeItems == 'UV_SPACE':
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
