@@ -74,3 +74,5 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         layout.label("Others:")
         row = layout.row()
         layout.operator("uv.snap_islands")
+        row = layout.row()
+        layout.operator("uv.match_islands")

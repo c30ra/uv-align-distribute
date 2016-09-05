@@ -16,11 +16,10 @@ import networkx
 
 class CopyPasteUV(templates.OperatorTemplate):
 
-    """Copy and paste UV"""
-    bl_idname = "uv.copy_paste_uv"
-    bl_label = "Copy paste UV"
+    """Match UV Island by moving their vertex"""
+    bl_idname = "uv.match_islands"
+    bl_label = "Match Islands"
     bl_options = {'REGISTER', 'UNDO'}
-
 
     def execute(self, context):
 

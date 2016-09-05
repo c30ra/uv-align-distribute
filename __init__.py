@@ -33,14 +33,14 @@ if "bpy" in locals():
     imp.reload(distribution_operations)
     imp.reload(ui)
     imp.reload(snap_islands)
-    imp.reload(copy_paste_uv)
+    imp.reload(match_islands)
 
 else:
     from . import align_operations
     from . import distribution_operations
     from . import ui
     from . import snap_islands
-    from . import copy_paste_uv
+    from . import match_islands
 
 import bpy
 #from . import debug
