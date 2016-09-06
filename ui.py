@@ -69,11 +69,11 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
                      icon_value=pcoll["distribute_right"].icon_id)
 
         row = box.row(True)
-        row.operator("uv.distribute_tedges_vertically", "Top",
+        row.operator("uv.distribute_tedges_vertically", "TEdges",
                      icon_value=pcoll["distribute_top"].icon_id)
-        row.operator("uv.distribute_center_vertically", "Center",
+        row.operator("uv.distribute_center_vertically", "VCenters",
                      icon_value=pcoll["distribute_vcentre"].icon_id)
-        row.operator("uv.distribute_bedges_vertically", "Bottom",
+        row.operator("uv.distribute_bedges_vertically", "BEdges",
                      icon_value=pcoll["distribute_bottom"].icon_id)
 
         row = layout.row(True)
@@ -82,9 +82,15 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         row.operator("uv.equalize_vertical_gap", "Eq. VGap",
                      icon_value=pcoll["distribute_vdist"].icon_id)
 
+        #wip
+        #row = layout.row(True)
+        #row.operator("uv.remove_overlaps", "Remove Overlaps")
+
+        #TODO organize these
         layout.separator()
         layout.label("Others:")
         row = layout.row()
         layout.operator("uv.snap_islands")
+
         row = layout.row()
         layout.operator("uv.match_islands")
