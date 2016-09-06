@@ -14,7 +14,7 @@ import networkx
 #COPY PASTE
 #####################
 
-class CopyPasteUV(templates.OperatorTemplate):
+class Match_Islands(templates.OperatorTemplate):
 
     """Match UV Island by moving their vertex"""
     bl_idname = "uv.match_islands"
@@ -24,6 +24,7 @@ class CopyPasteUV(templates.OperatorTemplate):
     def graphFromIsland(self, island):
 
         vertexList = set()
+        print("out: ", island)
 
         for face_id in island:
             face = global_def.bm.faces[face_id]
@@ -43,6 +44,7 @@ class CopyPasteUV(templates.OperatorTemplate):
         g = networkx.Graph(tuple(edgeVertex))
 
         return g
+
     def execute(self, context):
 
         makeIslands = make_island.MakeIslands()
@@ -89,8 +91,10 @@ class CopyPasteUV(templates.OperatorTemplate):
         #build create a edge list
         activeIslandGraph = self.graphFromIsland(activeIsland)
         selectedIslandsGraph = []
-        for islands in selectedIslands:
-            selectedIslandsGraph.append(self.graphFromIsland(island))
+
+        for island in selectedIslands:
+            graph = self.graphFromIsland(island)
+            selectedIslandsGraph.append(graph)
 
         #now test for isomorphism aginst activeIsland:
         for islandGraph in selectedIslandsGraph:
@@ -104,7 +108,6 @@ class CopyPasteUV(templates.OperatorTemplate):
                     for uv_loop in uv_to_vert[vertIndex]:
                         for active_uv_loop in activeIslandUVData[mappedVert]:
                             uv_loop.uv = active_uv_loop.uv
-
 
         utils.update()
         return{'FINISHED'}
