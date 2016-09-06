@@ -5,41 +5,41 @@ from . import utils
 from collections import defaultdict
 
 class MakeIslands():
-    
+
     bm = None
     uvlayer = None
     islands = []
-    
+
     def __init__(self):
         utils.InitBMesh()
         self.islands = []
         self.bm = global_def.bm
         self.uvlayer = global_def.uvlayer
-        
+
         self.face_to_verts = defaultdict(set)
         self.vert_to_faces = defaultdict(set)
         self.selectedIsland = set()
         self.hiddenIsland = set()
-        
+
         for face in self.bm.faces:
             for loop in face.loops:
                 vertID = loop[self.uvlayer].uv.to_tuple(5), loop.vert.index
                 self.face_to_verts[face.index].add(vertID)
                 self.vert_to_faces[vertID].add(face.index)
-                
+
                 if face.select:
                     if loop[self.uvlayer].select:
                         self.selectedIsland.add(face.index)
                 else:
                     self.hiddenIsland.add(face.index)
-         
+
         self.faces_left = set(self.face_to_verts.keys())
         while len(self.faces_left) > 0:
             face_id = list(self.faces_left)[0]
             self.current_island = []
             self.addToIsland(face_id)
             self.islands.append(self.current_island)
-                       
+
     def addToIsland(self, face_id):
         if face_id in self.faces_left:
             # add the face itself
@@ -48,7 +48,6 @@ class MakeIslands():
             # and add all faces that share uvs with this face
             verts = self.face_to_verts[face_id]
             for vert in verts:
-                # print('looking at vert {}'.format(vert))
                 connected_faces = self.vert_to_faces[vert]
                 if connected_faces:
                     for face in connected_faces:
@@ -68,7 +67,7 @@ class MakeIslands():
             if not self.selectedIsland.isdisjoint(island):
                 _selectedIslands.append(island)
         return _selectedIslands
-    
+
     def hiddenIslands(self):
         _hiddenIslands = []
         for island in self.islands:

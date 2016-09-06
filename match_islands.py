@@ -86,9 +86,6 @@ class CopyPasteUV(templates.OperatorTemplate):
                 index = loop.vert.index
                 activeIslandUVData[index].append(loop[global_def.uvlayer])
 
-        print(perIslandVerts)
-        print(activeIslandUVData)
-
         #build create a edge list
         activeIslandGraph = self.graphFromIsland(activeIsland)
         selectedIslandsGraph = []
@@ -104,8 +101,6 @@ class CopyPasteUV(templates.OperatorTemplate):
                 islandIndex = selectedIslandsGraph.index(islandGraph)
                 for vertIndex in perIslandVerts[islandIndex]:
                     mappedVert = vertexMapping[vertIndex]
-                    print(vertIndex, mappedVert)
-
                     for uv_loop in uv_to_vert[vertIndex]:
                         for active_uv_loop in activeIslandUVData[mappedVert]:
                             uv_loop.uv = active_uv_loop.uv

@@ -218,22 +218,22 @@ class DistributeBEdgesV(templates.OperatorTemplate):
         return {"FINISHED"}
 
 class RemoveOverlaps(templates.OperatorTemplate):
-    
+
     """Remove overlaps on islands"""
     bl_idname = "uv.remove_overlaps"
     bl_label = "Remove Overlaps"
     bl_options = {'REGISTER', 'UNDO'}
-    
+
     def execute(self, context):
         makeIslands = make_island.MakeIslands()
         islands = makeIslands.getIslands()
-        
-        
+
+
         islandEdges=[]
         uvData=[]
         for island in islands:
             edges = []
-            
+
             for face_id in island:
                 face = bm.faces[face_id]
 
@@ -245,9 +245,8 @@ class RemoveOverlaps(templates.OperatorTemplate):
                     vertIndex = loop.vert.index
                     uvData.append((vertIndex,uv))
             islandEdges.append(edges)
-        print(uvData) 
         return {"FINISHED"}    
-                                                         
+
 class EqualizeHGap(templates.OperatorTemplate):
 
     """Equalize horizontal gap between island"""
@@ -324,17 +323,17 @@ class EqualizeScale(templates.OperatorTemplate):
     bl_idname = "uv.equalize_scale"
     bl_label = "Equalize Scale"
     bl_options = {'REGISTER', 'UNDO'}
-    
+
     keepProportions = BoolProperty(
     name="Keep Proportions",
     description="Mantain proportions during scaling",
     default=False)
-    
+
     useYaxis = BoolProperty(
     name="Use Y axis",
     description="Use y axis as scale reference, default is x",
     default=False)
-    
+
     def execute(self, context):
         makeIslands = make_island.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
@@ -351,24 +350,20 @@ class EqualizeScale(templates.OperatorTemplate):
             size = utils.islandSize(island)
             scaleX = activeSize[0] / size[0]
             scaleY = activeSize[1] / size[1]
-            
+
             if self.keepProportions:
                 if self.useYaxis:
                     scaleX = scaleY
                 else:
                     scaleY = scaleX
-                                 
+
             utils.scaleIsland(island, scaleX, scaleY)
 
         utils.update()
         return {"FINISHED"}
-    
+
     def draw(self,context):
-        layout = self.layout      
-        layout.prop(self, "keepProportions")        
+        layout = self.layout
+        layout.prop(self, "keepProportions")
         if self.keepProportions:
             layout.prop(self,"useYaxis")
-
-
-
-

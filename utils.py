@@ -56,8 +56,6 @@ def GBBoxCenter(islands):
 def BBox(island):
     minX = minY = 1000
     maxX = maxY = -1000
-    # for island in islands:
-    # print(island)
     for face_id in island:
         face = global_def.bm.faces[face_id]
         for loop in face.loops:
@@ -122,7 +120,6 @@ def rotateIsland(island, angle):
             # loop[global_def.bm.loops.layers.uv.active].uv = trans
             loop[global_def.bm.loops.layers.uv.active].uv.x = xr + center.x
             loop[global_def.bm.loops.layers.uv.active].uv.y = yr + center.y
-            # print('fired')
 
 
 def scaleIsland(island, scaleX, scaleY):
@@ -185,9 +182,7 @@ def snapIsland(active, threshold, selectedIslands):
 
 def snapToUnselected(islands, threshold, selectedIslands):
     bestMatcherList = []
-    print(islands)
     islands.remove(selectedIslands)
-    print(islands)
 
     for face_id in selectedIslands:
         face = global_def.bm.faces[face_id]
@@ -202,13 +197,11 @@ def snapToUnselected(islands, threshold, selectedIslands):
                     for targetLoop in targetFace.loops:
                         #take the a reference vert
                         targetUvVert = targetLoop[global_def.bm.loops.layers.uv.active].uv
-                        #print(targetLoop.vert.index, targetLoop[global_def.bm.loops.layers.uv.active])
                         #get a selected vert and calc it's distance from the ref
                         #add it to uvList
                         dist = round(vectorDistance(selectedUVvert.uv, targetUvVert), 10)
                         uvList.append((dist, targetLoop[global_def.bm.loops.layers.uv.active]))
 
-            #print(loop.vert.index,  loop[global_def.bm.loops.layers.uv.active])
             #for every vert in uvList take the ones with the shortest distnace from ref
             minDist = uvList[0][0]
             bestMatcher = 0
@@ -233,9 +226,7 @@ def _sortCenter(list):
     n = len(list)
     while scambio:
         scambio = False
-        print('iter')
         for i in range(0, n-1):
-            print(round(list[i][0].x, 2), round(list[i+1][0].x, 2))
             if (list[i][0].x <= list[i+1][0].x) and (list[i][0].y > list[i+1][0].y):
                 list[i], list[i+1] = list[i+1], list[i]
 
@@ -252,9 +243,6 @@ def _sortVertex(vertexList, BBCenter):
 
     vertsAngle = sorted(anglesList, key=lambda coords: coords[0].uv)
     #vertsAngle = sorted(anglesList, key=lambda angle: angle[1])
-    print('sort')
-    for i in vertsAngle:
-        print(i[0].uv)
     newList = []
     for i in vertsAngle:
         newList.append(i[0])
@@ -264,38 +252,21 @@ def _sortVertex(vertexList, BBCenter):
 def sortFaces(faceList):
     anglesList = []
     for f in faceList:
-        #print('face')
         faceCenter = f[0]
         perFaceVertsAngle = []
         for v in f[1]:
-            #print(v.uv.dot(faceCenter))
             #atan2(P[i].y - M.y, P[i].x - M.x)
             angle = math.atan2(v.uv.y - faceCenter.y, v.uv.x - faceCenter.x )
             perFaceVertsAngle.append((v, angle))
-            #print(angle)
-        #for i in perFaceVertsAngle:
-            #print(i[0])
 
         perFaceVertsAngle2 = sorted(perFaceVertsAngle, key=lambda angle: angle[1])
-#        for i, j in zip(perFaceVertsAngle, perFaceVertsAngle2):
-#                print(i[0].uv, j[0].uv)
 
         anglesList.append(perFaceVertsAngle2)
 
     newList = []
-#    for data in faceList:
-#        uvData = []
-#        for vert in perFaceVertsAngle2:
-#            #uvData.append(vert[0])
-#            #print(data[0], vert[0])
-#            newList.append(vert[0])
     for data in anglesList:
         for vert in data:
-            print(vert)
             newList.append(vert[0])
-
-    for i in newList:
-        print(i.uv)
 
     return newList
 
@@ -323,13 +294,10 @@ def islandVertexOrder(island):
         #uvList = sorted(uvList, key=lambda data: round(data.uv.y, 2), reverse=True)
         #uvList = _sortVertex(uvList)
         faceData.append((faceCenter, uvList))
-        #print(faceData)
 
     faceData2 = sortFaces(faceData)
     #faceData = _sortCenter(faceData)
-    #print(uvData,'second')
     counter = 0
-    print('sorting')
 
     return faceData2
 
