@@ -16,6 +16,9 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+import bpy
+import os
+
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
@@ -26,6 +29,7 @@ bl_info = {
     "warning": "",
     "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts/UV/UV_Align_Distribution",
     "category": "UV"}
+
 
 if "bpy" in locals():
     import imp
@@ -43,9 +47,6 @@ else:
     from . import match_islands
     from . import global_def
 
-import bpy
-import os
-
 
 def register():
 
@@ -58,28 +59,43 @@ def register():
     my_icons_dir = os.path.join(os.path.dirname(__file__), "icons")
 
     # load a preview thumbnail of a file and store in the previews collection
-    pcoll.load("align_left", os.path.join(my_icons_dir, "al_left_in.png"), 'IMAGE')
-    pcoll.load("align_right", os.path.join(my_icons_dir, "al_right_in.png"), 'IMAGE')
-    pcoll.load("align_top", os.path.join(my_icons_dir, "al_top_in.png"), 'IMAGE')
-    pcoll.load("align_bottom", os.path.join(my_icons_dir, "al_bottom_in.png"), 'IMAGE')
-    pcoll.load("align_center_hor", os.path.join(my_icons_dir, "al_center_hor.png"), 'IMAGE')
-    pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), 'IMAGE')
+    pcoll.load("align_left", os.path.join(my_icons_dir, "al_left_in.png"),
+               'IMAGE')
+    pcoll.load("align_right", os.path.join(my_icons_dir, "al_right_in.png"),
+               'IMAGE')
+    pcoll.load("align_top", os.path.join(my_icons_dir, "al_top_in.png"),
+               'IMAGE')
+    pcoll.load("align_bottom", os.path.join(my_icons_dir, "al_bottom_in.png"),
+               'IMAGE')
+    pcoll.load("align_center_hor", os.path.join(my_icons_dir,
+               "al_center_hor.png"), 'IMAGE')
+    pcoll.load("align_center_ver", os.path.join(my_icons_dir,
+               "al_center_ver.png"), 'IMAGE')
 
-    pcoll.load("align_rotation", os.path.join(my_icons_dir, "ink_transform_rotate.png"), 'IMAGE')
-    # pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), 'IMAGE')
+    pcoll.load("align_rotation", os.path.join(my_icons_dir,
+               "ink_transform_rotate.png"), 'IMAGE')
 
-    pcoll.load("distribute_bottom", os.path.join(my_icons_dir, "distribute_bottom.png"), 'IMAGE')
-    pcoll.load("distribute_hcentre", os.path.join(my_icons_dir, "distribute_hcentre.png"), 'IMAGE')
-    pcoll.load("distribute_left", os.path.join(my_icons_dir, "distribute_left.png"), 'IMAGE')
-    pcoll.load("distribute_right", os.path.join(my_icons_dir, "distribute_right.png"), 'IMAGE')
-    pcoll.load("distribute_top", os.path.join(my_icons_dir, "distribute_top.png"), 'IMAGE')
-    pcoll.load("distribute_vcentre", os.path.join(my_icons_dir, "distribute_vcentre.png"), 'IMAGE')
-    pcoll.load("distribute_hdist", os.path.join(my_icons_dir, "distribute_hdist.png"), 'IMAGE')
-    pcoll.load("distribute_vdist", os.path.join(my_icons_dir, "distribute_vdist.png"), 'IMAGE')
+    pcoll.load("distribute_bottom", os.path.join(my_icons_dir,
+               "distribute_bottom.png"), 'IMAGE')
+    pcoll.load("distribute_hcentre", os.path.join(my_icons_dir,
+               "distribute_hcentre.png"), 'IMAGE')
+    pcoll.load("distribute_left", os.path.join(my_icons_dir,
+               "distribute_left.png"), 'IMAGE')
+    pcoll.load("distribute_right", os.path.join(my_icons_dir,
+               "distribute_right.png"), 'IMAGE')
+    pcoll.load("distribute_top", os.path.join(my_icons_dir,
+               "distribute_top.png"), 'IMAGE')
+    pcoll.load("distribute_vcentre", os.path.join(my_icons_dir,
+               "distribute_vcentre.png"), 'IMAGE')
+    pcoll.load("distribute_hdist", os.path.join(my_icons_dir,
+               "distribute_hdist.png"), 'IMAGE')
+    pcoll.load("distribute_vdist", os.path.join(my_icons_dir,
+               "distribute_vdist.png"), 'IMAGE')
 
     global_def.preview_collections["main"] = pcoll
 
     bpy.utils.register_module(__name__)
+
 
 def unregister():
 
