@@ -1,3 +1,21 @@
+# ##### BEGIN GPL LICENSE BLOCK #####
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; version 2
+#  of the License.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
+
 from bpy.props import BoolProperty
 
 from . import templates
@@ -8,6 +26,8 @@ import mathutils
 ############################
 # DISTRIBUTION
 ############################
+
+
 class DistributeLEdgesH(templates.OperatorTemplate):
 
     """Distribute left edges equidistantly horizontally"""
@@ -217,6 +237,7 @@ class DistributeBEdgesV(templates.OperatorTemplate):
         utils.update()
         return {"FINISHED"}
 
+
 class RemoveOverlaps(templates.OperatorTemplate):
 
     """Remove overlaps on islands"""
@@ -228,9 +249,8 @@ class RemoveOverlaps(templates.OperatorTemplate):
         makeIslands = make_island.MakeIslands()
         islands = makeIslands.getIslands()
 
-
-        islandEdges=[]
-        uvData=[]
+        islandEdges = []
+        uvData = []
         for island in islands:
             edges = []
 
@@ -240,12 +260,13 @@ class RemoveOverlaps(templates.OperatorTemplate):
                 for loop in face.loops:
                     edgeVert1 = loop.edge.verts[0].index
                     edgeVert2 = loop.edge.verts[1].index
-                    edges.append((edgeVert1,edgeVert2))
+                    edges.append((edgeVert1, edgeVert2))
                     uv = loop[bm.loops.layers.uv.active].uv
                     vertIndex = loop.vert.index
-                    uvData.append((vertIndex,uv))
+                    uvData.append((vertIndex, uv))
             islandEdges.append(edges)
-        return {"FINISHED"}    
+        return {"FINISHED"}
+
 
 class EqualizeHGap(templates.OperatorTemplate):
 
@@ -325,14 +346,14 @@ class EqualizeScale(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     keepProportions = BoolProperty(
-    name="Keep Proportions",
-    description="Mantain proportions during scaling",
-    default=False)
+        name="Keep Proportions",
+        description="Mantain proportions during scaling",
+        default=False)
 
     useYaxis = BoolProperty(
-    name="Use Y axis",
-    description="Use y axis as scale reference, default is x",
-    default=False)
+        name="Use Y axis",
+        description="Use y axis as scale reference, default is x",
+        default=False)
 
     def execute(self, context):
         makeIslands = make_island.MakeIslands()
@@ -362,8 +383,8 @@ class EqualizeScale(templates.OperatorTemplate):
         utils.update()
         return {"FINISHED"}
 
-    def draw(self,context):
+    def draw(self, context):
         layout = self.layout
         layout.prop(self, "keepProportions")
         if self.keepProportions:
-            layout.prop(self,"useYaxis")
+            layout.prop(self, "useYaxis")

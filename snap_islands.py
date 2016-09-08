@@ -1,3 +1,21 @@
+# ##### BEGIN GPL LICENSE BLOCK #####
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; version 2
+#  of the License.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
+
 from bpy.props import FloatProperty
 from . import global_def
 from . import templates
@@ -5,6 +23,7 @@ from . import utils
 from . import make_island
 
 import operator
+
 
 class SnapIsland(templates.OperatorTemplate):
 
@@ -42,7 +61,7 @@ class SnapIsland(templates.OperatorTemplate):
             if not activeIsland:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-            #selectedIslands.remove(activeIsland)
+            # selectedIslands.remove(activeIsland)
             for island in selectedIslands:
                 utils.snapIsland(activeIsland, self.threshold, island)
 

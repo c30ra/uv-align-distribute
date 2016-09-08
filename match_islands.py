@@ -1,3 +1,21 @@
+# ##### BEGIN GPL LICENSE BLOCK #####
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; version 2
+#  of the License.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
+
 from . import templates
 from . import make_island
 from . import utils
@@ -11,7 +29,7 @@ import networkx
 
 
 #####################
-#COPY PASTE
+# COPY PASTE
 #####################
 
 class Match_Islands(templates.OperatorTemplate):
@@ -67,8 +85,7 @@ class Match_Islands(templates.OperatorTemplate):
 
         numOfVertex = len(activeIslandVert)
 
-        #map each uv vert to corresponding vert for selectedIslands
-        # uv_to_vert = dict((i, list()) for i in range(len(global_def.bm.verts)))
+        # map each uv vert to corresponding vert for selectedIslands
         uv_to_vert = dict((i, list()) for i in range(len(global_def.bm.verts)))
         perIslandVerts = dict((i, set()) for i in range(len(selectedIslands)))
         # activeIslandUVData = dict((i, list()) for i in range(numOfVertex))
@@ -80,7 +97,6 @@ class Match_Islands(templates.OperatorTemplate):
                     uv_to_vert[index].append(loop[global_def.uvlayer])
                     perIslandVerts[selectedIslands.index(island)].add(index)
 
-
         activeIslandUVData = defaultdict(list)
         for face_id in activeIsland:
             face = global_def.bm.faces[face_id]
@@ -88,7 +104,7 @@ class Match_Islands(templates.OperatorTemplate):
                 index = loop.vert.index
                 activeIslandUVData[index].append(loop[global_def.uvlayer])
 
-        #build create a edge list
+        # build create a edge list
         activeIslandGraph = self.graphFromIsland(activeIsland)
         selectedIslandsGraph = []
 
@@ -96,7 +112,7 @@ class Match_Islands(templates.OperatorTemplate):
             graph = self.graphFromIsland(island)
             selectedIslandsGraph.append(graph)
 
-        #now test for isomorphism aginst activeIsland:
+        # now test for isomorphism aginst activeIsland:
         for islandGraph in selectedIslandsGraph:
             iso = networkx.isomorphism
             graphMatcher = iso.GraphMatcher(islandGraph, activeIslandGraph)

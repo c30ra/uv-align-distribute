@@ -1,3 +1,20 @@
+# ##### BEGIN GPL LICENSE BLOCK #####
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; version 2
+#  of the License.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
 
 import bpy
 from . import global_def
@@ -5,6 +22,8 @@ from . import global_def
 ##############
 #   UI
 ##############
+
+
 class IMAGE_PT_align_distribute(bpy.types.Panel):
     bl_label = "Align\Distribute"
     bl_space_type = 'IMAGE_EDITOR'
@@ -22,7 +41,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         scn = context.scene
         layout = self.layout
         pcoll = global_def.preview_collections["main"]
-        #load icons ID
+        # load icons ID
 
         layout.prop(scn, "relativeItems")
         layout.prop(scn, "selectionAsGroup")
@@ -33,7 +52,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         box = layout.box()
         row = box.row(True)
         row.operator("uv.align_left_margin", "Left",
-                     icon_value= pcoll["align_left"].icon_id)
+                     icon_value=pcoll["align_left"].icon_id)
         row.operator("uv.align_vertical_axis", "VCenter",
                      icon_value=pcoll["align_center_hor"].icon_id)
         row.operator("uv.align_right_margin", "Right",
@@ -82,11 +101,11 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         row.operator("uv.equalize_vertical_gap", "Eq. VGap",
                      icon_value=pcoll["distribute_vdist"].icon_id)
 
-        #wip
-        #row = layout.row(True)
-        #row.operator("uv.remove_overlaps", "Remove Overlaps")
+        # wip
+        # row = layout.row(True)
+        # row.operator("uv.remove_overlaps", "Remove Overlaps")
 
-        #TODO organize these
+        # TODO organize these
         layout.separator()
         layout.label("Others:")
         row = layout.row()
