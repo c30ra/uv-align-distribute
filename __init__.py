@@ -16,9 +16,6 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-import bpy
-import os
-
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
@@ -46,6 +43,11 @@ else:
     from . import snap_islands
     from . import match_islands
     from . import global_def
+
+# NOTE: important: must be placed here and not on top as pep8 would, or it give
+# import erros...
+import bpy
+import os
 
 
 def register():

@@ -2,7 +2,7 @@
 This add-on help align and distribute uv island in the uv space
 
 **Warning in order to use this, you need to install networkx python package**:  
-To install networkx you need to intall pip on your Blender python distribution. https://blender.stackexchange.com/questions/56011/how-to-use-pip-with-blenders-bundled-python
+To install networkx you need to install pip on your Blender python distribution. https://blender.stackexchange.com/questions/56011/how-to-use-pip-with-blenders-bundled-python
 
 Then, to intall networkx, just call:  
   > /path/to/blenderspython/python pip install --upgrade pip
