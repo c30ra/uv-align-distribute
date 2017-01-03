@@ -101,9 +101,9 @@ def register():
 
 def unregister():
 
-    for pcoll in preview_collections.values():
+    for pcoll in global_def.preview_collections.values():
         bpy.utils.previews.remove(pcoll)
-    preview_collections.clear()
+    global_def.preview_collections.clear()
 
     bpy.utils.unregister_module(__name__)
 
