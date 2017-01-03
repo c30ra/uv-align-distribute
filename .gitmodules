@@ -1,3 +1,0 @@
-[submodule "networkx"]
-	path = networkx
-	url = https://github.com/networkx/networkx.git

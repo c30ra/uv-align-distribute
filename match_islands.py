@@ -28,12 +28,14 @@ import mathutils
 
 import os
 import sys
+
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
-vendor_dir = os.path.join(parent_dir, 'networkx')
+nx_dir = os.path.join(parent_dir, 'networkx')
+decorator_dir = os.path.join(parent_dir, 'decorator')
 
-print(vendor_dir)
-sys.path.append(vendor_dir)
+sys.path.append(nx_dir)
+sys.path.append(decorator_dir)
 
 import networkx
 
