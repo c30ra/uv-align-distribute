@@ -81,10 +81,8 @@ Sometimes alignment rotation doesn't work correctly, either due to floating poin
 http://www.blenderartists.org/forum/showthread.php?340206-Add-On-UV-Align-Distribute
 
 ## Usage Examples:
-<iframe width="854" height="480" src="https://www.youtube.com/embed/7V2b1G9TpLU" frameborder="0" allowfullscreen></iframe>
-
-<iframe width="425" height="373" src="https://www.youtube.com/embed/clgrf0DUvso" frameborder="0" allowfullscreen></iframe>
-
+https://www.youtube.com/embed/7V2b1G9TpLU
+https://www.youtube.com/embed/clgrf0DUvso
 
 ## Special Thanks to Blenderartists users:
 
