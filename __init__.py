@@ -24,7 +24,7 @@ bl_info = {
     "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\distribution",
     "warning": "",
-    "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts/UV/UV_Align_Distribution",
+    "wiki_url": "https://github.com/c30ra/uv-align-distribute",
     "category": "UV"}
 
 
