@@ -19,8 +19,8 @@
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (2, 1),
-    "blender": (2, 7, 7),
+    "version": (2, 2),
+    "blender": (2, 7, 8),
     "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\distribution",
     "warning": "",
