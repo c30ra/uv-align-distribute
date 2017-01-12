@@ -7,7 +7,7 @@ Development Status: [![Build Status](https://travis-ci.org/c30ra/uv-align-distri
 
 ## Installation:  
 
-  - download the zip file(using the github green button)  
+  - download the zip file:  [uv_align_distribution](https://github.com/c30ra/uv-align-distribute/releases/latest)  
   - In blender user preference go to Add-ons page  
   - click on install from file  
 
