@@ -11,4 +11,5 @@ if len(sys.argv) > 1:
 
 # iterate over each *.test.blend file in the "tests" directory
 # and open up blender with the .test.blend file and the corresponding .test.py python script
-  subprocess.call([blenderExecutable, '--addons', 'uv_align_distribute', '--factory-startup', '-noaudio', '-b', file, '--python', file.replace('.blend', '.py')])
+for file in glob.glob('./tests/**/*.test.blend'):
+  subprocess.call([blenderExecutable, '--addons', 'io_xplane2blender', '--factory-startup', '-noaudio', '-b', file, '--python', file.replace('.blend', '.py')])

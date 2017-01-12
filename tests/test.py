@@ -3,6 +3,7 @@ import unittest
 # import the already loaded addon
 import uv_align_distribute
 
+
 class TestAddon(unittest.TestCase):
     def test_addon_enabled(self):
         # test if addon got loaded correctly
