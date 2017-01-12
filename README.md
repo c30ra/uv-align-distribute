@@ -1,6 +1,10 @@
 # [Blender Add-on] uv-align-distribute
 This add-on help align and distribute uv island in the uv space
 
+
+Master Status:  [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)  
+Development Status: [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)
+
 ## Installation:  
 
   - download the zip file(using the github green button)  
