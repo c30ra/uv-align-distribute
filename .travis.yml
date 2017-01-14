@@ -8,6 +8,11 @@ language: python
 python:
   - "3.6"
 
+# blocklist
+branches:
+  except:
+  - adding_icons
+  
 before_install:
   # update apt-gets repository sources
   - sudo apt-get update -qq
