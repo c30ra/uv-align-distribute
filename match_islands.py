@@ -16,18 +16,14 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-from . import templates
-from . import make_island
-from . import utils
-from . import global_def
-
-from collections import defaultdict
-
 import operator
-import mathutils
-
 import os
 import sys
+from collections import defaultdict
+
+import mathutils
+
+from . import global_def, make_islands, templates, utils
 
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
@@ -77,7 +73,7 @@ class Match_Islands(templates.OperatorTemplate):
 
     def execute(self, context):
 
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
         activeIsland = makeIslands.activeIsland()
 

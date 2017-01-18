@@ -16,13 +16,11 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-from bpy.props import FloatProperty
-from . import global_def
-from . import templates
-from . import utils
-from . import make_island
-
 import operator
+
+from bpy.props import FloatProperty
+
+from . import global_def, make_islands, templates, utils
 
 
 class SnapIsland(templates.OperatorTemplate):
@@ -44,7 +42,7 @@ class SnapIsland(templates.OperatorTemplate):
         precision=2)
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         islands = makeIslands.islands
         selectedIslands = makeIslands.selectedIslands()
         activeIsland = makeIslands.activeIsland()
@@ -63,7 +61,7 @@ class SnapIsland(templates.OperatorTemplate):
                 return {"CANCELLED"}
             # selectedIslands.remove(activeIsland)
             for island in selectedIslands:
-                utils.snapIsland(activeIsland, self.threshold, island)
+                utils.snapIsland(activeIsland, island, self.threshold)
 
         utils.update()
         return{'FINISHED'}

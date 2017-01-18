@@ -36,6 +36,7 @@ if "bpy" in locals():
     imp.reload(snap_islands)
     imp.reload(match_islands)
     imp.reload(global_def)
+    imp.reload(operator_manager)
 else:
     from . import align_operations
     from . import distribution_operations
@@ -43,6 +44,7 @@ else:
     from . import snap_islands
     from . import match_islands
     from . import global_def
+    from . import operator_manager
 
 # NOTE: important: must be placed here and not on top as pep8 would, or it give
 # import erros...
@@ -96,7 +98,9 @@ def register():
 
     global_def.preview_collections["main"] = pcoll
 
-    bpy.utils.register_module(__name__)
+    class_list = operator_manager.om.classList()
+    for c in class_list:
+        bpy.utils.register_class(c)
 
 
 def unregister():
@@ -105,7 +109,9 @@ def unregister():
         bpy.utils.previews.remove(pcoll)
     global_def.preview_collections.clear()
 
-    bpy.utils.unregister_module(__name__)
+    class_list = operator_manager.om.classList()
+    for c in class_list:
+        bpy.utils.unregister_class(c)
 
 
 if __name__ == "__main__":

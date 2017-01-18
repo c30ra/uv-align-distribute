@@ -18,8 +18,7 @@
 
 # Globals:
 import bpy
-from bpy.props import EnumProperty, BoolProperty
-
+from bpy.props import BoolProperty, EnumProperty
 
 bpy.types.Scene.relativeItems = EnumProperty(
     items=[

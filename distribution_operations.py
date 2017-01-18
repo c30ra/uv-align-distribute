@@ -19,7 +19,7 @@
 from bpy.props import BoolProperty
 
 from . import templates
-from . import make_island
+from . import make_islands
 from . import utils
 
 import mathutils
@@ -36,29 +36,31 @@ class DistributeLEdgesH(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortX(selectedIslands)
-        uvFirstX = utils.BBox(islandSpatialSort[0][1])[0].x
-        uvLastX = utils.BBox(islandSpatialSort[-1][1])[0].x
+        selectedIslands.sort(key=lambda island: island.BBox().center().x)
+
+        uvFirstX = selectedIslands[0].BBox().left()
+        uvLastX = selectedIslands[-1].BBox().left()
 
         distX = uvLastX - uvFirstX
 
         deltaDist = distX / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
         pos = uvFirstX + deltaDist
 
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((pos - utils.BBox(island[1])[0].x, 0.0))
+        for island in selectedIslands:
+            vec = mathutils.Vector((pos - island.BBox().left(), 0.0))
             pos += deltaDist
-            utils.moveIslands(vec, island[1])
+            island.move(vec)
+
         utils.update()
         return {"FINISHED"}
 
@@ -71,29 +73,25 @@ class DistributeCentersH(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortX(selectedIslands)
-        uvFirstX = min(islandSpatialSort)
-        uvLastX = max(islandSpatialSort)
+        selectedIslands.sort(key=lambda island: island.BBox().center().x)
 
-        distX = uvLastX[0] - uvFirstX[0]
+        uvFirstX = selectedIslands[0].BBox().center().x
+        uvLastX = selectedIslands[-1].BBox().center().x
+
+        distX = uvLastX - uvFirstX
 
         deltaDist = distX / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
-        pos = uvFirstX[0] + deltaDist
-
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((pos - utils.BBoxCenter(island[1]).x, 0.0))
-            pos += deltaDist
-            utils.moveIslands(vec, island[1])
+        pos = uvFirstX + deltaDist
         utils.update()
         return {"FINISHED"}
 
@@ -106,29 +104,30 @@ class DistributeREdgesH(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortX(selectedIslands)
-        uvFirstX = utils.BBox(islandSpatialSort[0][1])[1].x
-        uvLastX = utils.BBox(islandSpatialSort[-1][1])[1].x
+        selectedIslands.sort(key=lambda island: island.BBox().center().x)
+
+        uvFirstX = selectedIslands[0].BBox().center().x
+        uvLastX = selectedIslands[-1].BBox().center().x
 
         distX = uvLastX - uvFirstX
 
         deltaDist = distX / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
         pos = uvFirstX + deltaDist
 
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((pos - utils.BBox(island[1])[1].x, 0.0))
+        for island in selectedIslands:
+            vec = mathutils.Vector((pos - island.BBox().right(), 0.0))
             pos += deltaDist
-            utils.moveIslands(vec, island[1])
+            island.move(vec)
         utils.update()
         return {"FINISHED"}
 
@@ -141,29 +140,30 @@ class DistributeTEdgesV(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortY(selectedIslands)
-        uvFirstX = utils.BBox(islandSpatialSort[0][1])[1].y
-        uvLastX = utils.BBox(islandSpatialSort[-1][1])[1].y
+        selectedIslands.sort(key=lambda island: island.BBox().center().x)
+
+        uvFirstX = selectedIslands[0].BBox().center().x
+        uvLastX = selectedIslands[-1].BBox().center().x
 
         distX = uvLastX - uvFirstX
 
         deltaDist = distX / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
         pos = uvFirstX + deltaDist
 
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((0.0, pos - utils.BBox(island[1])[1].y))
+        for island in selectedIslands:
+            vec = mathutils.Vector((0.0, pos - island.BBox().top()))
             pos += deltaDist
-            utils.moveIslands(vec, island[1])
+            island.move(vec)
         utils.update()
         return {"FINISHED"}
 
@@ -176,7 +176,7 @@ class DistributeCentersV(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
@@ -198,7 +198,7 @@ class DistributeCentersV(templates.OperatorTemplate):
         for island in islandSpatialSort:
             vec = mathutils.Vector((0.0, pos - utils.BBoxCenter(island[1]).y))
             pos += deltaDist
-            utils.moveIslands(vec, island[1])
+            island.move(vector)
         utils.update()
         return {"FINISHED"}
 
@@ -211,7 +211,7 @@ class DistributeBEdgesV(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
@@ -233,7 +233,7 @@ class DistributeBEdgesV(templates.OperatorTemplate):
         for island in islandSpatialSort:
             vec = mathutils.Vector((0.0, pos - utils.BBox(island[1])[0].y))
             pos += deltaDist
-            utils.moveIslands(vec, island[1])
+            island.move(vector)
         utils.update()
         return {"FINISHED"}
 
@@ -246,7 +246,7 @@ class RemoveOverlaps(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         islands = makeIslands.getIslands()
 
         islandEdges = []
@@ -276,7 +276,7 @@ class EqualizeHGap(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
@@ -310,7 +310,7 @@ class EqualizeVGap(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         if len(selectedIslands) < 3:
@@ -356,7 +356,7 @@ class EqualizeScale(templates.OperatorTemplate):
         default=False)
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
         activeIsland = makeIslands.activeIsland()
 
