@@ -17,5 +17,5 @@ for file in glob.glob('./tests/**/*.test.blend'):
     # print("executing:", file)
     subprocess.call([blenderExecutable, '--addons', 'uv_align_distribute',
                      '--factory-startup', '-noaudio', '-b', file, '--python',
-                     file.replace('.blend', '.py')], stdout=subprocess.DEVNULL)
-
+                     file.replace('test.blend', 'profile.py')])
+                     

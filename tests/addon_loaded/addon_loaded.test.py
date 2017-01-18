@@ -10,6 +10,7 @@ class TestAddon(unittest.TestCase):
         # every addon must provide the "bl_info" dict
         self.assertIsNotNone(uv_align_distribute.bl_info)
 
+
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-unittest.TextTestRunner().run(suite)
+unittest.TextTestRunner(verbosity=2).run(suite)

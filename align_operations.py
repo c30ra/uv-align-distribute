@@ -16,117 +16,99 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-from . import templates
-from . import make_island
-from . import utils
-
 import mathutils
+
+from . import make_islands, templates, utils, operator_manager
+
+
 #####################
 # ALIGN
 #####################
 
-
 class AlignSXMargin(templates.OperatorTemplate):
+    """Align left margin."""
 
-    """Align left margin"""
     bl_idname = "uv.align_left_margin"
     bl_label = "Align left margin"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
 
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
-        targetElement = utils.getTargetPoint(context, makeIslands)
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 0.0
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().left()
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.x
 
         if context.scene.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
             if context.scene.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
-                vector = mathutils.Vector((targetElement[0].x - groupBox[0].x,
-                                           0.0))
-                utils.moveIslands(vector, island)
+                vector = mathutils.Vector(
+                    (targetElement - groupBox.left(), 0.0))
+                island.move(vector)
 
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (targetElement[0].x - utils.BBox(island)[0].x, 0.0))
-                utils.moveIslands(vector, island)
+                    (targetElement - island.BBox().left(), 0.0))
+                island.move(vector)
 
         utils.update()
         return {'FINISHED'}
 
 
 class AlignRxMargin(templates.OperatorTemplate):
+    """Align right margin."""
 
-    """Align right margin"""
     bl_idname = "uv.align_right_margin"
     bl_label = "Align right margin"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
-        targetElement = utils.getTargetPoint(context, makeIslands)
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 1.0
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().right()
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.x
 
         if context.scene.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
             if context.scene.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
-                vector = mathutils.Vector((targetElement[1].x - groupBox[1].x,
-                                           0.0))
-                utils.moveIslands(vector, island)
+                vector = mathutils.Vector(
+                    (targetElement - groupBox.right(), 0.0))
+                island.move(vector)
 
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (targetElement[1].x - utils.BBox(island)[1].x, 0.0))
-                utils.moveIslands(vector, island)
-
-        utils.update()
-        return {'FINISHED'}
-
-
-class AlignVAxis(templates.OperatorTemplate):
-
-    """Align vertical axis"""
-    bl_idname = "uv.align_vertical_axis"
-    bl_label = "Align vertical axis"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-        makeIslands = make_island.MakeIslands()
-        selectedIslands = makeIslands.selectedIslands()
-
-        targetElement = utils.getTargetPoint(context, makeIslands)
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
-        targetCenter = (targetElement[0] + targetElement[1]) / 2
-        if context.scene.selectionAsGroup:
-            groupBoxCenter = utils.GBBoxCenter(selectedIslands)
-            if context.scene.relativeItems == 'ACTIVE':
-                selectedIslands.remove(makeIslands.activeIsland())
-            for island in selectedIslands:
-                vector = mathutils.Vector(
-                    (targetCenter.x - groupBoxCenter.x, 0.0))
-                utils.moveIslands(vector, island)
-
-        else:
-            for island in selectedIslands:
-                vector = mathutils.Vector(
-                    (targetCenter.x - utils.BBoxCenter(island).x, 0.0))
-                utils.moveIslands(vector, island)
+                    (targetElement - island.BBox().right(), 0.0))
+                island.move(vector)
 
         utils.update()
         return {'FINISHED'}
@@ -142,10 +124,20 @@ class AlignTopMargin(templates.OperatorTemplate):
 
     def execute(self, context):
 
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
-        targetElement = utils.getTargetPoint(context, makeIslands)
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 1.0
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().top()
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.y
+
         if not targetElement:
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
@@ -155,14 +147,14 @@ class AlignTopMargin(templates.OperatorTemplate):
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetElement[1].y - groupBox[1].y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - groupBox.top()))
+                island.move(vector)
 
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetElement[1].y - utils.BBox(island)[1].y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - island.BBox().top()))
+                island.move(vector)
 
         utils.update()
         return {'FINISHED'}
@@ -176,10 +168,20 @@ class AlignLowMargin(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
-        targetElement = utils.getTargetPoint(context, makeIslands)
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 0.0
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().bottom()
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.y
+
         if not targetElement:
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
@@ -189,14 +191,14 @@ class AlignLowMargin(templates.OperatorTemplate):
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetElement[0].y - groupBox[0].y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - groupBox.bottom))
+                island.move(vector)
 
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetElement[0].y - utils.BBox(island)[0].y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - island.BBox(island).bottom))
+                island.move(vector)
 
         utils.update()
         return {'FINISHED'}
@@ -210,29 +212,82 @@ class AlignHAxis(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
-        targetElement = utils.getTargetPoint(context, makeIslands)
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
-        targetCenter = (targetElement[0] + targetElement[1]) / 2
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 0.5
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().center().y
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.y
 
         if context.scene.selectionAsGroup:
-            groupBoxCenter = utils.GBBoxCenter(selectedIslands)
+            groupBoxCenter = utils.GBBox(selectedIslands).center()
             if context.scene.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetCenter.y - groupBoxCenter.y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - groupBoxCenter.y))
+                island.move(vector)
 
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetCenter.y - utils.BBoxCenter(island).y))
-                utils.moveIslands(vector, island)
+                    (0.0, targetElement - island.BBox().center().y))
+                island.move(vector)
+
+        utils.update()
+        return {'FINISHED'}
+
+
+class AlignVAxis(templates.OperatorTemplate):
+    """Align vertical axis."""
+
+    bl_idname = "uv.align_vertical_axis"
+    bl_label = "Align vertical axis"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        makeIslands = make_islands.MakeIslands()
+        selectedIslands = makeIslands.selectedIslands()
+
+        targetElement = None
+
+        if context.scene.relativeItems == 'UV_SPACE':
+            targetElement = 0.5
+        elif context.scene.relativeItems == 'ACTIVE':
+            activeIsland = makeIslands.activeIsland()
+            if activeIsland:
+                targetElement = activeIsland.BBox().center().x
+        elif context.scene.relativeItems == 'CURSOR':
+            targetElement = context.space_data.cursor_location.x
+
+        if not targetElement:
+            self.report({"ERROR"}, "No active face")
+            return {"CANCELLED"}
+
+        if context.scene.selectionAsGroup:
+            groupBoxCenter = utils.GBBox(selectedIslands).center()
+            if context.scene.relativeItems == 'ACTIVE':
+                selectedIslands.remove(makeIslands.activeIsland())
+            for island in selectedIslands:
+                vector = mathutils.Vector(
+                    (targetElement - groupBoxCenter.x, 0.0))
+                island.move(vector)
+
+        else:
+            for island in selectedIslands:
+                vector = mathutils.Vector(
+                    (targetElement - island.BBox().center().x, 0.0))
+                island.move(vector)
 
         utils.update()
         return {'FINISHED'}
@@ -247,19 +302,33 @@ class AlignRotation(templates.OperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        makeIslands = make_island.MakeIslands()
+        makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
         activeIsland = makeIslands.activeIsland()
+
         if not activeIsland:
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
-        activeAngle = utils.islandAngle(activeIsland)
+        activeAngle = activeIsland.angle()
 
         for island in selectedIslands:
             uvAngle = utils.islandAngle(island)
             deltaAngle = activeAngle - uvAngle
             deltaAngle = round(-deltaAngle, 5)
-            utils.rotateIsland(island, deltaAngle)
+            island.rotate(deltaAngle)
 
         utils.update()
         return {'FINISHED'}
+
+
+#################################
+# REGISTRATION
+#################################
+_om = operator_manager.om
+_om.addOperator(AlignHAxis)
+_om.addOperator(AlignVAxis)
+_om.addOperator(AlignRotation)
+_om.addOperator(AlignRxMargin)
+_om.addOperator(AlignSXMargin)
+_om.addOperator(AlignLowMargin)
+_om.addOperator(AlignTopMargin)

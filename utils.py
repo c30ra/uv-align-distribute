@@ -16,15 +16,17 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-import bpy
-import bmesh
-from . import global_def
-import mathutils
 import math
+
+import bmesh
+import bpy
+import mathutils
+
+from . import bounding_box, global_def, island
 
 
 def InitBMesh():
-
+    """ Init global bmesh. """
     global_def.bm = bmesh.from_edit_mesh(bpy.context.edit_object.data)
     global_def.bm.faces.ensure_lookup_table()
     # uvlayer = bm.loops.layers.uv.active
@@ -42,8 +44,8 @@ def update():
 def GBBox(islands):
     minX = minY = 1000
     maxX = maxY = -1000
-    for island in islands:
-        for face_id in island:
+    for _island in islands:
+        for face_id in _island.faceList:
             face = global_def.bm.faces[face_id]
             for loop in face.loops:
                 u, v = loop[global_def.uvlayer].uv
@@ -52,109 +54,8 @@ def GBBox(islands):
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-    return mathutils.Vector((minX, minY)), mathutils.Vector((maxX, maxY))
-
-
-def GBBoxCenter(islands):
-    minX = minY = 1000
-    maxX = maxY = -1000
-    for island in islands:
-        for face_id in island:
-            face = global_def.bm.faces[face_id]
-            for loop in face.loops:
-                u, v = loop[global_def.uvlayer].uv
-                minX = min(u, minX)
-                minY = min(v, minY)
-                maxX = max(u, maxX)
-                maxY = max(v, maxY)
-
-    return (mathutils.Vector((minX, minY)) +
-            mathutils.Vector((maxX, maxY))) / 2
-
-
-def BBox(island):
-    minX = minY = 1000
-    maxX = maxY = -1000
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            u, v = loop[global_def.uvlayer].uv
-            minX = min(u, minX)
-            minY = min(v, minY)
-            maxX = max(u, maxX)
-            maxY = max(v, maxY)
-
-    return mathutils.Vector((minX, minY)), mathutils.Vector((maxX, maxY))
-
-
-def BBoxCenter(island):
-    minX = minY = 1000
-    maxX = maxY = -1000
-    # for island in islands:
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            u, v = loop[global_def.uvlayer].uv
-            minX = min(u, minX)
-            minY = min(v, minY)
-            maxX = max(u, maxX)
-            maxY = max(v, maxY)
-
-    return (mathutils.Vector((minX, minY)) +
-            mathutils.Vector((maxX, maxY))) / 2
-
-
-def islandAngle(island):
-    uvList = []
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            uv = loop[global_def.bm.loops.layers.uv.active].uv
-            uvList.append(uv)
-
-    angle = math.degrees(mathutils.geometry.box_fit_2d(uvList))
-    return angle
-
-
-def moveIslands(vector, island):
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            loop[global_def.bm.loops.layers.uv.active].uv += vector
-
-
-def rotateIsland(island, angle):
-    rad = math.radians(angle)
-    center = BBoxCenter(island)
-
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            uv_act = global_def.bm.loops.layers.uv.active
-            x, y = loop[uv_act].uv
-            xt = x - center.x
-            yt = y - center.y
-            xr = (xt * math.cos(rad)) - (yt * math.sin(rad))
-            yr = (xt * math.sin(rad)) + (yt * math.cos(rad))
-            # loop[global_def.bm.loops.layers.uv.active].uv = trans
-            loop[global_def.bm.loops.layers.uv.active].uv.x = xr + center.x
-            loop[global_def.bm.loops.layers.uv.active].uv.y = yr + center.y
-
-
-def scaleIsland(island, scaleX, scaleY):
-    center = BBoxCenter(island)
-
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        for loop in face.loops:
-            x = loop[global_def.bm.loops.layers.uv.active].uv.x
-            y = loop[global_def.bm.loops.layers.uv.active].uv.y
-            xt = x - center.x
-            yt = y - center.y
-            xs = xt * scaleX
-            ys = yt * scaleY
-            loop[global_def.bm.loops.layers.uv.active].uv.x = xs + center.x
-            loop[global_def.bm.loops.layers.uv.active].uv.y = ys + center.y
+    return bounding_box.BoundingBox(mathutils.Vector((minX, minY)),
+                                    mathutils.Vector((maxX, maxY)))
 
 
 def vectorDistance(vector1, vector2):
@@ -163,18 +64,20 @@ def vectorDistance(vector1, vector2):
         math.pow((vector2.y - vector1.y), 2))
 
 
-def snapIsland(active, threshold, selectedIslands):
+def snapIsland(island, targetIsland, threshold):
+    """ snap 'island' to 'targetIsland' """
+
     bestMatcherList = []
     activeUvLayer = global_def.bm.loops.layers.uv.active
 
-    for face_id in selectedIslands:
+    for face_id in targetIsland.faceList:
         face = global_def.bm.faces[face_id]
 
         for loop in face.loops:
             selectedUVvert = loop[activeUvLayer]
             uvList = []
 
-            for active_face_id in active:
+            for active_face_id in island:
                 active_face = global_def.bm.faces[active_face_id]
 
                 for active_loop in active_face.loops:
@@ -204,20 +107,20 @@ def snapIsland(active, threshold, selectedIslands):
         if bestMatcher[0] <= threshold:
             bestMatcher[1].uv = bestMatcher[2]
 
-
+# todo: change param order
 def snapToUnselected(islands, threshold, selectedIslands):
     bestMatcherList = []
-    islands.remove(selectedIslands)
+    islands.faceList.remove(selectedIslands.faceList)
     activeUvLayer = global_def.bm.loops.layers.uv.active
 
-    for face_id in selectedIslands:
+    for face_id in selectedIslands.faceList:
         face = global_def.bm.faces[face_id]
 
         for loop in face.loops:
             selectedUVvert = loop[activeUvLayer]
             uvList = []
 
-            for targetIsland in islands:
+            for targetIsland in islands.faceList:
                 for targetFace_id in targetIsland:
                     targetFace = global_def.bm.faces[targetFace_id]
                     for targetLoop in targetFace.loops:
@@ -285,60 +188,6 @@ def _sortVertex(vertexList, BBCenter):
     return newList
 
 
-def sortFaces(faceList):
-    anglesList = []
-    for f in faceList:
-        faceCenter = f[0]
-        perFaceVertsAngle = []
-        for v in f[1]:
-            # atan2(P[i].y - M.y, P[i].x - M.x)
-            angle = math.atan2(v.uv.y - faceCenter.y, v.uv.x - faceCenter.x)
-            perFaceVertsAngle.append((v, angle))
-
-        perFaceVertsAngle2 = sorted(perFaceVertsAngle,
-                                    key=lambda angle: angle[1])
-
-        anglesList.append(perFaceVertsAngle2)
-
-    newList = []
-    for data in anglesList:
-        for vert in data:
-            newList.append(vert[0])
-
-    return newList
-
-
-def islandVertexOrder(island):
-    uvData = []
-    faceData = []
-    for face_id in island:
-        face = global_def.bm.faces[face_id]
-        uvList = []
-        for loop in face.loops:
-
-            loopData = loop[global_def.bm.loops.layers.uv.active]
-            uvData.append(loopData)
-            uvList.append(loopData)
-
-        faceCenter = 0
-        vX = 0
-        vY = 0
-        for uv in uvList:
-            vX += uv.uv.x
-            vY += uv.uv.y
-        vertNum = len(uvList)
-        faceCenter = mathutils.Vector((vX / vertNum, vY / vertNum))
-        uvList = sorted(uvList, key=lambda data: data.uv)
-        # uvList = _sortVertex(uvList)
-        faceData.append((faceCenter, uvList))
-
-    faceData2 = sortFaces(faceData)
-    # faceData = _sortCenter(faceData)
-    counter = 0
-
-    return faceData2
-
-
 def getTargetPoint(context, islands):
     if context.scene.relativeItems == 'UV_SPACE':
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
@@ -347,37 +196,36 @@ def getTargetPoint(context, islands):
         if not activeIsland:
             return None
         else:
-            return BBox(activeIsland)
+            return activeIsland.BBox()
     elif context.scene.relativeItems == 'CURSOR':
-        return context.space_data.cursor_location,\
-            context.space_data.cursor_location
+        return context.space_data.cursor_location
 
 
 def IslandSpatialSortX(islands):
     spatialSort = []
-    for island in islands:
-        spatialSort.append((BBoxCenter(island).x, island))
+    for _island in islands:
+        spatialSort.append((island.BBox().center().x, island))
     spatialSort.sort()
     return spatialSort
 
 
 def IslandSpatialSortY(islands):
     spatialSort = []
-    for island in islands:
-        spatialSort.append((BBoxCenter(island).y, island))
+    for _island in islands:
+        spatialSort.append((_island.BBox().center().y, island))
     spatialSort.sort()
     return spatialSort
 
-
+# todo: to rework
 def averageIslandDist(islands):
     distX = 0
     distY = 0
     counter = 0
 
     for i in range(len(islands)):
-        elem1 = BBox(islands[i][1])[1]
-        try:
-            elem2 = BBox(islands[i + 1][1])[0]
+        elem1 = islands[i].BBox().bottomRight
+        try:            # island
+            elem2 = bounding_box.BBox(islands[i + 1][1])[0]
             counter += 1
         except:
             break
@@ -388,26 +236,3 @@ def averageIslandDist(islands):
     avgDistX = distX / counter
     avgDistY = distY / counter
     return mathutils.Vector((avgDistX, avgDistY))
-
-
-def islandSize(island):
-    bbox = BBox(island)
-    sizeX = bbox[1].x - bbox[0].x
-    sizeY = bbox[1].y - bbox[0].y
-
-    return sizeX, sizeY
-
-
-def determinant(vec1, vec2):
-    return vec1.x * vec2.y - vec1.y * vec2.x
-
-
-def edgeIntersection(vec_a, vec_b, vec_c, vec_d):
-    # one edge is a-b, the other is c-d
-    det = determinant(vec_b - vec_a, vec_c - vec_d)
-    t = determinant(vec_c - vec_a, vec_c - vec_d) / det
-    u = determinant(vec_b - vec_a, vec_c - vec_a) / det
-    if ((t < 0) or (u < 0) or (t > 1) or (u > 1)):
-        return False
-    else:
-        return True
