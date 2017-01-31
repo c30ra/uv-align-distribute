@@ -1,12 +1,15 @@
 import mathutils
 
+# coords in blender start from bottom-right corner as (0.0, 0.0)
+# so change accordling
+
 
 class BoundingBox():
     """BoundingBox rappresentation."""
 
-    def __init__(self, topLeft, bottomRight):
-        self.__topLeft = topLeft
-        self.__bottomRight = bottomRight
+    def __init__(self, lowest, highest):
+        self.__topLeft = mathutils.Vector((lowest.x, highest.y))
+        self.__bottomRight = mathutils.Vector((highest.x, lowest.y))
 
     def topLeft(self):
         """ Return the top left corner. """
@@ -42,4 +45,4 @@ class BoundingBox():
 
     def center(self):
         """Return the bounding box center."""
-        return self.__topLeft + self.__bottomRight / 2
+        return (self.__topLeft + self.__bottomRight) / 2

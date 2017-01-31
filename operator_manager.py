@@ -5,7 +5,7 @@ class __OperatorManager:
 
     def addOperator(self, operator):
         self.__operator_list.append(operator)
-        
+
     def classList(self):
         return self.__operator_list
 

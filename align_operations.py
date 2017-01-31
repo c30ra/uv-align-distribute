@@ -135,12 +135,12 @@ class AlignTopMargin(templates.OperatorTemplate):
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().top()
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
         elif context.scene.relativeItems == 'CURSOR':
             targetElement = context.space_data.cursor_location.y
 
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
         if context.scene.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
             if context.scene.relativeItems == 'ACTIVE':
@@ -179,12 +179,12 @@ class AlignLowMargin(templates.OperatorTemplate):
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().bottom()
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
         elif context.scene.relativeItems == 'CURSOR':
             targetElement = context.space_data.cursor_location.y
 
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
         if context.scene.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
             if context.scene.relativeItems == 'ACTIVE':
@@ -197,7 +197,7 @@ class AlignLowMargin(templates.OperatorTemplate):
         else:
             for island in selectedIslands:
                 vector = mathutils.Vector(
-                    (0.0, targetElement - island.BBox(island).bottom))
+                    (0.0, targetElement - island.BBox().bottom()))
                 island.move(vector)
 
         utils.update()
@@ -267,12 +267,11 @@ class AlignVAxis(templates.OperatorTemplate):
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().center().x
+            else:
+                self.report({"ERROR"}, "No active face")
+                return {"CANCELLED"}
         elif context.scene.relativeItems == 'CURSOR':
             targetElement = context.space_data.cursor_location.x
-
-        if not targetElement:
-            self.report({"ERROR"}, "No active face")
-            return {"CANCELLED"}
 
         if context.scene.selectionAsGroup:
             groupBoxCenter = utils.GBBox(selectedIslands).center()
@@ -309,10 +308,11 @@ class AlignRotation(templates.OperatorTemplate):
         if not activeIsland:
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
+
         activeAngle = activeIsland.angle()
 
         for island in selectedIslands:
-            uvAngle = utils.islandAngle(island)
+            uvAngle = island.angle()
             deltaAngle = activeAngle - uvAngle
             deltaAngle = round(-deltaAngle, 5)
             island.rotate(deltaAngle)

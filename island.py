@@ -1,10 +1,8 @@
 import math
 
-import bmesh
-import bpy
 import mathutils
 
-from . import bounding_box, global_def
+from . import bounding_box, global_def, utils
 
 
 class Island:
@@ -17,6 +15,15 @@ class Island:
 
     def __len__(self):
         return len(self.faceList)
+
+    def __str__(self):
+        return str(self.faceList)
+
+    def __repr__(self):
+        return repr(self.faceList)
+
+    def __eq__(self, other):
+        return self.faceList == other
 
 # properties
     def BBox(self):
@@ -49,7 +56,7 @@ class Island:
         angle = math.degrees(mathutils.geometry.box_fit_2d(uvList))
         return angle
 
-    def islandSize(self):
+    def size(self):
         """ return the island size. """
 
         bbox = bounding_box.BBox()
@@ -71,7 +78,7 @@ class Island:
         """ rotate the island on it's center by 'angle(degree)'. """
 
         rad = math.radians(angle)
-        center = bounding_box.BBox().center()
+        center = self.BBox().center()
 
         for face_id in self.faceList:
             face = global_def.bm.faces[face_id]
@@ -102,3 +109,49 @@ class Island:
                 ys = yt * scaleY
                 loop[global_def.bm.loops.layers.uv.active].uv.x = xs + center.x
                 loop[global_def.bm.loops.layers.uv.active].uv.y = ys + center.y
+
+    def snapToUnselected(self, targetIslands, threshold):
+        bestMatcherList = []
+        # targetIslands.remove(self)
+        activeUvLayer = global_def.bm.loops.layers.uv.active
+
+        for face_id in self.faceList:
+            face = global_def.bm.faces[face_id]
+
+            for loop in face.loops:
+                selectedUVvert = loop[activeUvLayer]
+                uvList = []
+
+                for targetIsland in targetIslands:
+                    for targetFace_id in targetIsland:
+                        targetFace = global_def.bm.faces[targetFace_id]
+                        for targetLoop in targetFace.loops:
+                            # take the a reference vert
+                            targetUvVert = targetLoop[activeUvLayer].uv
+                            # get a selected vert and calc it's distance from
+                            # the ref
+                            # add it to uvList
+                            dist = round(
+                                utils.vectorDistance(selectedUVvert.uv,
+                                                     targetUvVert), 10)
+                            uvList.append((dist, targetLoop[activeUvLayer]))
+
+                # for every vert in uvList take the ones with the shortest
+                # distnace from ref
+                minDist = uvList[0][0]
+                bestMatcher = 0
+
+                # 1st pass get lower dist
+                for bestDist in uvList:
+                    if bestDist[0] <= minDist:
+                        minDist = bestDist[0]
+
+                # 2nd pass get the only ones with a match
+                for bestVert in uvList:
+                    if bestVert[0] <= minDist:
+                        bestMatcherList.append((bestVert[0], selectedUVvert,
+                                                bestVert[1]))
+
+        for bestMatcher in bestMatcherList:
+            if bestMatcher[0] <= threshold:
+                bestMatcher[1].uv = bestMatcher[2].uv

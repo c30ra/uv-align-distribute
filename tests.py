@@ -13,9 +13,11 @@ if len(sys.argv) > 1:
 # and the corresponding .test.py python script.
 
 print("start testing...")
-for file in glob.glob('./tests/**/*.test.blend'):
+gl = glob.glob('./tests/**/*.test.blend')
+print("found %s tests: " % len(gl))
+
+for file in gl:
     # print("executing:", file)
     subprocess.call([blenderExecutable, '--addons', 'uv_align_distribute',
                      '--factory-startup', '-noaudio', '-b', file, '--python',
-                     file.replace('.blend', '.py')], stdout=subprocess.DEVNULL)
-
+                     file.replace('.blend', '.py')], stdout=subprocess.DEVNULL) 

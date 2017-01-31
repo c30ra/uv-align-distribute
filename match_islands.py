@@ -21,8 +21,6 @@ import os
 import sys
 from collections import defaultdict
 
-import mathutils
-
 from . import global_def, make_islands, templates, utils
 
 # Add vendor directory to module search path
@@ -58,7 +56,7 @@ class Match_Islands(templates.OperatorTemplate):
                 vertexList.add(vert)
 
         vertexList = sorted(vertexList, key=lambda data: data.index)
-        numOfVertex = len(vertexList)
+        #numOfVertex = len(vertexList)
 
         edgeVertex = set()
         for face_id in island:
@@ -91,7 +89,7 @@ class Match_Islands(templates.OperatorTemplate):
             for vert in face.verts:
                 activeIslandVert.add(vert.index)
 
-        numOfVertex = len(activeIslandVert)
+        #numOfVertex = len(activeIslandVert)
 
         # map each uv vert to corresponding vert for selectedIslands
         uv_to_vert = dict((i, list()) for i in range(len(global_def.bm.verts)))
@@ -112,7 +110,7 @@ class Match_Islands(templates.OperatorTemplate):
                 index = loop.vert.index
                 activeIslandUVData[index].append(loop[global_def.uvlayer])
 
-        # build create a edge list
+        # build a edge list
         activeIslandGraph = self.graphFromIsland(activeIsland)
         selectedIslandsGraph = []
 

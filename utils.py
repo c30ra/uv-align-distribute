@@ -22,7 +22,7 @@ import bmesh
 import bpy
 import mathutils
 
-from . import bounding_box, global_def, island
+from . import bounding_box, global_def
 
 
 def InitBMesh():
@@ -107,22 +107,24 @@ def snapIsland(island, targetIsland, threshold):
         if bestMatcher[0] <= threshold:
             bestMatcher[1].uv = bestMatcher[2]
 
+
 # todo: change param order
-def snapToUnselected(islands, threshold, selectedIslands):
+def snapToUnselected(island, targetIslands, threshold):
     bestMatcherList = []
-    islands.faceList.remove(selectedIslands.faceList)
+    # targetIslands.faceList.remove(island.faceList)
     activeUvLayer = global_def.bm.loops.layers.uv.active
 
-    for face_id in selectedIslands.faceList:
+    for face_id in island.faceList:
         face = global_def.bm.faces[face_id]
 
         for loop in face.loops:
             selectedUVvert = loop[activeUvLayer]
             uvList = []
 
-            for targetIsland in islands.faceList:
+            for targetIsland in targetIslands.faceList:
                 for targetFace_id in targetIsland:
                     targetFace = global_def.bm.faces[targetFace_id]
+
                     for targetLoop in targetFace.loops:
                         # take the a reference vert
                         targetUvVert = targetLoop[activeUvLayer].uv
@@ -148,10 +150,9 @@ def snapToUnselected(islands, threshold, selectedIslands):
                 if bestVert[0] <= minDist:
                     bestMatcherList.append((bestVert[0], selectedUVvert,
                                             bestVert[1].uv))
-
     for bestMatcher in bestMatcherList:
         if bestMatcher[0] <= threshold:
-            bestMatcher[1].uv = bestMatcher[2]
+            bestMatcher[2].uv = bestMatcher[1]
 
 
 def _sortCenter(pointList):
@@ -201,20 +202,22 @@ def getTargetPoint(context, islands):
         return context.space_data.cursor_location
 
 
-def IslandSpatialSortX(islands):
-    spatialSort = []
-    for _island in islands:
-        spatialSort.append((island.BBox().center().x, island))
-    spatialSort.sort()
-    return spatialSort
+# deprecated: 
+# def IslandSpatialSortX(islands):
+#     spatialSort = []
+#     for _island in islands:
+#         spatialSort.append((island.BBox().center().x, island))
+#     spatialSort.sort()
+#     return spatialSort
 
 
-def IslandSpatialSortY(islands):
-    spatialSort = []
-    for _island in islands:
-        spatialSort.append((_island.BBox().center().y, island))
-    spatialSort.sort()
-    return spatialSort
+# def IslandSpatialSortY(islands):
+#     spatialSort = []
+#     for _island in islands:
+#         spatialSort.append((_island.BBox().center().y, island))
+#     spatialSort.sort()
+#     return spatialSort
+
 
 # todo: to rework
 def averageIslandDist(islands):
@@ -223,9 +226,9 @@ def averageIslandDist(islands):
     counter = 0
 
     for i in range(len(islands)):
-        elem1 = islands[i].BBox().bottomRight
+        elem1 = islands[i].BBox().bottomRight()
         try:            # island
-            elem2 = bounding_box.BBox(islands[i + 1][1])[0]
+            elem2 = islands[i + 1].BBox().topLeft()
             counter += 1
         except:
             break

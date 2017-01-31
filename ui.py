@@ -18,6 +18,7 @@
 
 import bpy
 from . import global_def
+from . import operator_manager
 
 ##############
 #   UI
@@ -100,16 +101,23 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
                      icon_value=pcoll["distribute_hdist"].icon_id)
         row.operator("uv.equalize_vertical_gap", "Eq. VGap",
                      icon_value=pcoll["distribute_vdist"].icon_id)
-
-        # wip
-        # row = layout.row(True)
-        # row.operator("uv.remove_overlaps", "Remove Overlaps")
-
-        # TODO organize these
+        #
+        # # wip
+        # # row = layout.row(True)
+        # # row.operator("uv.remove_overlaps", "Remove Overlaps")
+        #
+        # # TODO organize these
         layout.separator()
         layout.label("Others:")
         row = layout.row()
         layout.operator("uv.snap_islands")
 
         row = layout.row()
-        layout.operator("uv.match_islands")
+        #layout.operator("uv.match_islands")
+
+
+#################################
+# REGISTRATION
+#################################
+_om = operator_manager.om
+_om.addOperator(IMAGE_PT_align_distribute)

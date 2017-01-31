@@ -15,14 +15,15 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
+import mathutils
 
 from bpy.props import BoolProperty
 
-from . import templates
 from . import make_islands
+from . import templates
 from . import utils
+from . import operator_manager
 
-import mathutils
 ############################
 # DISTRIBUTION
 ############################
@@ -92,6 +93,12 @@ class DistributeCentersH(templates.OperatorTemplate):
         selectedIslands.pop(-1)
 
         pos = uvFirstX + deltaDist
+
+        for island in selectedIslands:
+            vec = mathutils.Vector((pos - island.BBox().center().x, 0.0))
+            pos += deltaDist
+            island.move(vec)
+
         utils.update()
         return {"FINISHED"}
 
@@ -112,8 +119,8 @@ class DistributeREdgesH(templates.OperatorTemplate):
 
         selectedIslands.sort(key=lambda island: island.BBox().center().x)
 
-        uvFirstX = selectedIslands[0].BBox().center().x
-        uvLastX = selectedIslands[-1].BBox().center().x
+        uvFirstX = selectedIslands[0].BBox().right()
+        uvLastX = selectedIslands[-1].BBox().right()
 
         distX = uvLastX - uvFirstX
 
@@ -146,10 +153,10 @@ class DistributeTEdgesV(templates.OperatorTemplate):
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        selectedIslands.sort(key=lambda island: island.BBox().center().x)
+        selectedIslands.sort(key=lambda island: island.BBox().center().y)
 
-        uvFirstX = selectedIslands[0].BBox().center().x
-        uvLastX = selectedIslands[-1].BBox().center().x
+        uvFirstX = selectedIslands[0].BBox().top()
+        uvLastX = selectedIslands[-1].BBox().top()
 
         distX = uvLastX - uvFirstX
 
@@ -182,23 +189,24 @@ class DistributeCentersV(templates.OperatorTemplate):
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortY(selectedIslands)
-        uvFirst = utils.BBoxCenter(islandSpatialSort[0][1]).y
-        uvLast = utils.BBoxCenter(islandSpatialSort[-1][1]).y
+        selectedIslands.sort(key=lambda island: island.BBox().center().y)
+
+        uvFirst = selectedIslands[0].BBox().center().y
+        uvLast = selectedIslands[-1].BBox().center().y
 
         dist = uvLast - uvFirst
 
         deltaDist = dist / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
         pos = uvFirst + deltaDist
 
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((0.0, pos - utils.BBoxCenter(island[1]).y))
+        for island in selectedIslands:
+            vec = mathutils.Vector((0.0, pos - island.BBox().center().y))
             pos += deltaDist
-            island.move(vector)
+            island.move(vec)
         utils.update()
         return {"FINISHED"}
 
@@ -217,55 +225,56 @@ class DistributeBEdgesV(templates.OperatorTemplate):
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortY(selectedIslands)
-        uvFirst = utils.BBox(islandSpatialSort[0][1])[0].y
-        uvLast = utils.BBox(islandSpatialSort[-1][1])[0].y
+        selectedIslands.sort(key=lambda island: island.BBox().center().y)
+
+        uvFirst = selectedIslands[0].BBox().bottom()
+        uvLast = selectedIslands[-1].BBox().bottom()
 
         dist = uvLast - uvFirst
 
         deltaDist = dist / (len(selectedIslands) - 1)
 
-        islandSpatialSort.pop(0)
-        islandSpatialSort.pop(-1)
+        selectedIslands.pop(0)
+        selectedIslands.pop(-1)
 
         pos = uvFirst + deltaDist
 
-        for island in islandSpatialSort:
-            vec = mathutils.Vector((0.0, pos - utils.BBox(island[1])[0].y))
+        for island in selectedIslands:
+            vec = mathutils.Vector((0.0, pos - island.BBox().bottom()))
             pos += deltaDist
-            island.move(vector)
+            island.move(vec)
         utils.update()
         return {"FINISHED"}
 
+# TODO:
+# class RemoveOverlaps(templates.OperatorTemplate):
 
-class RemoveOverlaps(templates.OperatorTemplate):
+#     """Remove overlaps on islands"""
+#     bl_idname = "uv.remove_overlaps"
+#     bl_label = "Remove Overlaps"
+#     bl_options = {'REGISTER', 'UNDO'}
 
-    """Remove overlaps on islands"""
-    bl_idname = "uv.remove_overlaps"
-    bl_label = "Remove Overlaps"
-    bl_options = {'REGISTER', 'UNDO'}
+#     def execute(self, context):
+#         makeIslands = make_islands.MakeIslands()
+#         islands = makeIslands.getIslands()
 
-    def execute(self, context):
-        makeIslands = make_islands.MakeIslands()
-        islands = makeIslands.getIslands()
+#         islandEdges = []
+#         uvData = []
+#         for island in islands:
+#             edges = []
 
-        islandEdges = []
-        uvData = []
-        for island in islands:
-            edges = []
+#             for face_id in island:
+#                 face = bm.faces[face_id]
 
-            for face_id in island:
-                face = bm.faces[face_id]
-
-                for loop in face.loops:
-                    edgeVert1 = loop.edge.verts[0].index
-                    edgeVert2 = loop.edge.verts[1].index
-                    edges.append((edgeVert1, edgeVert2))
-                    uv = loop[bm.loops.layers.uv.active].uv
-                    vertIndex = loop.vert.index
-                    uvData.append((vertIndex, uv))
-            islandEdges.append(edges)
-        return {"FINISHED"}
+#                 for loop in face.loops:
+#                     edgeVert1 = loop.edge.verts[0].index
+#                     edgeVert2 = loop.edge.verts[1].index
+#                     edges.append((edgeVert1, edgeVert2))
+#                     uv = loop[bm.loops.layers.uv.active].uv
+#                     vertIndex = loop.vert.index
+#                     uvData.append((vertIndex, uv))
+#             islandEdges.append(edges)
+#         return {"FINISHED"}
 
 
 class EqualizeHGap(templates.OperatorTemplate):
@@ -282,22 +291,23 @@ class EqualizeHGap(templates.OperatorTemplate):
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortX(selectedIslands)
+        selectedIslands.sort(key=lambda island: island.BBox().center().x)
 
-        averageDist = utils.averageIslandDist(islandSpatialSort)
+        averageDist = utils.averageIslandDist(selectedIslands)
 
-        for i in range(len(islandSpatialSort)):
-            if islandSpatialSort.index(islandSpatialSort[i + 1]) == \
-                    islandSpatialSort.index(islandSpatialSort[-1]):
+        for i in range(len(selectedIslands)):
+            # break if the last island is the same as the next one
+            if selectedIslands.index(selectedIslands[i + 1]) == \
+                    selectedIslands.index(selectedIslands[-1]):
                 break
-            elem1 = utils.BBox(islandSpatialSort[i][1])[1].x
-            elem2 = utils.BBox(islandSpatialSort[i + 1][1])[0].x
+            elem1 = selectedIslands[i].BBox().right()
+            elem2 = selectedIslands[i + 1].BBox().left()
 
             dist = elem2 - elem1
             increment = averageDist.x - dist
 
             vec = mathutils.Vector((increment, 0.0))
-            utils.moveIslands(vec, islandSpatialSort[i + 1][1])
+            selectedIslands[i + 1].move(vec)
         utils.update()
         return {"FINISHED"}
 
@@ -316,24 +326,23 @@ class EqualizeVGap(templates.OperatorTemplate):
         if len(selectedIslands) < 3:
             return {'CANCELLED'}
 
-        islandSpatialSort = utils.IslandSpatialSortY(selectedIslands)
+        selectedIslands.sort(key=lambda island: island.BBox().center().y)
 
-        averageDist = utils.averageIslandDist(islandSpatialSort)
+        averageDist = utils.averageIslandDist(selectedIslands)
 
-        for i in range(len(islandSpatialSort)):
-            if islandSpatialSort.index(islandSpatialSort[i + 1]) ==\
-                    islandSpatialSort.index(islandSpatialSort[-1]):
+        for i in range(len(selectedIslands)):
+            if selectedIslands.index(selectedIslands[i + 1]) ==\
+                    selectedIslands.index(selectedIslands[-1]):
                 break
-            elem1 = utils.BBox(islandSpatialSort[i][1])[1].y
-            elem2 = utils.BBox(islandSpatialSort[i + 1][1])[0].y
+            elem1 = selectedIslands[i].BBox().bottom()
+            elem2 = selectedIslands[i + 1].BBox().top()
 
             dist = elem2 - elem1
 
             increment = averageDist.y - dist
 
             vec = mathutils.Vector((0.0, increment))
-
-            utils.moveIslands(vec, islandSpatialSort[i + 1][1])
+            selectedIslands[i + 1].move(vec)
         utils.update()
         return {"FINISHED"}
 
@@ -364,11 +373,11 @@ class EqualizeScale(templates.OperatorTemplate):
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
 
-        activeSize = utils.islandSize(activeIsland)
+        activeSize = activeIsland.size()
         selectedIslands.remove(activeIsland)
 
         for island in selectedIslands:
-            size = utils.islandSize(island)
+            size = island.size()
             scaleX = activeSize[0] / size[0]
             scaleY = activeSize[1] / size[1]
 
@@ -378,7 +387,7 @@ class EqualizeScale(templates.OperatorTemplate):
                 else:
                     scaleY = scaleX
 
-            utils.scaleIsland(island, scaleX, scaleY)
+            island.scale(scaleX, scaleY)
 
         utils.update()
         return {"FINISHED"}
@@ -388,3 +397,19 @@ class EqualizeScale(templates.OperatorTemplate):
         layout.prop(self, "keepProportions")
         if self.keepProportions:
             layout.prop(self, "useYaxis")
+
+
+#################################
+# REGISTRATION
+#################################
+_om = operator_manager.om
+_om.addOperator(DistributeBEdgesV)
+_om.addOperator(DistributeCentersH)
+_om.addOperator(DistributeCentersV)
+_om.addOperator(DistributeLEdgesH)
+_om.addOperator(DistributeREdgesH)
+_om.addOperator(DistributeTEdgesV)
+
+_om.addOperator(EqualizeHGap)
+_om.addOperator(EqualizeVGap)
+_om.addOperator(EqualizeScale)

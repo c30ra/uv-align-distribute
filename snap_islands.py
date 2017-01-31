@@ -16,11 +16,9 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-import operator
-
 from bpy.props import FloatProperty
 
-from . import global_def, make_islands, templates, utils
+from . import make_islands, templates, utils, operator_manager
 
 
 class SnapIsland(templates.OperatorTemplate):
@@ -43,7 +41,7 @@ class SnapIsland(templates.OperatorTemplate):
 
     def execute(self, context):
         makeIslands = make_islands.MakeIslands()
-        islands = makeIslands.islands
+        islands = makeIslands.getIslands()
         selectedIslands = makeIslands.selectedIslands()
         activeIsland = makeIslands.activeIsland()
         hiddenIslands = makeIslands.hiddenIslands()
@@ -51,17 +49,31 @@ class SnapIsland(templates.OperatorTemplate):
         for island in hiddenIslands:
             islands.remove(island)
 
+        print(selectedIslands, islands)
+
         if len(selectedIslands) < 2:
+            print("snapping to unselected")
             for island in selectedIslands:
-                utils.snapToUnselected(islands, self.threshold, island)
+                islands.remove(island)
+
+            for island in selectedIslands:
+                island.snapToUnselected(islands, self.threshold)
 
         else:
+            print("snapping to activeIsland")
             if not activeIsland:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
             # selectedIslands.remove(activeIsland)
             for island in selectedIslands:
-                utils.snapIsland(activeIsland, island, self.threshold)
+                island.snapToUnselected([activeIsland], self.threshold)
 
         utils.update()
         return{'FINISHED'}
+
+
+#################################
+# REGISTRATION
+#################################
+_om = operator_manager.om
+_om.addOperator(SnapIsland)
