@@ -23,6 +23,7 @@ before_install:
   - sudo apt-get install blender
 
 install:
+  pip install lib2to3
   # create temp directory where we store a recent blender version
   - mkdir tmp && cd tmp
 
