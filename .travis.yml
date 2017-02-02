@@ -6,7 +6,7 @@ language: python
 # Define which python version to build against.
 # As blender comes bundled with it's own python you can use just one version if you like
 python:
-  - "3.6"
+  - "3.5"
 
 # blocklist
 branches:
@@ -45,7 +45,7 @@ install:
 
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
-  - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
+  - sudo ln -s ${PWD} ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 script: 
