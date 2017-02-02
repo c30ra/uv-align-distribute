@@ -33,13 +33,13 @@ install:
   - wget https://builder.blender.org/download/blender-2.78-3ab8895610-linux-glibc219-x86_64.tar.bz2
 
   # Extract the archive
-  - tar jxf blender-2.78-092cbcd-linux-glibc219-x86_64.tar.bz2
+  - tar jxf blender-2.78-3ab8895610-linux-glibc219-x86_64.tar.bz2
 
   # rename the extracted folder to "blender" for easier reference
-  - mv blender-2.78-092cbcd-linux-glibc219-x86_64 blender
+  - mv blender-2.78-3ab8895610-linux-glibc219-x86_64 blender
 
   # remove the archive, we do not need it anymore
-  - rm blender-2.78-092cbcd-linux-glibc219-x86_64.tar.bz2
+  - rm blender-2.78-3ab8895610-linux-glibc219-x86_64.tar.bz2
 
   # go back to root directory
   - cd ..
