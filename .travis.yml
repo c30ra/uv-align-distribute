@@ -16,7 +16,9 @@ branches:
 before_install:
   # update apt-gets repository sources
   - sudo apt-get update -qq
-
+  # cannot start recent blender builds so trying to update libc6
+  - sudo apt-get update
+  - sudo apt-get install libc6
   # install blender from official sources.
   # This will most propably install an outdated blender version,
   # but it will resolve all system dependencies blender has to be able to run.
