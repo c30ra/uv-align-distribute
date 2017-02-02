@@ -49,7 +49,6 @@ install:
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 script: 
-  - python tests.py ./tmp/blender/blender
   - coverage run tests.py ./tmp/blender/blender
 
 after_sucess:
