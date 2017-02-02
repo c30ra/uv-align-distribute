@@ -23,7 +23,7 @@ before_install:
   - sudo apt-get install blender
 
 install:
-  pip install lib2to3
+  - pip install lib2to3
   # create temp directory where we store a recent blender version
   - mkdir tmp && cd tmp
 
@@ -47,4 +47,5 @@ install:
   - sudo ln -s ${PWD} ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
-script: python tests.py ./tmp/blender/blender
+script: 
+  - python tests.py ./tmp/blender/blender
