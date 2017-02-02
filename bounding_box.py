@@ -46,3 +46,11 @@ class BoundingBox():
     def center(self):
         """Return the bounding box center."""
         return (self.__topLeft + self.__bottomRight) / 2
+
+
+class Size():
+    """class rappresentation of a size"""
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height

@@ -17,6 +17,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
+
 from . import global_def
 from . import operator_manager
 
@@ -113,7 +114,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         layout.operator("uv.snap_islands")
 
         row = layout.row()
-        #layout.operator("uv.match_islands")
+        layout.operator("uv.match_islands")
 
 
 #################################

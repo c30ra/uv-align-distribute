@@ -21,7 +21,7 @@ from bpy.props import FloatProperty
 from . import make_islands, templates, utils, operator_manager
 
 
-class SnapIsland(templates.OperatorTemplate):
+class SnapIsland(templates.UvOperatorTemplate):
 
     """Snap UV Islands by moving their vertex to the closest one"""
     bl_idname = "uv.snap_islands"

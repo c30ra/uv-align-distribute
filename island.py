@@ -59,11 +59,11 @@ class Island:
     def size(self):
         """ return the island size. """
 
-        bbox = bounding_box.BBox()
-        sizeX = bbox.bottomRight.x - bbox.topLeft.x
-        sizeY = bbox.bottomRight.y - bbox.topLeft.y
+        bbox = self.BBox()
+        sizeX = bbox.right() - bbox.left()
+        sizeY = bbox.bottom() - bbox.top()
 
-        return sizeX, sizeY
+        return bounding_box.Size(sizeX, sizeY)
 
 # Transformation
     def move(self, vector):
@@ -96,7 +96,7 @@ class Island:
     def scale(self, scaleX, scaleY):
         """ scale the island by 'scaleX, scaleY'. """
 
-        center = bounding_box.BBox().center()
+        center = self.BBox().center()
 
         for face_id in self.faceList:
             face = global_def.bm.faces[face_id]
@@ -155,3 +155,7 @@ class Island:
         for bestMatcher in bestMatcherList:
             if bestMatcher[0] <= threshold:
                 bestMatcher[1].uv = bestMatcher[2].uv
+
+    def isIsomorphic(self, other):
+        """test for isomorphism"""
+        pass

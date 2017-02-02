@@ -171,6 +171,16 @@ class TestAddon(unittest.TestCase):
         for i in self.selectedIslands:
             self.assertAlmostEquals(i.angle(), activeIsland_angle, places=4)
 
+    def test_align_operations_EqualizeScale_active_island(self):
+        bpy.types.Scene.relativeItems = "ACTIVE"
+        bpy.ops.uv.equalize_scale(self.override)
+        activeIsland_size = self.activeIsland.size()
+        for i in self.selectedIslands:
+            self.assertAlmostEquals(i.size().width, activeIsland_size.width,
+                                    places=4)
+            self.assertAlmostEquals(i.size().height, activeIsland_size.height,
+                                    places=4)
+
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)

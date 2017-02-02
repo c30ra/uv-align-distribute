@@ -24,7 +24,7 @@
 import bpy
 
 
-class OperatorTemplate(bpy.types.Operator):
+class UvOperatorTemplate(bpy.types.Operator):
     bl_label = "Class Template"
 
     @classmethod

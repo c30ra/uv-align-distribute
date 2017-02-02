@@ -25,7 +25,7 @@ from . import make_islands, templates, utils, operator_manager
 # ALIGN
 #####################
 
-class AlignSXMargin(templates.OperatorTemplate):
+class AlignSXMargin(templates.UvOperatorTemplate):
     """Align left margin."""
 
     bl_idname = "uv.align_left_margin"
@@ -70,7 +70,7 @@ class AlignSXMargin(templates.OperatorTemplate):
         return {'FINISHED'}
 
 
-class AlignRxMargin(templates.OperatorTemplate):
+class AlignRxMargin(templates.UvOperatorTemplate):
     """Align right margin."""
 
     bl_idname = "uv.align_right_margin"
@@ -115,7 +115,7 @@ class AlignRxMargin(templates.OperatorTemplate):
 
 
 ##################################################
-class AlignTopMargin(templates.OperatorTemplate):
+class AlignTopMargin(templates.UvOperatorTemplate):
 
     """Align top margin"""
     bl_idname = "uv.align_top_margin"
@@ -160,7 +160,7 @@ class AlignTopMargin(templates.OperatorTemplate):
         return {'FINISHED'}
 
 
-class AlignLowMargin(templates.OperatorTemplate):
+class AlignLowMargin(templates.UvOperatorTemplate):
 
     """Align low margin"""
     bl_idname = "uv.align_low_margin"
@@ -204,7 +204,7 @@ class AlignLowMargin(templates.OperatorTemplate):
         return {'FINISHED'}
 
 
-class AlignHAxis(templates.OperatorTemplate):
+class AlignHAxis(templates.UvOperatorTemplate):
 
     """Align horizontal axis"""
     bl_idname = "uv.align_horizontal_axis"
@@ -248,7 +248,7 @@ class AlignHAxis(templates.OperatorTemplate):
         return {'FINISHED'}
 
 
-class AlignVAxis(templates.OperatorTemplate):
+class AlignVAxis(templates.UvOperatorTemplate):
     """Align vertical axis."""
 
     bl_idname = "uv.align_vertical_axis"
@@ -293,7 +293,7 @@ class AlignVAxis(templates.OperatorTemplate):
 
 
 #########################################
-class AlignRotation(templates.OperatorTemplate):
+class AlignRotation(templates.UvOperatorTemplate):
 
     """Align island rotation """
     bl_idname = "uv.align_rotation"

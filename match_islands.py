@@ -21,7 +21,7 @@ import os
 import sys
 from collections import defaultdict
 
-from . import global_def, make_islands, templates, utils
+from . import global_def, make_islands, templates, utils, operator_manager
 
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
@@ -38,7 +38,7 @@ import networkx
 # COPY PASTE
 #####################
 
-class Match_Islands(templates.OperatorTemplate):
+class Match_Islands(templates.UvOperatorTemplate):
 
     """Match UV Island by moving their vertex"""
     bl_idname = "uv.match_islands"
@@ -47,16 +47,16 @@ class Match_Islands(templates.OperatorTemplate):
 
     def graphFromIsland(self, island):
 
-        vertexList = set()
-        print("out: ", island)
+        # vertexList = set()
+        # print("out: ", island)
 
-        for face_id in island:
-            face = global_def.bm.faces[face_id]
-            for vert in face.verts:
-                vertexList.add(vert)
+        # for face_id in island:
+        #     face = global_def.bm.faces[face_id]
+        #     for vert in face.verts:
+        #         vertexList.add(vert)
 
-        vertexList = sorted(vertexList, key=lambda data: data.index)
-        #numOfVertex = len(vertexList)
+        # vertexList = sorted(vertexList, key=lambda data: data.index)
+        # numOfVertex = len(vertexList)
 
         edgeVertex = set()
         for face_id in island:
@@ -89,7 +89,7 @@ class Match_Islands(templates.OperatorTemplate):
             for vert in face.verts:
                 activeIslandVert.add(vert.index)
 
-        #numOfVertex = len(activeIslandVert)
+        # numOfVertex = len(activeIslandVert)
 
         # map each uv vert to corresponding vert for selectedIslands
         uv_to_vert = dict((i, list()) for i in range(len(global_def.bm.verts)))
@@ -133,3 +133,10 @@ class Match_Islands(templates.OperatorTemplate):
 
         utils.update()
         return{'FINISHED'}
+
+
+#################################
+# REGISTRATION
+#################################
+_om = operator_manager.om
+_om.addOperator(Match_Islands)

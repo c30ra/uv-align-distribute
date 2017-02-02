@@ -29,7 +29,7 @@ from . import operator_manager
 ############################
 
 
-class DistributeLEdgesH(templates.OperatorTemplate):
+class DistributeLEdgesH(templates.UvOperatorTemplate):
 
     """Distribute left edges equidistantly horizontally"""
     bl_idname = "uv.distribute_ledges_horizontally"
@@ -66,7 +66,7 @@ class DistributeLEdgesH(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class DistributeCentersH(templates.OperatorTemplate):
+class DistributeCentersH(templates.UvOperatorTemplate):
 
     """Distribute centers equidistantly horizontally"""
     bl_idname = "uv.distribute_center_horizontally"
@@ -103,7 +103,7 @@ class DistributeCentersH(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class DistributeREdgesH(templates.OperatorTemplate):
+class DistributeREdgesH(templates.UvOperatorTemplate):
 
     """Distribute right edges equidistantly horizontally"""
     bl_idname = "uv.distribute_redges_horizontally"
@@ -139,7 +139,7 @@ class DistributeREdgesH(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class DistributeTEdgesV(templates.OperatorTemplate):
+class DistributeTEdgesV(templates.UvOperatorTemplate):
 
     """Distribute top edges equidistantly vertically"""
     bl_idname = "uv.distribute_tedges_vertically"
@@ -175,7 +175,7 @@ class DistributeTEdgesV(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class DistributeCentersV(templates.OperatorTemplate):
+class DistributeCentersV(templates.UvOperatorTemplate):
 
     """Distribute centers equidistantly vertically"""
     bl_idname = "uv.distribute_center_vertically"
@@ -211,7 +211,7 @@ class DistributeCentersV(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class DistributeBEdgesV(templates.OperatorTemplate):
+class DistributeBEdgesV(templates.UvOperatorTemplate):
 
     """Distribute bottom edges equidistantly vertically"""
     bl_idname = "uv.distribute_bedges_vertically"
@@ -247,7 +247,7 @@ class DistributeBEdgesV(templates.OperatorTemplate):
         return {"FINISHED"}
 
 # TODO:
-# class RemoveOverlaps(templates.OperatorTemplate):
+# class RemoveOverlaps(templates.UvOperatorTemplate):
 
 #     """Remove overlaps on islands"""
 #     bl_idname = "uv.remove_overlaps"
@@ -277,7 +277,7 @@ class DistributeBEdgesV(templates.OperatorTemplate):
 #         return {"FINISHED"}
 
 
-class EqualizeHGap(templates.OperatorTemplate):
+class EqualizeHGap(templates.UvOperatorTemplate):
 
     """Equalize horizontal gap between island"""
     bl_idname = "uv.equalize_horizontal_gap"
@@ -312,7 +312,7 @@ class EqualizeHGap(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class EqualizeVGap(templates.OperatorTemplate):
+class EqualizeVGap(templates.UvOperatorTemplate):
 
     """Equalize vertical gap between island"""
     bl_idname = "uv.equalize_vertical_gap"
@@ -347,7 +347,7 @@ class EqualizeVGap(templates.OperatorTemplate):
         return {"FINISHED"}
 
 
-class EqualizeScale(templates.OperatorTemplate):
+class EqualizeScale(templates.UvOperatorTemplate):
 
     """Equalize the islands scale to the active one"""
     bl_idname = "uv.equalize_scale"
@@ -378,8 +378,8 @@ class EqualizeScale(templates.OperatorTemplate):
 
         for island in selectedIslands:
             size = island.size()
-            scaleX = activeSize[0] / size[0]
-            scaleY = activeSize[1] / size[1]
+            scaleX = activeSize.width / size.width
+            scaleY = activeSize.height / size.height
 
             if self.keepProportions:
                 if self.useYaxis:
