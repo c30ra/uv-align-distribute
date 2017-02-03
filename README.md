@@ -72,6 +72,7 @@ All these distributions work correctly if the islands are partially aligned vert
   - Equalize VGap: the distribution is performed so the vertical distance between the islands is the same.
 
 #### Others:
+  - Snap islands: snap vertices of the selected island on the acitve one(if present), or to the nearest one. Use threshold to adjust distance of matched verts.
 
   - Match Island: this operator makes two or more similar islands (same amount of vertices, similar shape) perfectly overlapped.
 
