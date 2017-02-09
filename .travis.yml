@@ -5,8 +5,8 @@ language: python
 
 # Define which python version to build against.
 # As blender comes bundled with it's own python you can use just one version if you like
-python:
-  - "3.5"
+#python:
+#  - "3.5"
 
 # blocklist
 branches:
@@ -20,6 +20,7 @@ before_install:
   # This will most propably install an outdated blender version,
   # but it will resolve all system dependencies blender has to be able to run.
   - sudo apt-get install blender
+  - sudo apt-get install python3.5
 
 install:
   # codecoverage
