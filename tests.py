@@ -18,6 +18,12 @@ print("found %s tests: " % len(gl))
 
 for file in gl:
     # print("executing:", file)
-    subprocess.call([blenderExecutable, '--addons', 'uv_align_distribute',
-                     '--factory-startup', '-noaudio', '-b', file, '--python',
-                     file.replace('.blend', '.py')], stdout=subprocess.DEVNULL) 
+    cmd = [blenderExecutable,
+           '--addons',
+           'uv_align_distribute',
+           '--factory-startup',
+           '-noaudio',
+           '-b',
+           file, '--python',
+           file.replace('.blend', '.py')]
+    subprocess.call(cmd, stdout=subprocess.DEVNULL)
