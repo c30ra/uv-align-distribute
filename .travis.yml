@@ -6,8 +6,8 @@ language: python
 # Define which python version to build against.
 # As blender comes bundled with it's own python you can use just one version if you like
 python:
-  - "3.5"
-  - "3.6"
+  - "3.5_with_system_site_packages"
+  - "3.6_with_system_site_packages"
 
 # blocklist
 branches:
