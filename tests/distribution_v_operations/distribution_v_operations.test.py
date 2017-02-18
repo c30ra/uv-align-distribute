@@ -99,4 +99,4 @@ class TestAddon(unittest.TestCase):
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-unittest.TextTestRunner(verbosity=2).run(suite)
+unittest.TextTestRunner(verbosity=0).run(suite)

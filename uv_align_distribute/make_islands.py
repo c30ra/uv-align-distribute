@@ -30,16 +30,17 @@ class MakeIslands:
         self.__bm = global_def.bm
         self.__uvlayer = global_def.uvlayer
 
-        self.__face_to_verts = defaultdict(set)
-        self.__vert_to_faces = defaultdict(set)
         self.__selectedIslands = set()
         self.__hiddenFaces = set()
+
+        face_to_verts = defaultdict(set)
+        vert_to_faces = defaultdict(set)
 
         for face in self.__bm.faces:
             for loop in face.loops:
                 vertID = loop[self.__uvlayer].uv.to_tuple(5), loop.vert.index
-                self.__face_to_verts[face.index].add(vertID)
-                self.__vert_to_faces[vertID].add(face.index)
+                face_to_verts[face.index].add(vertID)
+                vert_to_faces[vertID].add(face.index)
 
                 if face.select:
                     if loop[self.__uvlayer].select:
@@ -47,26 +48,32 @@ class MakeIslands:
                 else:
                     self.__hiddenFaces.add(face.index)
 
-        self.__faces_left = set(self.__face_to_verts.keys())
+        faces_left = set(face_to_verts.keys())
 
-        while len(self.__faces_left) > 0:
-            face_id = list(self.__faces_left)[0]
-            current_island = []
-            self.__addToIsland(face_id, current_island)
-            self.__islands.append(island.Island(current_island))
+        while len(faces_left) > 0:
+            face_id = list(faces_left)[0]
+            current_island = set()
 
-    def __addToIsland(self, face_id, current_island):
-        if face_id in self.__faces_left:
-            # add the face itself
-            current_island.append(face_id)
-            self.__faces_left.remove(face_id)
-            # and add all faces that share uvs with this face
-            verts = self.__face_to_verts[face_id]
-            for vert in verts:
-                connected_faces = self.__vert_to_faces[vert]
-                if connected_faces:
+            face_to_visit = [face_id]
+            faces_left.remove(face_id)
+
+            # BDF search of face
+            while len(face_to_visit) > 0:
+                current_island.add(face_id)
+                cur_face = face_to_visit.pop(0)
+                # and add all faces that share uvs with this face
+                verts = face_to_verts[cur_face]
+                # search for connected faces: faces that have same vertex index
+                # and same uv
+                for vert in verts:
+                    connected_faces = vert_to_faces[vert]
                     for face in connected_faces:
-                        self.__addToIsland(face, current_island)
+                        current_island.add(face)
+                        if face in faces_left:
+                            face_to_visit.append(face)
+                            faces_left.remove(face)
+            # finally add the discovered island to the list of islands
+            self.__islands.append(current_island)
 
     def getIslands(self):
         """ return all the uv islands """

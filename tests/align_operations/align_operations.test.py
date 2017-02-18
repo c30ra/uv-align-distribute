@@ -169,7 +169,7 @@ class TestAddon(unittest.TestCase):
         bpy.ops.uv.align_rotation(self.override)
         activeIsland_angle = self.activeIsland.angle()
         for i in self.selectedIslands:
-            self.assertAlmostEquals(i.angle(), activeIsland_angle, places=4)
+            self.assertAlmostEquals(i.angle(), activeIsland_angle, places=2)
 
     def test_align_operations_EqualizeScale_active_island(self):
         bpy.types.Scene.relativeItems = "ACTIVE"
@@ -184,4 +184,4 @@ class TestAddon(unittest.TestCase):
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-unittest.TextTestRunner(verbosity=2).run(suite)
+unittest.TextTestRunner(verbosity=0).run(suite)

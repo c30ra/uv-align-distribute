@@ -15,7 +15,7 @@ class TestAddon(unittest.TestCase):
         self.assertEqual(len(self.make_island.getIslands()), 2)
 
     def test_make_islands_number_of_selected_islands(self):
-        self.assertEqual(len(self.make_island.selectedIslands()), 1)
+        self.assertEqual(len(self.make_island.selectedIslands()), 2)
 
     def test_make_islands_active_island(self):
         self.assertIsNotNone(self.make_island.activeIsland)
@@ -24,4 +24,4 @@ class TestAddon(unittest.TestCase):
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-unittest.TextTestRunner(verbosity=2).run(suite)
+unittest.TextTestRunner(verbosity=0).run(suite)
