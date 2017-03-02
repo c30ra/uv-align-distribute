@@ -53,7 +53,7 @@ class Island:
                 uv = loop[global_def.bm.loops.layers.uv.active].uv
                 uvList.append(uv)
 
-        angle = math.degrees(mathutils.geometry.box_fit_2d(uvList))
+        angle = mathutils.geometry.box_fit_2d(uvList)
         return angle
 
     def size(self):
@@ -77,7 +77,6 @@ class Island:
     def rotate(self, angle):
         """ rotate the island on it's center by 'angle(degree)'. """
 
-        rad = math.radians(angle)
         center = self.BBox().center()
 
         for face_id in self.faceList:
@@ -87,8 +86,8 @@ class Island:
                 x, y = loop[uv_act].uv
                 xt = x - center.x
                 yt = y - center.y
-                xr = (xt * math.cos(rad)) - (yt * math.sin(rad))
-                yr = (xt * math.sin(rad)) + (yt * math.cos(rad))
+                xr = (xt * math.cos(angle)) - (yt * math.sin(angle))
+                yr = (xt * math.sin(angle)) + (yt * math.cos(angle))
                 # loop[global_def.bm.loops.layers.uv.active].uv = trans
                 loop[global_def.bm.loops.layers.uv.active].uv.x = xr + center.x
                 loop[global_def.bm.loops.layers.uv.active].uv.y = yr + center.y
