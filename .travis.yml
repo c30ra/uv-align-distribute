@@ -44,7 +44,7 @@ install:
 
   # download python
   - wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
-  - tar jxf Python-3.6.0.tar.xz
+  - tar -xJf Python-3.6.0.tar.xz
   - mv Python-3.6.0 python36
   - rm Python-3.6.0.tar.xz
   # go back to root directory
