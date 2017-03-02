@@ -188,6 +188,6 @@ class TestAddon(unittest.TestCase):
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
 suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-success = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccesful()
+success = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
 
 sys.exit(success)
