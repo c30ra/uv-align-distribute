@@ -45,8 +45,8 @@ install:
 
   # go back to root directory
   - cd ..
-  # try to symlin system lib2to3 python module
-  - sudo ln -s /usr/lib/python3.5/lib2to3/ ${PWD}/tmp/blender/2.78/python//lib/python3.5/lib2to3
+  # try to copy system lib2to3 python module
+  - sudo cp -r /usr/lib/python3.5/lib2to3/ ${PWD}/tmp/blender/2.78/python//lib/python3.5/lib2to3
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
   - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
