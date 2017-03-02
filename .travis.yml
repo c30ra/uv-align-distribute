@@ -22,12 +22,12 @@ before_install:
   # This will most propably install an outdated blender version,
   # but it will resolve all system dependencies blender has to be able to run.
   - sudo apt-get install blender
-  #- sudo apt-get install python3
+  - sudo apt-get install python3
 
 install:
   # codecoverage
   - pip install codecov
-  - pip install networkx
+  #- pip install networkx
   # create temp directory where we store a recent blender version
   - mkdir tmp && cd tmp
 
@@ -46,7 +46,7 @@ install:
   # go back to root directory
   - cd ..
   # try to copy system lib2to3 python module
-  - sudo cp -r /home/travis/virtualenv/python3.6.0/lib/python3.6/lib2to3/ ${PWD}/tmp/blender/2.78/python//lib/python3.5/lib2to3
+  - sudo cp -r /usr/lib/python3.5/lib2to3/ ${PWD}/tmp/blender/2.78/python//lib/python3.5/lib2to3
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
   - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
