@@ -3,17 +3,18 @@
 # this is essential to make python work out of the box
 language: python
 
+os:
+  - linux
 # Define which python version to build against.
-# As blender comes bundled with it's own python you can use just one version if you like
+
 python:
-  - "3.5_with_system_site_packages"
-  - "3.6_with_system_site_packages"
+  - "3.6"
 
 # blocklist
 branches:
   except:
   - adding_icons
-  
+
 before_install:
   # update apt-gets repository sources
   - sudo apt-get update -qq
@@ -44,14 +45,15 @@ install:
 
   # go back to root directory
   - cd ..
-
+  # remove bundled python
+  - rm tmp/blender/2.78/python
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
   - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
-script: 
+script:
   - coverage run tests.py ./tmp/blender/blender
 
-after_sucess:
-  - codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

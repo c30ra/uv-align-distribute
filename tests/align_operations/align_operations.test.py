@@ -1,4 +1,5 @@
 import unittest
+import sys
 
 import bpy
 
@@ -183,5 +184,16 @@ class TestAddon(unittest.TestCase):
 
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
-suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-unittest.TextTestRunner(verbosity=0).run(suite)
+def run():
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
+    success = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccesful()
+
+    if not success:
+        raise Exception('Tests Failed')
+
+
+try:
+    run()
+    sys.exit(0)
+except Exception:
+    sys.exit(1)
