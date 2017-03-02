@@ -187,16 +187,7 @@ class TestAddon(unittest.TestCase):
 
 
 # we have to manually invoke the test runner here, as we cannot use the CLI
-def run():
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-    success = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccesful()
+suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
+success = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccesful()
 
-    if not success:
-        raise Exception('Tests Failed')
-
-
-try:
-    run()
-    sys.exit(0)
-except Exception:
-    sys.exit(1)
+sys.exit(success)
