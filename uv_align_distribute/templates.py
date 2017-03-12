@@ -15,16 +15,14 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
-
-# #####################
-# OPERATOR
-# #####################
-
+"""Template for blender operators."""
 
 import bpy
 
 
 class UvOperatorTemplate(bpy.types.Operator):
+    """Operator template for uv."""
+
     bl_label = "Class Template"
 
     @classmethod

@@ -38,14 +38,14 @@ import networkx
 #####################
 
 class Match_Islands(templates.UvOperatorTemplate):
+    """Match UV Island by moving their vertex."""
 
-    """Match UV Island by moving their vertex"""
     bl_idname = "uv.match_islands"
     bl_label = "Match Islands"
     bl_options = {'REGISTER', 'UNDO'}
 
     def graphFromIsland(self, island):
-
+        """Return a networkx graph rappresenting the island."""
         # vertexList = set()
         # print("out: ", island)
 

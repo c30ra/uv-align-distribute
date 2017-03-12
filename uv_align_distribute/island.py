@@ -39,7 +39,6 @@ class Island:
 # properties
     def BBox(self):
         """Return the bounding box of the island."""
-
         minX = minY = 1000
         maxX = maxY = -1000
         for face_id in self.faceList:
@@ -52,7 +51,7 @@ class Island:
                 maxY = max(v, maxY)
 
         return rectangle.Rectangle(mathutils.Vector((minX, minY)),
-                                        mathutils.Vector((maxX, maxY)))
+                                   mathutils.Vector((maxX, maxY)))
 
     def angle(self):
         """Return the island angle."""
@@ -117,7 +116,10 @@ class Island:
 
     # FIXME: in some case doesn't work as expected...
     def snapToUnselected(self, targetIslands, threshold):
-        """Snap this island to 'targetIsland'. Use threshold to adjust vertex macthing."""
+        """Snap this island to 'targetIsland'.
+
+        Use threshold to adjust vertex macthing.
+        """
         bestMatcherList = []
         # targetIslands.remove(self)
         activeUvLayer = global_def.bm.loops.layers.uv.active

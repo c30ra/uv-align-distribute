@@ -116,8 +116,8 @@ class AlignRxMargin(templates.UvOperatorTemplate):
 
 ##################################################
 class AlignTopMargin(templates.UvOperatorTemplate):
+    """Align top margin."""
 
-    """Align top margin"""
     bl_idname = "uv.align_top_margin"
     bl_label = "Align top margin"
     bl_options = {'REGISTER', 'UNDO'}
@@ -161,8 +161,8 @@ class AlignTopMargin(templates.UvOperatorTemplate):
 
 
 class AlignLowMargin(templates.UvOperatorTemplate):
+    """Align low margin."""
 
-    """Align low margin"""
     bl_idname = "uv.align_low_margin"
     bl_label = "Align low margin"
     bl_options = {'REGISTER', 'UNDO'}
@@ -205,8 +205,8 @@ class AlignLowMargin(templates.UvOperatorTemplate):
 
 
 class AlignHAxis(templates.UvOperatorTemplate):
+    """Align horizontal axis."""
 
-    """Align horizontal axis"""
     bl_idname = "uv.align_horizontal_axis"
     bl_label = "Align horizontal axis"
     bl_options = {'REGISTER', 'UNDO'}
@@ -294,8 +294,8 @@ class AlignVAxis(templates.UvOperatorTemplate):
 
 #########################################
 class AlignRotation(templates.UvOperatorTemplate):
+    """Align island rotation."""
 
-    """Align island rotation """
     bl_idname = "uv.align_rotation"
     bl_label = "Align island rotation"
     bl_options = {'REGISTER', 'UNDO'}

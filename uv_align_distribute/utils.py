@@ -15,6 +15,9 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
+"""Utils function.
+
+Most functions here will be deprecated"""
 
 import math
 
@@ -26,7 +29,7 @@ from . import rectangle, global_def
 
 
 def InitBMesh():
-    """ Init global bmesh. """
+    """Init global bmesh."""
     global_def.bm = bmesh.from_edit_mesh(bpy.context.edit_object.data)
     global_def.bm.faces.ensure_lookup_table()
     # uvlayer = bm.loops.layers.uv.active
@@ -36,12 +39,14 @@ def InitBMesh():
 
 
 def update():
+    """Update mesh rappresentation in blender."""
     bmesh.update_edit_mesh(bpy.context.edit_object.data, False, False)
     # bm.to_mesh(bpy.context.object.data)
     # bm.free()
 
 
 def GBBox(islands):
+    """Return the bounding box of all islands."""
     minX = minY = 1000
     maxX = maxY = -1000
     for _island in islands:
@@ -55,10 +60,11 @@ def GBBox(islands):
                 maxY = max(v, maxY)
 
     return rectangle.Rectangle(mathutils.Vector((minX, minY)),
-                                    mathutils.Vector((maxX, maxY)))
+                               mathutils.Vector((maxX, maxY)))
 
 
 def vectorDistance(vector1, vector2):
+    """Return the distance between vectors."""
     return math.sqrt(
         math.pow((vector2.x - vector1.x), 2) +
         math.pow((vector2.y - vector1.y), 2))
@@ -99,6 +105,7 @@ def _sortVertex(vertexList, BBCenter):
 
 
 def getTargetPoint(context, islands):
+    """Return the target of uv operations."""
     if context.scene.relativeItems == 'UV_SPACE':
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
     elif context.scene.relativeItems == 'ACTIVE':
@@ -111,7 +118,7 @@ def getTargetPoint(context, islands):
         return context.space_data.cursor_location
 
 
-# deprecated: 
+# deprecated:
 # def IslandSpatialSortX(islands):
 #     spatialSort = []
 #     for _island in islands:
@@ -130,6 +137,7 @@ def getTargetPoint(context, islands):
 
 # todo: to rework
 def averageIslandDist(islands):
+    """Return the average distance between islands."""
     distX = 0
     distY = 0
     counter = 0

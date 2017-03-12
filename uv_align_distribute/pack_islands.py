@@ -16,7 +16,7 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 """
-PackIslands Module:
+PackIslands Module(attention still wp).
 
 contain the operator used by blender to perform Island Packing
 """

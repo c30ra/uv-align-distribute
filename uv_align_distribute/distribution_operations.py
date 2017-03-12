@@ -30,8 +30,8 @@ from . import operator_manager
 
 
 class DistributeLEdgesH(templates.UvOperatorTemplate):
+    """Distribute left edges equidistantly horizontally."""
 
-    """Distribute left edges equidistantly horizontally"""
     bl_idname = "uv.distribute_ledges_horizontally"
     bl_label = "Distribute Left Edges Horizontally"
     bl_options = {'REGISTER', 'UNDO'}
@@ -67,8 +67,8 @@ class DistributeLEdgesH(templates.UvOperatorTemplate):
 
 
 class DistributeCentersH(templates.UvOperatorTemplate):
+    """Distribute centers equidistantly horizontally."""
 
-    """Distribute centers equidistantly horizontally"""
     bl_idname = "uv.distribute_center_horizontally"
     bl_label = "Distribute Centers Horizontally"
     bl_options = {'REGISTER', 'UNDO'}
@@ -104,8 +104,8 @@ class DistributeCentersH(templates.UvOperatorTemplate):
 
 
 class DistributeREdgesH(templates.UvOperatorTemplate):
+    """Distribute right edges equidistantly horizontally."""
 
-    """Distribute right edges equidistantly horizontally"""
     bl_idname = "uv.distribute_redges_horizontally"
     bl_label = "Distribute Right Edges Horizontally"
     bl_options = {'REGISTER', 'UNDO'}
@@ -140,8 +140,8 @@ class DistributeREdgesH(templates.UvOperatorTemplate):
 
 
 class DistributeTEdgesV(templates.UvOperatorTemplate):
+    """Distribute top edges equidistantly vertically."""
 
-    """Distribute top edges equidistantly vertically"""
     bl_idname = "uv.distribute_tedges_vertically"
     bl_label = "Distribute Top Edges Vertically"
     bl_options = {'REGISTER', 'UNDO'}
@@ -176,8 +176,8 @@ class DistributeTEdgesV(templates.UvOperatorTemplate):
 
 
 class DistributeCentersV(templates.UvOperatorTemplate):
+    """Distribute centers equidistantly vertically."""
 
-    """Distribute centers equidistantly vertically"""
     bl_idname = "uv.distribute_center_vertically"
     bl_label = "Distribute Centers Vertically"
     bl_options = {'REGISTER', 'UNDO'}
@@ -212,8 +212,8 @@ class DistributeCentersV(templates.UvOperatorTemplate):
 
 
 class DistributeBEdgesV(templates.UvOperatorTemplate):
+    """Distribute bottom edges equidistantly vertically."""
 
-    """Distribute bottom edges equidistantly vertically"""
     bl_idname = "uv.distribute_bedges_vertically"
     bl_label = "Distribute Bottom Edges Vertically"
     bl_options = {'REGISTER', 'UNDO'}
@@ -278,8 +278,8 @@ class DistributeBEdgesV(templates.UvOperatorTemplate):
 
 
 class EqualizeHGap(templates.UvOperatorTemplate):
+    """Equalize horizontal gap between island."""
 
-    """Equalize horizontal gap between island"""
     bl_idname = "uv.equalize_horizontal_gap"
     bl_label = "Equalize Horizontal Gap"
     bl_options = {'REGISTER', 'UNDO'}
@@ -313,8 +313,8 @@ class EqualizeHGap(templates.UvOperatorTemplate):
 
 
 class EqualizeVGap(templates.UvOperatorTemplate):
+    """Equalize vertical gap between island."""
 
-    """Equalize vertical gap between island"""
     bl_idname = "uv.equalize_vertical_gap"
     bl_label = "Equalize Vertical Gap"
     bl_options = {'REGISTER', 'UNDO'}
@@ -348,8 +348,8 @@ class EqualizeVGap(templates.UvOperatorTemplate):
 
 
 class EqualizeScale(templates.UvOperatorTemplate):
+    """Equalize the islands scale to the active one."""
 
-    """Equalize the islands scale to the active one"""
     bl_idname = "uv.equalize_scale"
     bl_label = "Equalize Scale"
     bl_options = {'REGISTER', 'UNDO'}

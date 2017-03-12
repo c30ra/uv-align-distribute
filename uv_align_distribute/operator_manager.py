@@ -12,7 +12,12 @@
 
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library.  If not, see <http://www.gnu.org/licenses/>.
+"""Manage operators.
 
+This module contain class for managing operator
+that will be registered in blender, in future will be used also for drawing the
+UI.
+"""
 
 class __OperatorManager:
     def __init__(self):

@@ -23,7 +23,10 @@ from . import global_def, island, utils
 
 
 class MakeIslands:
-    """Create and get Island."""
+    """Create and get Island.
+
+    Scan the current edit mesh for uv islands.
+    """
 
     def __init__(self):
         """Scan the uv data and create the islands."""
@@ -78,8 +81,7 @@ class MakeIslands:
             self.__islands.append(island.Island(current_island))
 
     def getIslands(self):
-        """Return all the uv islands."""
-
+        """Return all the uv islands found."""
         return self.__islands
 
     def activeIsland(self):

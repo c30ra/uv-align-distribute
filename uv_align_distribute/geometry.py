@@ -1,3 +1,7 @@
+"""Geometry module.
+
+This module contain geometry utilities.
+"""
 import mathutils
 
 # coords in blender start from bottom-right corner as (0.0, 0.0)
