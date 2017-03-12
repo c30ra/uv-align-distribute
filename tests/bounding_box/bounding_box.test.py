@@ -13,7 +13,7 @@ class TestAddon(unittest.TestCase):
         self.selectedIslands = self.make_island.selectedIslands()
         self.activeIsland = self.make_island.activeIsland()
 
-    def test_BoundingBox_FromIsland(self):
+    def test_Rectangle_FromIsland(self):
         self.assertEqual(self.activeIsland.BBox().topLeft(),
                          mathutils.Vector((0.0, 1.0)))
 

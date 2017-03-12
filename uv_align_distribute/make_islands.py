@@ -23,8 +23,10 @@ from . import global_def, island, utils
 
 
 class MakeIslands:
+    """Create and get Island."""
 
     def __init__(self):
+        """Scan the uv data and create the islands."""
         utils.InitBMesh()
         self.__islands = []
         self.__bm = global_def.bm
@@ -73,16 +75,15 @@ class MakeIslands:
                             face_to_visit.append(face)
                             faces_left.remove(face)
             # finally add the discovered island to the list of islands
-            self.__islands.append(current_island)
+            self.__islands.append(island.Island(current_island))
 
     def getIslands(self):
-        """ return all the uv islands """
+        """Return all the uv islands."""
 
         return self.__islands
 
     def activeIsland(self):
-        """ return the active island(the island containing the active face) """
-
+        """Return the active island(the island containing the active face)."""
         for _island in self.__islands:
             try:
                 if self.__bm.faces.active.index in _island:
@@ -91,8 +92,7 @@ class MakeIslands:
                 return None
 
     def selectedIslands(self):
-        """ return a list of selected islands """
-
+        """Return a list of selected islands."""
         selectedIslands = []
         for _island in self.__islands:
             if not self.__selectedIslands.isdisjoint(_island):
@@ -100,8 +100,7 @@ class MakeIslands:
         return selectedIslands
 
     def hiddenIslands(self):
-        """ return a list of hidden islands """
-
+        """Return a list of hidden islands."""
         _hiddenIslands = []
         for _island in self.__islands:
             if not self.__hiddenFaces.isdisjoint(_island):

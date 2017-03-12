@@ -22,7 +22,7 @@ import bmesh
 import bpy
 import mathutils
 
-from . import bounding_box, global_def
+from . import rectangle, global_def
 
 
 def InitBMesh():
@@ -54,7 +54,7 @@ def GBBox(islands):
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-    return bounding_box.BoundingBox(mathutils.Vector((minX, minY)),
+    return rectangle.Rectangle(mathutils.Vector((minX, minY)),
                                     mathutils.Vector((maxX, maxY)))
 
 

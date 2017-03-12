@@ -1,8 +1,19 @@
 import math
+import os
+import sys
 
 import mathutils
 
-from . import bounding_box, global_def, utils
+from . import rectangle, global_def, utils
+# Add vendor directory to module search path
+parent_dir = os.path.abspath(os.path.dirname(__file__))
+nx_dir = os.path.join(parent_dir, 'networkx')
+decorator_dir = os.path.join(parent_dir, 'decorator')
+
+sys.path.append(nx_dir)
+sys.path.append(decorator_dir)
+
+import networkx
 
 
 class Island:
@@ -27,7 +38,7 @@ class Island:
 
 # properties
     def BBox(self):
-        """ return the bounding box of the island. """
+        """Return the bounding box of the island."""
 
         minX = minY = 1000
         maxX = maxY = -1000
@@ -40,12 +51,11 @@ class Island:
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-        return bounding_box.BoundingBox(mathutils.Vector((minX, minY)),
+        return rectangle.Rectangle(mathutils.Vector((minX, minY)),
                                         mathutils.Vector((maxX, maxY)))
 
     def angle(self):
-        """ return the island angle. """
-
+        """Return the island angle."""
         uvList = []
         for face_id in self.faceList:
             face = global_def.bm.faces[face_id]
@@ -57,26 +67,23 @@ class Island:
         return angle
 
     def size(self):
-        """ return the island size. """
-
+        """Return the island size."""
         bbox = self.BBox()
         sizeX = bbox.right() - bbox.left()
         sizeY = bbox.bottom() - bbox.top()
 
-        return bounding_box.Size(sizeX, sizeY)
+        return rectangle.Size(sizeX, sizeY)
 
 # Transformation
     def move(self, vector):
-        """ move the island by vector. """
-
+        """Move the island by vector."""
         for face_id in self.faceList:
             face = global_def.bm.faces[face_id]
             for loop in face.loops:
                 loop[global_def.bm.loops.layers.uv.active].uv += vector
 
     def rotate(self, angle):
-        """ rotate the island on it's center by 'angle(degree)'. """
-
+        """Rotate the island on it's center by 'angle(degree)'."""
         center = self.BBox().center()
 
         for face_id in self.faceList:
@@ -93,8 +100,7 @@ class Island:
                 loop[global_def.bm.loops.layers.uv.active].uv.y = yr + center.y
 
     def scale(self, scaleX, scaleY):
-        """ scale the island by 'scaleX, scaleY'. """
-
+        """Scale the island by 'scaleX, scaleY'."""
         center = self.BBox().center()
 
         for face_id in self.faceList:
@@ -109,7 +115,9 @@ class Island:
                 loop[global_def.bm.loops.layers.uv.active].uv.x = xs + center.x
                 loop[global_def.bm.loops.layers.uv.active].uv.y = ys + center.y
 
+    # FIXME: in some case doesn't work as expected...
     def snapToUnselected(self, targetIslands, threshold):
+        """Snap this island to 'targetIsland'. Use threshold to adjust vertex macthing."""
         bestMatcherList = []
         # targetIslands.remove(self)
         activeUvLayer = global_def.bm.loops.layers.uv.active
@@ -156,5 +164,31 @@ class Island:
                 bestMatcher[1].uv = bestMatcher[2].uv
 
     def isIsomorphic(self, other):
-        """test for isomorphism"""
-        pass
+        """Test for isomorphism.
+
+        Return a verterx mapping between two island if they are isomorphic
+        or 'None' if there is no isomorphism.
+        """
+        def graphFromIsland(island):
+
+            edgeVertex = set()
+            for face_id in island:
+                face = global_def.bm.faces[face_id]
+                for edges in face.edges:
+                    edgeVert = (edges.verts[0].index, edges.verts[1].index)
+                    edgeVertex.add(tuple(sorted(edgeVert, key=lambda data: data)))
+
+            graph = networkx.Graph(tuple(edgeVertex))
+
+            return graph
+
+        selfGraph = graphFromIsland(self)
+        otheGraph = graphFromIsland(other)
+
+        iso = networkx.isomorphism
+        graphMatcher = iso.GraphMatcher(selfGraph, otheGraph)
+
+        if graphMatcher.is_isomorphic():
+            return graphMatcher.mapping
+        else:
+            None

@@ -33,7 +33,6 @@ sys.path.append(decorator_dir)
 
 import networkx
 
-
 #####################
 # COPY PASTE
 #####################
@@ -111,20 +110,23 @@ class Match_Islands(templates.UvOperatorTemplate):
                 activeIslandUVData[index].append(loop[global_def.uvlayer])
 
         # build a edge list
-        activeIslandGraph = self.graphFromIsland(activeIsland)
-        selectedIslandsGraph = []
+        # activeIslandGraph = self.graphFromIsland(activeIsland)
+        # selectedIslandsGraph = []
 
-        for island in selectedIslands:
-            graph = self.graphFromIsland(island)
-            selectedIslandsGraph.append(graph)
+        # for island in selectedIslands:
+        #     graph = self.graphFromIsland(island)
+        #     selectedIslandsGraph.append(graph)
 
         # now test for isomorphism aginst activeIsland:
-        for islandGraph in selectedIslandsGraph:
-            iso = networkx.isomorphism
-            graphMatcher = iso.GraphMatcher(islandGraph, activeIslandGraph)
-            if graphMatcher.is_isomorphic():
-                vertexMapping = graphMatcher.mapping
-                islandIndex = selectedIslandsGraph.index(islandGraph)
+        # for islandGraph in selectedIslandsGraph:
+        #     iso = networkx.isomorphism
+        #     graphMatcher = iso.GraphMatcher(islandGraph, activeIslandGraph)
+        #     if graphMatcher.is_isomorphic():
+        #         vertexMapping = graphMatcher.mapping
+        for island in selectedIslands:
+            vertexMapping = island.isIsomorphic(activeIsland)
+            if vertexMapping:
+                islandIndex = selectedIslands.index(island)
                 for vertIndex in perIslandVerts[islandIndex]:
                     mappedVert = vertexMapping[vertIndex]
                     for uv_loop in uv_to_vert[vertIndex]:

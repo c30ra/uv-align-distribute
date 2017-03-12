@@ -19,7 +19,7 @@
 bl_info = {
     "name": "UV Align/Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (2, 2),
+    "version": (3, 0),
     "blender": (2, 7, 8),
     "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\distribution",
@@ -35,6 +35,7 @@ if "bpy" in locals():
     imp.reload(ui)
     imp.reload(snap_islands)
     imp.reload(match_islands)
+#    imp.reload(pack_islands)
     imp.reload(global_def)
     imp.reload(operator_manager)
 else:
@@ -43,6 +44,7 @@ else:
     from . import ui
     from . import snap_islands
     from . import match_islands
+#    from . import pack_islands
     from . import global_def
     from . import operator_manager
 

@@ -116,9 +116,14 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         row = layout.row()
         layout.operator("uv.match_islands")
 
+        row = layout.row()
+        layout.operator("uv.pack_pile_islands")
+
 
 #################################
+#################################
 # REGISTRATION
+#################################
 #################################
 _om = operator_manager.om
 _om.addOperator(IMAGE_PT_align_distribute)
