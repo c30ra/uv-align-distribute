@@ -19,21 +19,26 @@ that will be registered in blender, in future will be used also for drawing the
 UI.
 """
 
+
 class __OperatorManager:
     def __init__(self):
         self.__operator_list = []
         self.__ui_list = []
 
     def addOperator(self, operator):
+        """Register 'operator' to blender operators."""
         self.__operator_list.append(operator)
 
     def classList(self):
+        """Return the registered operators."""
         return self.__operator_list
 
     def addUI(self, ui):
+        """.. warning:: Curently unused."""
         self.__ui_list.append(ui)
 
     def draw(self, context, layout):
+        """.. warning:: Curently unused."""
         for ui in self.__ui_list:
             ui.draw(context, layout)
 

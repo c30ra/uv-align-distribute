@@ -81,11 +81,17 @@ class MakeIslands:
             self.__islands.append(island.Island(current_island))
 
     def getIslands(self):
-        """Return all the uv islands found."""
+        """Return all the uv islands found.
+
+        :rtype: :class:`.Island`
+        """
         return self.__islands
 
     def activeIsland(self):
-        """Return the active island(the island containing the active face)."""
+        """Return the active island(the island containing the active face).
+
+        :rtype: :class:`.Island`
+        """
         for _island in self.__islands:
             try:
                 if self.__bm.faces.active.index in _island:
@@ -94,7 +100,10 @@ class MakeIslands:
                 return None
 
     def selectedIslands(self):
-        """Return a list of selected islands."""
+        """Return a list of selected islands.
+
+        :rtype: :class:`.Island`
+        """
         selectedIslands = []
         for _island in self.__islands:
             if not self.__selectedIslands.isdisjoint(_island):
@@ -102,7 +111,10 @@ class MakeIslands:
         return selectedIslands
 
     def hiddenIslands(self):
-        """Return a list of hidden islands."""
+        """Return a list of hidden islands.
+
+        :rtype: :class:`.Island`
+        """
         _hiddenIslands = []
         for _island in self.__islands:
             if not self.__hiddenFaces.isdisjoint(_island):

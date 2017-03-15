@@ -25,7 +25,7 @@ import bmesh
 import bpy
 import mathutils
 
-from . import rectangle, global_def
+from . import geometry, global_def
 
 
 def InitBMesh():

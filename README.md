@@ -80,6 +80,9 @@ All these distributions work correctly if the islands are partially aligned vert
 
 Sometimes alignment rotation doesn't work correctly, either due to floating point precision or because unwrapping makes some islands flipped or mirrored. You see this if all the islands point in the same direction, but one or more are flipped by 180°. In order to fix this, select those island and mirror them.
 
+## Development
+If you are interested in development of this add-on follow this link:  
+[Api](docs/build/html/index.html)
 
 ## External Links
 

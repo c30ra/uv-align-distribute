@@ -21,10 +21,14 @@ import bpy
 
 
 class UvOperatorTemplate(bpy.types.Operator):
-    """Operator template for uv."""
+    """Operator template for uv.
+
+    this class serve as base class for most UV blender operator
+    """
 
     bl_label = "Class Template"
 
     @classmethod
     def poll(cls, context):
+        """Check if 'context' is correct."""
         return not (context.scene.tool_settings.use_uv_select_sync)

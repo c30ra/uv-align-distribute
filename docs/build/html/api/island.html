@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Island &#8212; UV Align Distribute 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Make Islands" href="make_islands.html" />
+    <link rel="prev" title="UV Align Distribute API v3.0" href="api_index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="make_islands.html" title="Make Islands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="api_index.html" title="UV Align Distribute API v3.0"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="api_index.html" accesskey="U">UV Align Distribute API v3.0</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-uv_align_distribute.island">
+<span id="island"></span><h1>Island<a class="headerlink" href="#module-uv_align_distribute.island" title="Permalink to this headline">¶</a></h1>
+<p>The Island module.</p>
+<dl class="class">
+<dt id="uv_align_distribute.island.Island">
+<em class="property">class </em><code class="descclassname">uv_align_distribute.island.</code><code class="descname">Island</code><span class="sig-paren">(</span><em>island</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Island from a set() of faces.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>island</strong> (<em>set</em><em>(</em><em></em><em>)</em><em></em>) &#8211; a set() of face indexes.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.BBox">
+<code class="descname">BBox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.BBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.BBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the bounding box of the island.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a Rectangle rappresenting the bounding box of the island.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="geometry.html#uv_align_distribute.geometry.Rectangle" title="uv_align_distribute.geometry.Rectangle"><code class="xref py py-class docutils literal"><span class="pre">Rectangle</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.angle">
+<code class="descname">angle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the island angle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the angle of the island in radians.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.isIsomorphic">
+<code class="descname">isIsomorphic</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.isIsomorphic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.isIsomorphic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for isomorphism.</p>
+<p>Return a verterx mapping between two island if they are isomorphic
+or &#8216;None&#8217; if there is no isomorphism.
+The returned mapped vertex index, correspond to the mesh vertex index
+and not the uv one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> (<a class="reference internal" href="#uv_align_distribute.island.Island" title="uv_align_distribute.island.Island"><code class="xref py py-class docutils literal"><span class="pre">Island</span></code></a>) &#8211; the other island</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mapping between vertex or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict, None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>vector</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the island by vector.</p>
+<p>Move the island by &#8216;vector&#8217;, by adding &#8216;vector&#8217; to the curretnt uv
+coords.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vector</strong> &#8211; the vector to add.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">mathutils.Vector</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.rotate">
+<code class="descname">rotate</code><span class="sig-paren">(</span><em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate the island on it&#8217;s center by &#8216;angle(radians)&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>angle</strong> &#8211; the angle(radians) of rotation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.scale">
+<code class="descname">scale</code><span class="sig-paren">(</span><em>scaleX</em>, <em>scaleY</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the island by &#8216;scaleX, scaleY&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>scaleX</strong> (<em>float</em>) &#8211; x scale factor.</li>
+<li><strong>scaleY</strong> (<em>float</em>) &#8211; y scale factor</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.size">
+<code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the island size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the size of the island(bounding box).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="geometry.html#uv_align_distribute.geometry.Size" title="uv_align_distribute.geometry.Size"><code class="xref py py-class docutils literal"><span class="pre">Size</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="uv_align_distribute.island.Island.snapToUnselected">
+<code class="descname">snapToUnselected</code><span class="sig-paren">(</span><em>targetIslands</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/uv_align_distribute/island.html#Island.snapToUnselected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#uv_align_distribute.island.Island.snapToUnselected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Snap this island to &#8216;targetIsland&#8217;.</p>
+<p>Use threshold to adjust vertex macthing. targetIsland is the island to
+use to search for nearest vertex.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>targetIsland</strong> (<a class="reference internal" href="#uv_align_distribute.island.Island" title="uv_align_distribute.island.Island"><code class="xref py py-class docutils literal"><span class="pre">Island</span></code></a>) &#8211; the target island for snapping</li>
+<li><strong>threshold</strong> (<em>float</em>) &#8211; distance from one vert to the others</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api_index.html"
+                        title="previous chapter">UV Align Distribute API v3.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="make_islands.html"
+                        title="next chapter">Make Islands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/island.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="make_islands.html" title="Make Islands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="api_index.html" title="UV Align Distribute API v3.0"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="api_index.html" >UV Align Distribute API v3.0</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, rebellion (Luca Carella).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

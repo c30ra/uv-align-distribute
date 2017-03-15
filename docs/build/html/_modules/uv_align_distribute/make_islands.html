@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>uv_align_distribute.make_islands &#8212; UV Align Distribute 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for uv_align_distribute.make_islands</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ##### BEGIN GPL LICENSE BLOCK #####</span>
+<span class="c1">#</span>
+<span class="c1">#  This program is free software; you can redistribute it and/or</span>
+<span class="c1">#  modify it under the terms of the GNU General Public License</span>
+<span class="c1">#  as published by the Free Software Foundation; version 2</span>
+<span class="c1">#  of the License.</span>
+<span class="c1">#</span>
+<span class="c1">#  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">#  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#  GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#  You should have received a copy of the GNU General Public License</span>
+<span class="c1">#  along with this program; if not, write to the Free Software Foundation,</span>
+<span class="c1">#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</span>
+<span class="c1">#</span>
+<span class="c1"># ##### END GPL LICENSE BLOCK #####</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+<span class="c1"># from global_def import *</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">global_def</span><span class="p">,</span> <span class="n">island</span><span class="p">,</span> <span class="n">utils</span>
+
+
+<div class="viewcode-block" id="MakeIslands"><a class="viewcode-back" href="../../api/make_islands.html#uv_align_distribute.make_islands.MakeIslands">[docs]</a><span class="k">class</span> <span class="nc">MakeIslands</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create and get Island.</span>
+
+<span class="sd">    Scan the current edit mesh for uv islands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan the uv data and create the islands.&quot;&quot;&quot;</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">InitBMesh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bm</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__uvlayer</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">uvlayer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__selectedIslands</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hiddenFaces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="n">face_to_verts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="n">vert_to_faces</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bm</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">vertID</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__uvlayer</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">loop</span><span class="o">.</span><span class="n">vert</span><span class="o">.</span><span class="n">index</span>
+                <span class="n">face_to_verts</span><span class="p">[</span><span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">vertID</span><span class="p">)</span>
+                <span class="n">vert_to_faces</span><span class="p">[</span><span class="n">vertID</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">select</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">loop</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__uvlayer</span><span class="p">]</span><span class="o">.</span><span class="n">select</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__selectedIslands</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__hiddenFaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">faces_left</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">face_to_verts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces_left</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">face_id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces_left</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">current_island</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+            <span class="n">face_to_visit</span> <span class="o">=</span> <span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="n">faces_left</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">face_id</span><span class="p">)</span>
+
+            <span class="c1"># BDF search of face</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_to_visit</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">current_island</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face_id</span><span class="p">)</span>
+                <span class="n">cur_face</span> <span class="o">=</span> <span class="n">face_to_visit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="c1"># and add all faces that share uvs with this face</span>
+                <span class="n">verts</span> <span class="o">=</span> <span class="n">face_to_verts</span><span class="p">[</span><span class="n">cur_face</span><span class="p">]</span>
+                <span class="c1"># search for connected faces: faces that have same vertex index</span>
+                <span class="c1"># and same uv</span>
+                <span class="k">for</span> <span class="n">vert</span> <span class="ow">in</span> <span class="n">verts</span><span class="p">:</span>
+                    <span class="n">connected_faces</span> <span class="o">=</span> <span class="n">vert_to_faces</span><span class="p">[</span><span class="n">vert</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">connected_faces</span><span class="p">:</span>
+                        <span class="n">current_island</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces_left</span><span class="p">:</span>
+                            <span class="n">face_to_visit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+                            <span class="n">faces_left</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="c1"># finally add the discovered island to the list of islands</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">island</span><span class="o">.</span><span class="n">Island</span><span class="p">(</span><span class="n">current_island</span><span class="p">))</span>
+
+<div class="viewcode-block" id="MakeIslands.getIslands"><a class="viewcode-back" href="../../api/make_islands.html#uv_align_distribute.make_islands.MakeIslands.getIslands">[docs]</a>    <span class="k">def</span> <span class="nf">getIslands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return all the uv islands found.</span>
+
+<span class="sd">        :rtype: :class:`.Island`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span></div>
+
+<div class="viewcode-block" id="MakeIslands.activeIsland"><a class="viewcode-back" href="../../api/make_islands.html#uv_align_distribute.make_islands.MakeIslands.activeIsland">[docs]</a>    <span class="k">def</span> <span class="nf">activeIsland</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the active island(the island containing the active face).</span>
+
+<span class="sd">        :rtype: :class:`.Island`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_island</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bm</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">index</span> <span class="ow">in</span> <span class="n">_island</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">island</span><span class="o">.</span><span class="n">Island</span><span class="p">(</span><span class="n">_island</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="MakeIslands.selectedIslands"><a class="viewcode-back" href="../../api/make_islands.html#uv_align_distribute.make_islands.MakeIslands.selectedIslands">[docs]</a>    <span class="k">def</span> <span class="nf">selectedIslands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of selected islands.</span>
+
+<span class="sd">        :rtype: :class:`.Island`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selectedIslands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_island</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__selectedIslands</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">_island</span><span class="p">):</span>
+                <span class="n">selectedIslands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">island</span><span class="o">.</span><span class="n">Island</span><span class="p">(</span><span class="n">_island</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">selectedIslands</span></div>
+
+<div class="viewcode-block" id="MakeIslands.hiddenIslands"><a class="viewcode-back" href="../../api/make_islands.html#uv_align_distribute.make_islands.MakeIslands.hiddenIslands">[docs]</a>    <span class="k">def</span> <span class="nf">hiddenIslands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of hidden islands.</span>
+
+<span class="sd">        :rtype: :class:`.Island`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_hiddenIslands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_island</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__islands</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hiddenFaces</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">_island</span><span class="p">):</span>
+                <span class="n">_hiddenIslands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">island</span><span class="o">.</span><span class="n">Island</span><span class="p">(</span><span class="n">_island</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_hiddenIslands</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, rebellion (Luca Carella).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

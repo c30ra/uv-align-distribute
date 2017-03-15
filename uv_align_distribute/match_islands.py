@@ -33,9 +33,6 @@ sys.path.append(decorator_dir)
 
 import networkx
 
-#####################
-# COPY PASTE
-#####################
 
 class Match_Islands(templates.UvOperatorTemplate):
     """Match UV Island by moving their vertex."""
