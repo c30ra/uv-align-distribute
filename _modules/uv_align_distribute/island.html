@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>uv_align_distribute.island &#8212; UV Align Distribute 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for uv_align_distribute.island</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The Island module.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">mathutils</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">global_def</span><span class="p">,</span> <span class="n">utils</span>
+<span class="c1"># Add vendor directory to module search path</span>
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">nx_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="s1">&#39;networkx&#39;</span><span class="p">)</span>
+<span class="n">decorator_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="s1">&#39;decorator&#39;</span><span class="p">)</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decorator_dir</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nx_dir</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span>
+
+
+<div class="viewcode-block" id="Island"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island">[docs]</a><span class="k">class</span> <span class="nc">Island</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create Island from a set() of faces.</span>
+
+<span class="sd">    :param island: a set() of face indexes.</span>
+<span class="sd">    :type island: set().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">island</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span> <span class="o">=</span> <span class="n">island</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterate throught all face faces forming the island.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of faces of this island.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare two island.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span> <span class="o">==</span> <span class="n">other</span>
+
+<span class="c1"># properties</span>
+<div class="viewcode-block" id="Island.BBox"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.BBox">[docs]</a>    <span class="k">def</span> <span class="nf">BBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the bounding box of the island.</span>
+
+<span class="sd">        :return: a Rectangle rappresenting the bounding box of the island.</span>
+<span class="sd">        :rtype: :class:`.Rectangle`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">minX</span> <span class="o">=</span> <span class="n">minY</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="n">maxX</span> <span class="o">=</span> <span class="n">maxY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">uvlayer</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span>
+                <span class="n">minX</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">minX</span><span class="p">)</span>
+                <span class="n">minY</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">minY</span><span class="p">)</span>
+                <span class="n">maxX</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">maxX</span><span class="p">)</span>
+                <span class="n">maxY</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">maxY</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">)),</span>
+                                  <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Island.angle"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the island angle.</span>
+
+<span class="sd">        :return: the angle of the island in radians.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uvList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">uv</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span>
+                <span class="n">uvList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box_fit_2d</span><span class="p">(</span><span class="n">uvList</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">angle</span></div>
+
+<div class="viewcode-block" id="Island.size"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the island size.</span>
+
+<span class="sd">        :return: the size of the island(bounding box).</span>
+<span class="sd">        :rtype: :class:`.Size`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span>
+        <span class="n">sizeX</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">bbox</span><span class="o">.</span><span class="n">left</span><span class="p">()</span>
+        <span class="n">sizeY</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">bbox</span><span class="o">.</span><span class="n">top</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Size</span><span class="p">(</span><span class="n">sizeX</span><span class="p">,</span> <span class="n">sizeY</span><span class="p">)</span></div>
+
+<span class="c1"># Transformation</span>
+<div class="viewcode-block" id="Island.move"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move the island by vector.</span>
+
+<span class="sd">        Move the island by &#39;vector&#39;, by adding &#39;vector&#39; to the curretnt uv</span>
+<span class="sd">        coords.</span>
+
+<span class="sd">        :param vector: the vector to add.</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span> <span class="o">+=</span> <span class="n">vector</span></div>
+
+<div class="viewcode-block" id="Island.rotate"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rotate the island on it&#39;s center by &#39;angle(radians)&#39;.</span>
+
+<span class="sd">        :param angle: the angle(radians) of rotation.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">uv_act</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">uv_act</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span>
+                <span class="n">xt</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">center</span><span class="o">.</span><span class="n">y</span>
+                <span class="n">xr</span> <span class="o">=</span> <span class="p">(</span><span class="n">xt</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">yt</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+                <span class="n">yr</span> <span class="o">=</span> <span class="p">(</span><span class="n">xt</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">yt</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
+                <span class="c1"># loop[global_def.bm.loops.layers.uv.active].uv = trans</span>
+                <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">xr</span> <span class="o">+</span> <span class="n">center</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">yr</span> <span class="o">+</span> <span class="n">center</span><span class="o">.</span><span class="n">y</span></div>
+
+<div class="viewcode-block" id="Island.scale"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaleX</span><span class="p">,</span> <span class="n">scaleY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scale the island by &#39;scaleX, scaleY&#39;.</span>
+
+<span class="sd">        :param scaleX: x scale factor.</span>
+<span class="sd">        :type scaleX: float</span>
+<span class="sd">        :param scaleY: y scale factor</span>
+<span class="sd">        :type scaleY: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">y</span>
+                <span class="n">xt</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">center</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">center</span><span class="o">.</span><span class="n">y</span>
+                <span class="n">xs</span> <span class="o">=</span> <span class="n">xt</span> <span class="o">*</span> <span class="n">scaleX</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="n">yt</span> <span class="o">*</span> <span class="n">scaleY</span>
+                <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">+</span> <span class="n">center</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">ys</span> <span class="o">+</span> <span class="n">center</span><span class="o">.</span><span class="n">y</span></div>
+
+    <span class="c1"># FIXME: in some case doesn&#39;t work as expected...</span>
+<div class="viewcode-block" id="Island.snapToUnselected"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.snapToUnselected">[docs]</a>    <span class="k">def</span> <span class="nf">snapToUnselected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targetIslands</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Snap this island to &#39;targetIsland&#39;.</span>
+
+<span class="sd">        Use threshold to adjust vertex macthing. targetIsland is the island to</span>
+<span class="sd">        use to search for nearest vertex.</span>
+
+<span class="sd">        :param targetIsland: the target island for snapping</span>
+<span class="sd">        :type targetIsland: :class:`.Island`</span>
+<span class="sd">        :param threshold: distance from one vert to the others</span>
+<span class="sd">        :type threshold: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bestMatcherList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># targetIslands.remove(self)</span>
+        <span class="n">activeUvLayer</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">active</span>
+
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">selectedUVvert</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">activeUvLayer</span><span class="p">]</span>
+                <span class="n">uvList</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">targetIsland</span> <span class="ow">in</span> <span class="n">targetIslands</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">targetFace_id</span> <span class="ow">in</span> <span class="n">targetIsland</span><span class="p">:</span>
+                        <span class="n">targetFace</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">targetFace_id</span><span class="p">]</span>
+                        <span class="k">for</span> <span class="n">targetLoop</span> <span class="ow">in</span> <span class="n">targetFace</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                            <span class="c1"># take the a reference vert</span>
+                            <span class="n">targetUvVert</span> <span class="o">=</span> <span class="n">targetLoop</span><span class="p">[</span><span class="n">activeUvLayer</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span>
+                            <span class="c1"># get a selected vert and calc it&#39;s distance from</span>
+                            <span class="c1"># the ref</span>
+                            <span class="c1"># add it to uvList</span>
+                            <span class="n">dist</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                                <span class="n">utils</span><span class="o">.</span><span class="n">vectorDistance</span><span class="p">(</span><span class="n">selectedUVvert</span><span class="o">.</span><span class="n">uv</span><span class="p">,</span>
+                                                     <span class="n">targetUvVert</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+                            <span class="n">uvList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">dist</span><span class="p">,</span> <span class="n">targetLoop</span><span class="p">[</span><span class="n">activeUvLayer</span><span class="p">]))</span>
+
+                <span class="c1"># for every vert in uvList take the ones with the shortest</span>
+                <span class="c1"># distnace from ref</span>
+                <span class="n">minDist</span> <span class="o">=</span> <span class="n">uvList</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">bestMatcher</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="c1"># 1st pass get lower dist</span>
+                <span class="k">for</span> <span class="n">bestDist</span> <span class="ow">in</span> <span class="n">uvList</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">bestDist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">minDist</span><span class="p">:</span>
+                        <span class="n">minDist</span> <span class="o">=</span> <span class="n">bestDist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1"># 2nd pass get the only ones with a match</span>
+                <span class="k">for</span> <span class="n">bestVert</span> <span class="ow">in</span> <span class="n">uvList</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">bestVert</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">minDist</span><span class="p">:</span>
+                        <span class="n">bestMatcherList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">bestVert</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">selectedUVvert</span><span class="p">,</span>
+                                                <span class="n">bestVert</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="k">for</span> <span class="n">bestMatcher</span> <span class="ow">in</span> <span class="n">bestMatcherList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bestMatcher</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">bestMatcher</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span> <span class="o">=</span> <span class="n">bestMatcher</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span></div>
+
+<div class="viewcode-block" id="Island.isIsomorphic"><a class="viewcode-back" href="../../api/island.html#uv_align_distribute.island.Island.isIsomorphic">[docs]</a>    <span class="k">def</span> <span class="nf">isIsomorphic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test for isomorphism.</span>
+
+<span class="sd">        Return a verterx mapping between two island if they are isomorphic</span>
+<span class="sd">        or &#39;None&#39; if there is no isomorphism.</span>
+<span class="sd">        The returned mapped vertex index, correspond to the mesh vertex index</span>
+<span class="sd">        and not the uv one.</span>
+
+<span class="sd">        :param other: the other island</span>
+<span class="sd">        :type other: :class:`.Island`</span>
+<span class="sd">        :return: mapping between vertex or None</span>
+<span class="sd">        :rtype: dict, None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">graphFromIsland</span><span class="p">(</span><span class="n">island</span><span class="p">):</span>
+
+            <span class="n">edgeVertex</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="n">island</span><span class="p">:</span>
+                <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">edges</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+                    <span class="n">edgeVert</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">edges</span><span class="o">.</span><span class="n">verts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                    <span class="n">edgeVertex</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">edgeVert</span><span class="p">,</span>
+                                                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="p">)))</span>
+
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">networkx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">edgeVertex</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">graph</span>
+
+        <span class="n">selfGraph</span> <span class="o">=</span> <span class="n">graphFromIsland</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">otheGraph</span> <span class="o">=</span> <span class="n">graphFromIsland</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="n">iso</span> <span class="o">=</span> <span class="n">networkx</span><span class="o">.</span><span class="n">isomorphism</span>
+        <span class="n">graphMatcher</span> <span class="o">=</span> <span class="n">iso</span><span class="o">.</span><span class="n">GraphMatcher</span><span class="p">(</span><span class="n">selfGraph</span><span class="p">,</span> <span class="n">otheGraph</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">graphMatcher</span><span class="o">.</span><span class="n">is_isomorphic</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">graphMatcher</span><span class="o">.</span><span class="n">mapping</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kc">None</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, rebellion (Luca Carella).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

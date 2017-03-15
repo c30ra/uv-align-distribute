@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>uv_align_distribute.geometry &#8212; UV Align Distribute 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for uv_align_distribute.geometry</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Geometry module.</span>
+
+<span class="sd">This module contain geometry utilities.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+
+<span class="c1"># coords in blender start from bottom-right corner as (0.0, 0.0)</span>
+<span class="c1"># so change accordling</span>
+
+
+<div class="viewcode-block" id="Rectangle"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle">[docs]</a><span class="k">class</span> <span class="nc">Rectangle</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Rectangle rappresentation.</span>
+
+<span class="sd">    :param lowest: lowest corner</span>
+<span class="sd">    :type lowest: :class:`mathutils.Vector`</span>
+<span class="sd">    :param highest: highest corner</span>
+<span class="sd">    :type lowest: :class:`mathutils.Vector`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lowest</span><span class="p">,</span> <span class="n">highest</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">lowest</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">highest</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span> <span class="o">=</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">highest</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">lowest</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Rectangle.topLeft"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.topLeft">[docs]</a>    <span class="k">def</span> <span class="nf">topLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the top left corner.</span>
+
+<span class="sd">        :return: top left corner</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span></div>
+
+<div class="viewcode-block" id="Rectangle.top"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.top">[docs]</a>    <span class="k">def</span> <span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the top.</span>
+
+<span class="sd">        :return: top edge</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span><span class="o">.</span><span class="n">y</span></div>
+
+<div class="viewcode-block" id="Rectangle.topRight"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.topRight">[docs]</a>    <span class="k">def</span> <span class="nf">topRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the top right corner.</span>
+
+<span class="sd">        :return: top right corner</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Rectangle.right"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.right">[docs]</a>    <span class="k">def</span> <span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the right edge.</span>
+
+<span class="sd">        :return: right edge</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span><span class="o">.</span><span class="n">x</span></div>
+
+<div class="viewcode-block" id="Rectangle.bottomRight"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.bottomRight">[docs]</a>    <span class="k">def</span> <span class="nf">bottomRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the bottom right corner.</span>
+
+<span class="sd">        :return: top bottom right</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span></div>
+
+<div class="viewcode-block" id="Rectangle.bottom"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.bottom">[docs]</a>    <span class="k">def</span> <span class="nf">bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the bottom edge.</span>
+
+<span class="sd">        :return: bottom edge</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span><span class="o">.</span><span class="n">y</span></div>
+
+<div class="viewcode-block" id="Rectangle.bottomLeft"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.bottomLeft">[docs]</a>    <span class="k">def</span> <span class="nf">bottomLeft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the bottom left corner.</span>
+
+<span class="sd">        :return: bottom left</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Rectangle.left"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.left">[docs]</a>    <span class="k">def</span> <span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the left edge.</span>
+
+<span class="sd">        :return: left edge</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span><span class="o">.</span><span class="n">x</span></div>
+
+<div class="viewcode-block" id="Rectangle.center"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Rectangle.center">[docs]</a>    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the bounding box center.</span>
+
+<span class="sd">        :return: rectangle center</span>
+<span class="sd">        :rtype: :class:`mathutils.Vector`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__topLeft</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bottomRight</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div></div>
+
+
+<div class="viewcode-block" id="Size"><a class="viewcode-back" href="../../api/geometry.html#uv_align_distribute.geometry.Size">[docs]</a><span class="k">class</span> <span class="nc">Size</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Rappresentation of size.</span>
+
+<span class="sd">    :param width: width.</span>
+<span class="sd">    :type width: float</span>
+<span class="sd">    :param height: height.</span>
+<span class="sd">    :type height: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, rebellion (Luca Carella).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
