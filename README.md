@@ -72,6 +72,7 @@ All these distributions work correctly if the islands are partially aligned vert
   - Equalize VGap: the distribution is performed so the vertical distance between the islands is the same.
 
 #### Others:
+  - Snap islands: snap vertices of the selected island on the acitve one(if present), or to the nearest one. Use threshold to adjust distance of matched verts.
 
   - Match Island: this operator makes two or more similar islands (same amount of vertices, similar shape) perfectly overlapped.
 
@@ -79,6 +80,9 @@ All these distributions work correctly if the islands are partially aligned vert
 
 Sometimes alignment rotation doesn't work correctly, either due to floating point precision or because unwrapping makes some islands flipped or mirrored. You see this if all the islands point in the same direction, but one or more are flipped by 180°. In order to fix this, select those island and mirror them.
 
+## Development
+If you are interested in development of this add-on follow this link:  
+[Api](docs/build/html/index.html)
 
 ## External Links
 

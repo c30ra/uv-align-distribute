@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>uv_align_distribute.utils &#8212; UV Align Distribute 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for uv_align_distribute.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ##### BEGIN GPL LICENSE BLOCK #####</span>
+<span class="c1">#</span>
+<span class="c1">#  This program is free software; you can redistribute it and/or</span>
+<span class="c1">#  modify it under the terms of the GNU General Public License</span>
+<span class="c1">#  as published by the Free Software Foundation; version 2</span>
+<span class="c1">#  of the License.</span>
+<span class="c1">#</span>
+<span class="c1">#  This program is distributed in the hope that it will be useful,</span>
+<span class="c1">#  but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#  GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#  You should have received a copy of the GNU General Public License</span>
+<span class="c1">#  along with this program; if not, write to the Free Software Foundation,</span>
+<span class="c1">#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</span>
+<span class="c1">#</span>
+<span class="c1"># ##### END GPL LICENSE BLOCK #####</span>
+<span class="sd">&quot;&quot;&quot;Utils function.</span>
+
+<span class="sd">Most functions here will be deprecated&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">bmesh</span>
+<span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">import</span> <span class="nn">mathutils</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">global_def</span>
+
+
+<div class="viewcode-block" id="InitBMesh"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.InitBMesh">[docs]</a><span class="k">def</span> <span class="nf">InitBMesh</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Init global bmesh.&quot;&quot;&quot;</span>
+    <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span> <span class="o">=</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">from_edit_mesh</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">edit_object</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">ensure_lookup_table</span><span class="p">()</span>
+    <span class="c1"># uvlayer = bm.loops.layers.uv.active</span>
+
+    <span class="n">global_def</span><span class="o">.</span><span class="n">uvlayer</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">loops</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">verify</span><span class="p">()</span>
+    <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">tex</span><span class="o">.</span><span class="n">verify</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="update"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.update">[docs]</a><span class="k">def</span> <span class="nf">update</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Update mesh rappresentation in blender.&quot;&quot;&quot;</span>
+    <span class="n">bmesh</span><span class="o">.</span><span class="n">update_edit_mesh</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">edit_object</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+    <span class="c1"># bm.to_mesh(bpy.context.object.data)</span>
+    <span class="c1"># bm.free()</span>
+
+
+<div class="viewcode-block" id="GBBox"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.GBBox">[docs]</a><span class="k">def</span> <span class="nf">GBBox</span><span class="p">(</span><span class="n">islands</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the bounding box of all islands.&quot;&quot;&quot;</span>
+    <span class="n">minX</span> <span class="o">=</span> <span class="n">minY</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">maxX</span> <span class="o">=</span> <span class="n">maxY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>
+    <span class="k">for</span> <span class="n">_island</span> <span class="ow">in</span> <span class="n">islands</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">face_id</span> <span class="ow">in</span> <span class="n">_island</span><span class="o">.</span><span class="n">faceList</span><span class="p">:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">global_def</span><span class="o">.</span><span class="n">bm</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_id</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">loops</span><span class="p">:</span>
+                <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">loop</span><span class="p">[</span><span class="n">global_def</span><span class="o">.</span><span class="n">uvlayer</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span>
+                <span class="n">minX</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">minX</span><span class="p">)</span>
+                <span class="n">minY</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">minY</span><span class="p">)</span>
+                <span class="n">maxX</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">maxX</span><span class="p">)</span>
+                <span class="n">maxY</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">maxY</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rectangle</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">)),</span>
+                               <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="vectorDistance"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.vectorDistance">[docs]</a><span class="k">def</span> <span class="nf">vectorDistance</span><span class="p">(</span><span class="n">vector1</span><span class="p">,</span> <span class="n">vector2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the distance between vectors.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">vector2</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">vector1</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">vector2</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">vector1</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_sortCenter</span><span class="p">(</span><span class="n">pointList</span><span class="p">):</span>
+
+    <span class="n">scambio</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pointList</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">scambio</span><span class="p">:</span>
+        <span class="n">scambio</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">pointA</span> <span class="o">=</span> <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pointB</span> <span class="o">=</span> <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">pointA</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">pointB</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pointA</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">pointB</span><span class="o">.</span><span class="n">y</span><span class="p">):</span>
+                <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">pointList</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">scambio</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">pointList</span>
+
+
+<span class="k">def</span> <span class="nf">_sortVertex</span><span class="p">(</span><span class="n">vertexList</span><span class="p">,</span> <span class="n">BBCenter</span><span class="p">):</span>
+
+    <span class="n">anglesList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertexList</span><span class="p">:</span>
+        <span class="c1"># atan2(P[i].y - M.y, P[i].x - M.x)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">BBCenter</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">uv</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">BBCenter</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">anglesList</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">angle</span><span class="p">))</span>
+
+    <span class="n">vertsAngle</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">anglesList</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">coords</span><span class="p">:</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">uv</span><span class="p">)</span>
+    <span class="c1"># vertsAngle = sorted(anglesList, key=lambda angle: angle[1])</span>
+    <span class="n">newList</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vertsAngle</span><span class="p">:</span>
+        <span class="n">newList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">newList</span>
+
+
+<div class="viewcode-block" id="getTargetPoint"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.getTargetPoint">[docs]</a><span class="k">def</span> <span class="nf">getTargetPoint</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">islands</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the target of uv operations.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">relativeItems</span> <span class="o">==</span> <span class="s1">&#39;UV_SPACE&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">relativeItems</span> <span class="o">==</span> <span class="s1">&#39;ACTIVE&#39;</span><span class="p">:</span>
+        <span class="n">activeIsland</span> <span class="o">=</span> <span class="n">islands</span><span class="o">.</span><span class="n">activeIsland</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">activeIsland</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">activeIsland</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">context</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">relativeItems</span> <span class="o">==</span> <span class="s1">&#39;CURSOR&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">space_data</span><span class="o">.</span><span class="n">cursor_location</span></div>
+
+
+<span class="c1"># deprecated:</span>
+<span class="c1"># def IslandSpatialSortX(islands):</span>
+<span class="c1">#     spatialSort = []</span>
+<span class="c1">#     for _island in islands:</span>
+<span class="c1">#         spatialSort.append((island.BBox().center().x, island))</span>
+<span class="c1">#     spatialSort.sort()</span>
+<span class="c1">#     return spatialSort</span>
+
+
+<span class="c1"># def IslandSpatialSortY(islands):</span>
+<span class="c1">#     spatialSort = []</span>
+<span class="c1">#     for _island in islands:</span>
+<span class="c1">#         spatialSort.append((_island.BBox().center().y, island))</span>
+<span class="c1">#     spatialSort.sort()</span>
+<span class="c1">#     return spatialSort</span>
+
+
+<span class="c1"># todo: to rework</span>
+<div class="viewcode-block" id="averageIslandDist"><a class="viewcode-back" href="../../api/utils.html#uv_align_distribute.utils.averageIslandDist">[docs]</a><span class="k">def</span> <span class="nf">averageIslandDist</span><span class="p">(</span><span class="n">islands</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the average distance between islands.&quot;&quot;&quot;</span>
+    <span class="n">distX</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">distY</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">islands</span><span class="p">)):</span>
+        <span class="n">elem1</span> <span class="o">=</span> <span class="n">islands</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span><span class="o">.</span><span class="n">bottomRight</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>            <span class="c1"># island</span>
+            <span class="n">elem2</span> <span class="o">=</span> <span class="n">islands</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">BBox</span><span class="p">()</span><span class="o">.</span><span class="n">topLeft</span><span class="p">()</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">distX</span> <span class="o">+=</span> <span class="n">elem2</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">elem1</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">distY</span> <span class="o">+=</span> <span class="n">elem2</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">elem1</span><span class="o">.</span><span class="n">y</span>
+
+    <span class="n">avgDistX</span> <span class="o">=</span> <span class="n">distX</span> <span class="o">/</span> <span class="n">counter</span>
+    <span class="n">avgDistY</span> <span class="o">=</span> <span class="n">distY</span> <span class="o">/</span> <span class="n">counter</span>
+    <span class="k">return</span> <span class="n">mathutils</span><span class="o">.</span><span class="n">Vector</span><span class="p">((</span><span class="n">avgDistX</span><span class="p">,</span> <span class="n">avgDistY</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">UV Align Distribute 3.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, rebellion (Luca Carella).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

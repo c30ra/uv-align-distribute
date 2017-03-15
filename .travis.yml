@@ -3,8 +3,10 @@
 # this is essential to make python work out of the box
 language: python
 
+os:
+  - linux
 # Define which python version to build against.
-# As blender comes bundled with it's own python you can use just one version if you like
+
 python:
   - "3.6"
 
@@ -12,18 +14,20 @@ python:
 branches:
   except:
   - adding_icons
-  
+
 before_install:
   # update apt-gets repository sources
   - sudo apt-get update -qq
-
   # install blender from official sources.
   # This will most propably install an outdated blender version,
   # but it will resolve all system dependencies blender has to be able to run.
   - sudo apt-get install blender
 
 install:
-  - pip install lib2to3
+  # codecoverage
+  - pip install codecov
+  #- pip install networkx
+
   # create temp directory where we store a recent blender version
   - mkdir tmp && cd tmp
 
@@ -39,13 +43,24 @@ install:
   # remove the archive, we do not need it anymore
   - rm blender-2.78a-linux-glibc211-x86_64.tar.bz2
 
+  # download python
+  - wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
+  - tar -xJf Python-3.6.0.tar.xz
+  - mv Python-3.6.0 python36
+  - rm Python-3.6.0.tar.xz
   # go back to root directory
   - cd ..
-
+  # try to copy system lib2to3 python module
+  - sudo cp -R ${PWD}/tmp/python36/Lib/lib2to3 ${PWD}/tmp/blender/2.78/python/lib/python3.5/lib2to3
+  - ls ${PWD}/tmp/blender/2.78/python/lib/python3.5/lib2to3
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
   - sudo ln -s ${PWD} ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
-script: 
-  - python tests.py ./tmp/blender/blender
+
+script:
+  - coverage run --source uv_align_distribute tests.py ./tmp/blender/blender
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

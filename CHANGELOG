@@ -1,0 +1,8 @@
+UV ALIGN DISTRIBUTE 3.0
+
+changes since v2.2
+- new directory structure
+- api rework: this change should allow easy integration of new tools
+- new doc
+- added more tests coverage
+- fixed the recursion problem when creating island
