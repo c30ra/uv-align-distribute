@@ -1,1 +1,1 @@
-If you want contribute see [Guidelines](docs/build/html/guidelines.html).
+If you want contribute see [Guidelines](https://c30ra.github.io/uv-align-distribute/).

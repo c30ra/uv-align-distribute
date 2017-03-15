@@ -1,5 +1,0 @@
-Islands
-=======
-
-.. automodule:: uv_align_distribute.islands
-   :members:

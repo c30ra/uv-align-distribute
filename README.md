@@ -2,8 +2,10 @@
 This add-on help align and distribute uv island in the uv space
 
 
-Master Status:  [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)  
-Development Status: [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)
+  | Master  |  Development
+-------|---------|--
+Linux  |[![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)|[![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)    
+Windows  |  [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/master?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/master)  |  [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/development?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/development)
 
 ## Installation:  
 
@@ -82,7 +84,7 @@ Sometimes alignment rotation doesn't work correctly, either due to floating poin
 
 ## Development
 If you are interested in development of this add-on follow this link:  
-[Api](docs/build/html/index.html)
+[Api](https://c30ra.github.io/uv-align-distribute/)
 
 ## External Links
 

@@ -9,11 +9,6 @@ if len(sys.argv) > 1:
     blenderExecutable = sys.argv[1]
 
 # iterate over each *.test.blend file in the "tests" directory
-<<<<<<< HEAD
-# and open up blender with the .test.blend file and the corresponding .test.py python script
-for file in glob.glob('./tests/**/*.test.blend'):
-  subprocess.call([blenderExecutable, '--addons', 'uv_align_distribute', '--factory-startup', '-noaudio', '-b', file, '--python', file.replace('.blend', '.py')])
-=======
 # and open up blender with the .test.blend file
 # and the corresponding .test.py python script.
 
@@ -21,6 +16,7 @@ print("start testing...")
 gl = glob.glob('./tests/**/*.test.blend')
 print("found %s tests: " % len(gl))
 
+errorCode = 0
 for file in gl:
     # print("executing:", file)
     cmd = [blenderExecutable,
@@ -31,5 +27,6 @@ for file in gl:
            '-b',
            file, '--python',
            file.replace('.blend', '.py')]
-    subprocess.call(cmd, stdout=subprocess.DEVNULL)
->>>>>>> development
+    errorCode |= subprocess.call(cmd, stdout=subprocess.DEVNULL)
+
+exit(errorCode)

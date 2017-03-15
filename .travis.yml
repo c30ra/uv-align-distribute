@@ -14,6 +14,7 @@ python:
 branches:
   except:
   - adding_icons
+  - gh-pages
 
 before_install:
   # update apt-gets repository sources
@@ -55,12 +56,12 @@ install:
   - ls ${PWD}/tmp/blender/2.78/python/lib/python3.5/lib2to3
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
-  - sudo ln -s ${PWD} ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
+  - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 
 script:
-  - coverage run --source uv_align_distribute tests.py ./tmp/blender/blender
+  - coverage run --source . tests.py ./tmp/blender/blender
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+# after_success:
+#  - bash <(curl -s https://codecov.io/bash)
