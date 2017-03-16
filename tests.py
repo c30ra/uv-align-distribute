@@ -1,6 +1,7 @@
 import glob
 import subprocess
 import sys
+import os
 
 blenderExecutable = 'blender'
 

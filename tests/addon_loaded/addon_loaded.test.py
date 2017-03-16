@@ -11,7 +11,6 @@ try:
             # every addon must provide the "bl_info" dict
             self.assertIsNotNone(uv_align_distribute.bl_info)
 
-
     # we have to manually invoke the test runner here, as we cannot use the CLI
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
     unittest.TextTestRunner(verbosity=0).run(suite)

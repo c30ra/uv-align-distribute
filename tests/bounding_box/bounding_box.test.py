@@ -2,7 +2,6 @@ import unittest
 import sys
 
 try:
-    import bpy
     import mathutils
 
     # import the already loaded addon

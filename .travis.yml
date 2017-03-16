@@ -26,7 +26,7 @@ before_install:
 
 install:
   # codecoverage
-  - pip install codecov
+  # - pip install codecov
   #- pip install networkx
 
   # create temp directory where we store a recent blender version
@@ -61,7 +61,7 @@ install:
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 
 script:
-  - coverage run --source . tests.py ./tmp/blender/blender
+  - python tests.py ./tmp/blender/blender
 
 # after_success:
 #  - bash <(curl -s https://codecov.io/bash)

@@ -7,7 +7,6 @@ try:
     # import the already loaded addon
     from uv_align_distribute import make_islands
 
-
     class TestAddon(unittest.TestCase):
         def setUp(self):
             self.override = None
