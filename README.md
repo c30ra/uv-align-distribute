@@ -1,11 +1,15 @@
 # [Blender Add-on] uv-align-distribute
+
+[![Github Releases](https://img.shields.io/github/downloads/c30ra/uv-align-distribute/latest/total.svg)]()
+
+
+
+|         | Master                                                                                                                                                                          | Development                                                                                                                                                                               |
+|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Linux   | [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)                                           | [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)                                                |
+| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/master?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/development?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/development) |
+
 This add-on help align and distribute uv island in the uv space
-
-
-  | Master  |  Development
--------|---------|--
-Linux  |[![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)|[![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)    
-Windows  |  [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/master?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/master)  |  [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/development?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/development)
 
 ## Installation:  
 
