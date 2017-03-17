@@ -1,6 +1,6 @@
 # [Blender Add-on] uv-align-distribute
 
-[![Github Releases](https://img.shields.io/github/downloads/c30ra/uv-align-distribute/latest/total.svg)]()
+[![Github All Releases](https://img.shields.io/github/downloads/c30ra/uv-align-distribute/total.svg)]()
 
 
 
