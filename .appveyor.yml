@@ -16,13 +16,13 @@ install:
   # - pip install coverage
   # - pip install codecov
   - cmd: cd C:\projects
-  - ps: Start-FileDownload 'https://builder.blender.org/download/blender-2.78-6a5487e-win64.zip'
-  - 7z.exe x blender-2.78-6a5487e-win64.zip
+  - ps: Start-FileDownload 'https://builder.blender.org/download//blender-2.79-75fc1c3-win64.zip'
+  - 7z.exe x blender-2.79-75fc1c3-win64.zip
   - ls
-  - cmd: mv blender-2.78.0-git.6a5487e-windows64 blender
-  - cmd: rm blender-2.78-6a5487e-win64.zip
-  - cmd: mklink /j /D C:\projects\blender\2.78\scripts\addons\uv_align_distribute C:\projects\uv-align-distribute\uv_align_distribute
-  - rm C:\projects\blender\2.78\scripts\addons_contrib\uv_align_distribute.py
+  - cmd: mv blender-2.79-75fc1c3-win64 blender
+  - cmd: rm blender-2.79-75fc1c3-win64.zip
+  - cmd: mklink /j /D C:\projects\blender\2.79\scripts\addons\uv_align_distribute C:\projects\uv-align-distribute\uv_align_distribute
+  - rm C:\projects\blender\2.79\scripts\addons_contrib\uv_align_distribute.py
   - cmd: cd C:\projects\uv-align-distribute
 
 build: off

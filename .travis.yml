@@ -33,30 +33,20 @@ install:
   - mkdir tmp && cd tmp
 
   # download the blender version you want to test against
-  - wget http://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78a-linux-glibc211-x86_64.tar.bz2
+  - wget https://builder.blender.org/download//blender-2.79-7c75c2db4f9-linux-glibc219-x86_64.tar.bz2
 
   # Extract the archive
-  - tar jxf blender-2.78a-linux-glibc211-x86_64.tar.bz2
+  - tar jxf blender-2.79-7c75c2db4f9-linux-glibc219-x86_64.tar.bz2
 
   # rename the extracted folder to "blender" for easier reference
-  - mv blender-2.78a-linux-glibc211-x86_64 blender
+  - mv blender-2.79-7c75c2db4f9-linux-glibc219-x86_64 blender
 
   # remove the archive, we do not need it anymore
-  - rm blender-2.78a-linux-glibc211-x86_64.tar.bz2
-
-  # download python
-  - wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
-  - tar -xJf Python-3.6.0.tar.xz
-  - mv Python-3.6.0 python36
-  - rm Python-3.6.0.tar.xz
-  # go back to root directory
-  - cd ..
-  # try to copy system lib2to3 python module
-  - sudo cp -R ${PWD}/tmp/python36/Lib/lib2to3 ${PWD}/tmp/blender/2.78/python/lib/python3.5/lib2to3
-  - ls ${PWD}/tmp/blender/2.78/python/lib/python3.5/lib2to3
+  - rm blender-2.79-7c75c2db4f9-linux-glibc219-x86_64.tar.bz2
+  
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
-  - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.78/scripts/addons/uv_align_distribute
+  - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.79/scripts/addons/uv_align_distribute
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 
