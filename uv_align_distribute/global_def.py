@@ -23,7 +23,7 @@ from bpy.props import BoolProperty, EnumProperty
 bpy.types.Scene.relativeItems = EnumProperty(
     items=[
         ('UV_SPACE', 'Uv Space', 'Align to UV space'),
-        ('ACTIVE', 'Active Face', 'Align to active face\island'),
+        ('ACTIVE', 'Active Face', 'Align to active face\\island'),
         ('CURSOR', 'Cursor', 'Align to cursor')],
     name="Relative to")
 
@@ -34,5 +34,3 @@ bpy.types.Scene.selectionAsGroup = BoolProperty(
 
 bm = None
 uvlayer = None
-
-preview_collections = {}
