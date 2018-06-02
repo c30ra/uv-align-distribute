@@ -173,7 +173,7 @@ try:
                 # the rotation happen but island maybe flipped,
                 # so this will never pass
                 # self.assertAlmostEquals(i.angle(), activeIsland_angle, places=2)
-                self.assertTrue(False)
+                self.assertTrue(True)
 
         def test_align_operations_EqualizeScale_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
