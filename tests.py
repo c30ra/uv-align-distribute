@@ -19,7 +19,7 @@ print("found %s tests: " % len(gl))
 
 errorCode = 0
 for file in gl:
-    print("executing:", file)
+    # print("executing:", file)
     cmd = [blenderExecutable,
            '--addons',
            'uv_align_distribute',

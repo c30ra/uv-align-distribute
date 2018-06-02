@@ -43,7 +43,10 @@ install:
 
   # remove the archive, we do not need it anymore
   - rm blender-2.79-7c75c2db4f9-linux-glibc219-x86_64.tar.bz2
-  
+
+  # go back
+  - cd ..
+
   # now create a symlink to the addon within blenders addons directory
   # this is important, because otherwhise blender would not be able to load the addon
   - sudo ln -s ${PWD}/uv_align_distribute ${PWD}/tmp/blender/2.79/scripts/addons/uv_align_distribute
