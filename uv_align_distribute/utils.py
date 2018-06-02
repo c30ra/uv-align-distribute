@@ -115,7 +115,11 @@ def getTargetPoint(context, islands):
         else:
             return activeIsland.BBox()
     elif context.scene.relativeItems == 'CURSOR':
-        return context.space_data.cursor_location
+        value = bpy.context.space_data.uv_editor.show_normalized_coords
+        bpy.context.space_data.uv_editor.show_normalized_coords = value or True
+        coords = context.space_data.cursor_location
+        bpy.context.space_data.uv_editor.show_normalized_coords = value
+        return coords
 
 
 # deprecated:
