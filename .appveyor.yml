@@ -22,7 +22,6 @@ install:
   - cmd: mv blender-2.79.0-git.75fc1c3-windows64 blender
   - cmd: rm blender-2.79-75fc1c3-win64.zip
   - cmd: mklink /j /D C:\projects\blender\2.79\scripts\addons\uv_align_distribute C:\projects\uv-align-distribute\uv_align_distribute
-  - rm C:\projects\blender\2.79\scripts\addons_contrib\uv_align_distribute.py
   - cmd: cd C:\projects\uv-align-distribute
 
 build: off
