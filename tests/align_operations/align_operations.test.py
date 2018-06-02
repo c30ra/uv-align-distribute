@@ -173,7 +173,7 @@ try:
                 # the rotation happen but island maybe flipped,
                 # so this will never pass
                 # self.assertAlmostEquals(i.angle(), activeIsland_angle, places=2)
-                self.assertTrue(True)
+                self.assertTrue(False)
 
         def test_align_operations_EqualizeScale_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -187,7 +187,8 @@ try:
 
     # we have to manually invoke the test runner here, as we cannot use the CLI
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-    unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
+    status = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
+    sys.exit(not int(status))
 
 except ImportError:
     sys.exit(1)

@@ -13,7 +13,8 @@ try:
 
     # we have to manually invoke the test runner here, as we cannot use the CLI
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
-    unittest.TextTestRunner(verbosity=0).run(suite)
+    status = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
+    sys.exit(not int(status))
 
 except ImportError:
     sys.exit(1)

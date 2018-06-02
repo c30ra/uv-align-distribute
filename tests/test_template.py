@@ -23,8 +23,9 @@ try:
 
     # this lines must be present at hte end of each test
     # we have to manually invoke the test runner here, as we cannot use the CLI
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase("AddonName")
-    unittest.TextTestRunner(verbosity=0).run(suite)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
+    status = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
+    sys.exit(not int(status))
 
 except ImportError:
     sys.exit(1)
