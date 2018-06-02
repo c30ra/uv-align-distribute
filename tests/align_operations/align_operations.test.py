@@ -23,7 +23,8 @@ try:
             self.activeIsland = self.make_island.activeIsland()
 
         def tearDown(self):
-            bpy.ops.ed.undo()
+            # bpy.ops.ed.undo()
+            pass
 
         def test_align_operations_AlignSXMargin_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -46,7 +47,7 @@ try:
             for i in self.selectedIslands:
                 self.assertAlmostEquals(i.BBox().left(), cursor_x)
 
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignRXMargin_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -69,7 +70,7 @@ try:
             for i in self.selectedIslands:
                 self.assertAlmostEquals(i.BBox().right(), cursor_x)
 
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignTopMargin_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -93,7 +94,7 @@ try:
                 # have to round for floaitng point precision
                 self.assertAlmostEquals(i.BBox().top(), cursor_y)
 
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignLowMargin_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -116,7 +117,7 @@ try:
             for i in self.selectedIslands:
                 self.assertAlmostEquals(i.BBox().bottom(), cursor_y)
 
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignHAxis_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -139,7 +140,7 @@ try:
             for i in self.selectedIslands:
                 self.assertAlmostEquals(i.BBox().center().y, cursor_y)
 
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignVAxis_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
@@ -162,13 +163,12 @@ try:
             for i in self.selectedIslands:
                 self.assertAlmostEquals(i.BBox().center().x, cursor_x)
 
-
-    ###############################################################################
+    ###########################################################################
 
         def test_align_operations_AlignRotation_active_island(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
             bpy.ops.uv.align_rotation(self.override)
-            activeIsland_angle = self.activeIsland.angle()
+            # activeIsland_angle = self.activeIsland.angle()
             for i in self.selectedIslands:
                 # the rotation happen but island maybe flipped,
                 # so this will never pass
@@ -184,7 +184,6 @@ try:
                                         places=4)
                 self.assertAlmostEquals(i.size().height, activeIsland_size.height,
                                         places=4)
-
 
     # we have to manually invoke the test runner here, as we cannot use the CLI
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)

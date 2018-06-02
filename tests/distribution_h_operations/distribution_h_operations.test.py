@@ -24,7 +24,8 @@ try:
             self.activeIsland = self.make_island.activeIsland()
 
         def tearDown(self):
-            bpy.ops.ed.undo()
+            # bpy.ops.ed.undo()
+            pass
 
         def test_distribution_operations_DistributeLEdgesH(self):
             bpy.types.Scene.relativeItems = "ACTIVE"
