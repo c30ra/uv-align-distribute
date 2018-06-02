@@ -17,12 +17,12 @@
 # ##### END GPL LICENSE BLOCK #####
 
 bl_info = {
-    "name": "UV Align/Distribute",
+    "name": "UV Align\\Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (3, 0),
-    "blender": (2, 7, 8),
-    "location": "UV/Image editor > Tool Panel, UV/Image editor UVs > menu",
-    "description": "Set of tools to help UV alignment\distribution",
+    "version": (3, 1),
+    "blender": (2, 7, 9),
+    "location": "UV\\Image editor > Tool Panel, UV\\Image editor UVs > menu",
+    "description": "Set of tools to help UV alignment\\distribution",
     "warning": "",
     "wiki_url": "https://github.com/c30ra/uv-align-distribute",
     "category": "UV"}
@@ -30,28 +30,30 @@ bl_info = {
 
 if "bpy" in locals():
     import imp
-    imp.reload(align_operations)
-    imp.reload(distribution_operations)
-    imp.reload(ui)
-    imp.reload(snap_islands)
-    imp.reload(match_islands)
+    # imp.reload(align_operations)
+    # imp.reload(distribution_operations)
+    # imp.reload(ui)
+    # imp.reload(snap_islands)
+    # imp.reload(match_islands)
 #    imp.reload(pack_islands)
-    imp.reload(global_def)
+    # imp.reload(global_def)
     imp.reload(operator_manager)
 else:
-    from . import align_operations
-    from . import distribution_operations
-    from . import ui
-    from . import snap_islands
-    from . import match_islands
-#    from . import pack_islands
-    from . import global_def
+    # from . import align_operations
+    # from . import distribution_operations
+    # from . import ui
+    # from . import snap_islands
+    # from . import match_islands
+    # from . import pack_islands
+    # from . import global_def
     from . import operator_manager
 
 # NOTE: important: must be placed here and not on top as pep8 would, or it give
 # import erros...
 import bpy
 import os
+
+preview_collections = {}
 
 
 def register():
@@ -74,31 +76,40 @@ def register():
     pcoll.load("align_bottom", os.path.join(my_icons_dir, "al_bottom_in.png"),
                'IMAGE')
     pcoll.load("align_center_hor", os.path.join(my_icons_dir,
-               "al_center_hor.png"), 'IMAGE')
+                                                "al_center_hor.png"), 'IMAGE')
     pcoll.load("align_center_ver", os.path.join(my_icons_dir,
-               "al_center_ver.png"), 'IMAGE')
+                                                "al_center_ver.png"), 'IMAGE')
 
     pcoll.load("align_rotation", os.path.join(my_icons_dir,
-               "ink_transform_rotate.png"), 'IMAGE')
+                                              "ink_transform_rotate.png"),
+               'IMAGE')
 
     pcoll.load("distribute_bottom", os.path.join(my_icons_dir,
-               "distribute_bottom.png"), 'IMAGE')
+                                                 "distribute_bottom.png"),
+               'IMAGE')
     pcoll.load("distribute_hcentre", os.path.join(my_icons_dir,
-               "distribute_hcentre.png"), 'IMAGE')
+                                                  "distribute_hcentre.png"),
+               'IMAGE')
     pcoll.load("distribute_left", os.path.join(my_icons_dir,
-               "distribute_left.png"), 'IMAGE')
+                                               "distribute_left.png"),
+               'IMAGE')
     pcoll.load("distribute_right", os.path.join(my_icons_dir,
-               "distribute_right.png"), 'IMAGE')
+                                                "distribute_right.png"),
+               'IMAGE')
     pcoll.load("distribute_top", os.path.join(my_icons_dir,
-               "distribute_top.png"), 'IMAGE')
+                                              "distribute_top.png"),
+               'IMAGE')
     pcoll.load("distribute_vcentre", os.path.join(my_icons_dir,
-               "distribute_vcentre.png"), 'IMAGE')
+                                                  "distribute_vcentre.png"),
+               'IMAGE')
     pcoll.load("distribute_hdist", os.path.join(my_icons_dir,
-               "distribute_hdist.png"), 'IMAGE')
+                                                "distribute_hdist.png"),
+               'IMAGE')
     pcoll.load("distribute_vdist", os.path.join(my_icons_dir,
-               "distribute_vdist.png"), 'IMAGE')
+                                                "distribute_vdist.png"),
+               'IMAGE')
 
-    global_def.preview_collections["main"] = pcoll
+    preview_collections["main"] = pcoll
 
     class_list = operator_manager.om.classList()
     for c in class_list:
@@ -107,9 +118,9 @@ def register():
 
 def unregister():
 
-    for pcoll in global_def.preview_collections.values():
+    for pcoll in preview_collections.values():
         bpy.utils.previews.remove(pcoll)
-    global_def.preview_collections.clear()
+    preview_collections.clear()
 
     class_list = operator_manager.om.classList()
     for c in class_list:
