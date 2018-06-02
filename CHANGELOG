@@ -1,4 +1,7 @@
-UV ALIGN DISTRIBUTE 3.0
+UV ALIGN DISTRIBUTE 3.1
+changes since v3.0
+- Fix alignment on 3D Cursor mode, failing duo to wrong coordinate system
+- Fixes on test case where blender undo operation invalidate mesh status
 
 changes since v2.2
 - new directory structure

@@ -2,18 +2,22 @@
 
 import math
 import os
+import platform
 import sys
-
 import mathutils
 
 from . import geometry, global_def, utils
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
-nx_dir = os.path.join(parent_dir, 'networkx')
-decorator_dir = os.path.join(parent_dir, 'decorator')
+netxDir = os.path.join(parent_dir, 'networkx')
+decoratorDir = os.path.join(parent_dir, 'decorator')
 
-sys.path.append(decorator_dir)
-sys.path.append(nx_dir)
+if platform.system() != "Windows":
+    lib2to3Dir = os.path.join(parent_dir, 'lib2to3')
+    sys.path.append(lib2to3Dir)
+
+sys.path.append(decoratorDir)
+sys.path.append(netxDir)
 
 import networkx
 

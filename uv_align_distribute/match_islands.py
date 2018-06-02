@@ -18,6 +18,7 @@
 
 import operator
 import os
+import platform
 import sys
 from collections import defaultdict
 
@@ -25,13 +26,17 @@ from . import global_def, make_islands, templates, utils, operator_manager
 
 # Add vendor directory to module search path
 parent_dir = os.path.abspath(os.path.dirname(__file__))
-nx_dir = os.path.join(parent_dir, 'networkx')
-decorator_dir = os.path.join(parent_dir, 'decorator')
+netxDir = os.path.join(parent_dir, 'networkx')
+decoratorDir = os.path.join(parent_dir, 'decorator')
 
-sys.path.append(nx_dir)
-sys.path.append(decorator_dir)
+if platform.system() != "Windows":
+    lib2to3Dir = os.path.join(parent_dir, 'lib2to3')
+    sys.path.append(lib2to3Dir)
 
-import networkx
+sys.path.append(netxDir)
+sys.path.append(decoratorDir)
+
+# import networkx
 
 
 class Match_Islands(templates.UvOperatorTemplate):

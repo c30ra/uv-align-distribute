@@ -27,26 +27,35 @@ bl_info = {
     "wiki_url": "https://github.com/c30ra/uv-align-distribute",
     "category": "UV"}
 
+import imp
+import os
+import platform
+import sys
 
-if "bpy" in locals():
-    import imp
-    # imp.reload(align_operations)
-    # imp.reload(distribution_operations)
-    # imp.reload(ui)
-    # imp.reload(snap_islands)
-    # imp.reload(match_islands)
-    # # imp.reload(pack_islands)
-    # imp.reload(global_def)
-    imp.reload(operator_manager)
-else:
-    from . import align_operations
-    from . import distribution_operations
-    from . import ui
-    from . import snap_islands
-    from . import match_islands
-    from . import pack_islands
-    from . import global_def
-    from . import operator_manager
+
+
+# if "bpy" in locals():
+#     # is this really needed???
+#
+#     imp.reload(lib2to3)
+#     imp.reload(align_operations)
+#     imp.reload(distribution_operations)
+#     imp.reload(ui)
+#     imp.reload(snap_islands)
+#     imp.reload(match_islands)
+#     # imp.reload(pack_islands)
+#     imp.reload(global_def)
+#     imp.reload(operator_manager)
+# else:
+#     # this is needed for appveyor to work...
+# from . import align_operations
+# from . import distribution_operations
+# # from . import ui
+# from . import snap_islands
+# from . import match_islands
+# # from . import pack_islands
+# from . import global_def
+from . import operator_manager
 
 # NOTE: important: must be placed here and not on top as pep8 would, or it give
 # import erros...
@@ -57,7 +66,6 @@ preview_collections = {}
 
 
 def register():
-
     # importing icons
     import bpy.utils.previews
     pcoll = bpy.utils.previews.new()
