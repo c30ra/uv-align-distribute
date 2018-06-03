@@ -27,34 +27,53 @@ bl_info = {
     "wiki_url": "https://github.com/c30ra/uv-align-distribute",
     "category": "UV"}
 
+import os
+import platform
+import sys
+
+# Add vendor directory to module search path
+parent_dir = os.path.abspath(os.path.dirname(__file__))
+nx_dir = os.path.join(parent_dir, 'networkx')
+decorator_dir = os.path.join(parent_dir, 'decorator')
+
+if platform.system() != "Windows":
+    lib2to3Dir = os.path.join(parent_dir, 'lib2to3')
+    sys.path.append(lib2to3Dir)
+
+sys.path.append(nx_dir)
+sys.path.append(decorator_dir)
 
 if "bpy" in locals():
-    import imp
-    # imp.reload(align_operations)
-    # imp.reload(distribution_operations)
-    # imp.reload(ui)
-    # imp.reload(snap_islands)
-    # imp.reload(match_islands)
-    # # imp.reload(pack_islands)
-    # imp.reload(global_def)
-    imp.reload(operator_manager)
+    from importlib import reload
+    if "align_operations" in locals():
+        reload(align_operations)
+    if "distribution_operations" in locals():
+        reload(distribution_operations)
+    if "ui" in locals():
+        reload(ui)
+    if "snap_islands" in locals():
+        reload(snap_islands)
+    if "match_islands" in locals():
+        reload(match_islands)
+    # if "pack_islands" in locals():
+    #     reload(pack_islands)
+    if "global_def" in locals():
+        reload(global_def)
+    if "operator_manager" in locals():
+        reload(operator_manager)
 else:
     from . import align_operations
     from . import distribution_operations
     from . import ui
     from . import snap_islands
     from . import match_islands
-    from . import pack_islands
+    # from . import pack_islands
     from . import global_def
     from . import operator_manager
 
 # NOTE: important: must be placed here and not on top as pep8 would, or it give
 # import erros...
 import bpy
-import os
-
-preview_collections = {}
-
 
 def register():
 
@@ -109,7 +128,7 @@ def register():
                                                 "distribute_vdist.png"),
                'IMAGE')
 
-    preview_collections["main"] = pcoll
+    global_def.preview_collections["main"] = pcoll
 
     class_list = operator_manager.om.classList()
     for c in class_list:
@@ -118,9 +137,9 @@ def register():
 
 def unregister():
 
-    for pcoll in preview_collections.values():
+    for pcoll in global_def.preview_collections.values():
         bpy.utils.previews.remove(pcoll)
-    preview_collections.clear()
+    global_def.preview_collections.clear()
 
     class_list = operator_manager.om.classList()
     for c in class_list:

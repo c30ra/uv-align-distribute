@@ -17,19 +17,10 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import operator
-import os
-import sys
+
 from collections import defaultdict
 
 from . import global_def, make_islands, templates, utils, operator_manager
-
-# Add vendor directory to module search path
-parent_dir = os.path.abspath(os.path.dirname(__file__))
-nx_dir = os.path.join(parent_dir, 'networkx')
-decorator_dir = os.path.join(parent_dir, 'decorator')
-
-sys.path.append(nx_dir)
-sys.path.append(decorator_dir)
 
 import networkx
 

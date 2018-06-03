@@ -1,21 +1,11 @@
 """The Island module."""
 
 import math
-import os
-import sys
-
 import mathutils
 
-from . import geometry, global_def, utils
-# Add vendor directory to module search path
-parent_dir = os.path.abspath(os.path.dirname(__file__))
-nx_dir = os.path.join(parent_dir, 'networkx')
-decorator_dir = os.path.join(parent_dir, 'decorator')
-
-sys.path.append(decorator_dir)
-sys.path.append(nx_dir)
-
 import networkx
+
+from . import geometry, global_def, utils
 
 
 class Island:
