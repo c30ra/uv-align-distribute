@@ -47,6 +47,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
             box = layout.box()
             box.label("You must disable uv sync selection")
             return
+            
         layout.prop(scn, "relativeItems")
         layout.prop(scn, "selectionAsGroup")
 

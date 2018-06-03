@@ -27,6 +27,7 @@ bl_info = {
     "wiki_url": "https://github.com/c30ra/uv-align-distribute",
     "category": "UV"}
 
+import imp
 import os
 import platform
 import sys
@@ -76,7 +77,6 @@ else:
 import bpy
 
 def register():
-
     # importing icons
     import bpy.utils.previews
     pcoll = bpy.utils.previews.new()
