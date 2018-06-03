@@ -27,7 +27,7 @@ from . import operator_manager
 
 
 class IMAGE_PT_align_distribute(bpy.types.Panel):
-    bl_label = "Align\Distribute"
+    bl_label = "Align\\Distribute"
     bl_space_type = 'IMAGE_EDITOR'
     bl_region_type = 'TOOLS'
     bl_category = "Tools"
@@ -35,16 +35,18 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         sima = context.space_data
-        return sima.show_uvedit and \
-            not (context.tool_settings.use_uv_sculpt
-                 or context.scene.tool_settings.use_uv_select_sync)
+        return sima.show_uvedit and not context.tool_settings.use_uv_sculpt
 
     def draw(self, context):
         scn = context.scene
         layout = self.layout
-        pcoll = global_def.preview_collections["main"]
         # load icons ID
+        pcoll = global_def.preview_collections["main"]
 
+        if context.scene.tool_settings.use_uv_select_sync:
+            box = layout.box()
+            box.label("You must disable uv sync selection")
+            return
         layout.prop(scn, "relativeItems")
         layout.prop(scn, "selectionAsGroup")
 
