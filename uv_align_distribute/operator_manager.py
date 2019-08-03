@@ -25,7 +25,7 @@ class __OperatorManager:
         self.__operator_list = []
         self.__ui_list = []
 
-    def addOperator(self, operator):
+    def addClass(self, operator):
         """Register 'operator' to blender operators."""
         self.__operator_list.append(operator)
 

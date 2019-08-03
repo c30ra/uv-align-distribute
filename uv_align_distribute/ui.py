@@ -29,16 +29,16 @@ from . import operator_manager
 class IMAGE_PT_align_distribute(bpy.types.Panel):
     bl_label = "Align\\Distribute"
     bl_space_type = 'IMAGE_EDITOR'
-    bl_region_type = 'TOOLS'
+    bl_region_type = 'UI'
     bl_category = "Tools"
 
     @classmethod
     def poll(cls, context):
         sima = context.space_data
-        return sima.show_uvedit and not context.tool_settings.use_uv_sculpt
+        return sima.show_uvedit
 
     def draw(self, context):
-        scn = context.scene
+        scn = context.scene.uv_align_distribute
         layout = self.layout
         # load icons ID
         pcoll = global_def.preview_collections["main"]
@@ -47,7 +47,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
             box = layout.box()
             box.label("You must disable uv sync selection")
             return
-            
+
         layout.prop(scn, "relativeItems")
         layout.prop(scn, "selectionAsGroup")
 
@@ -55,26 +55,26 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         layout.label(text="Align:")
 
         box = layout.box()
-        row = box.row(True)
-        row.operator("uv.align_left_margin", "Left",
+        row = box.row(align=True)
+        row.operator("uv.align_left_margin", text="Left",
                      icon_value=pcoll["align_left"].icon_id)
-        row.operator("uv.align_vertical_axis", "VCenter",
+        row.operator("uv.align_vertical_axis", text="VCenter",
                      icon_value=pcoll["align_center_hor"].icon_id)
-        row.operator("uv.align_right_margin", "Right",
+        row.operator("uv.align_right_margin", text="Right",
                      icon_value=pcoll["align_right"].icon_id)
 
-        row = box.row(True)
-        row.operator("uv.align_top_margin", "Top",
+        row = box.row(align=True)
+        row.operator("uv.align_top_margin", text="Top",
                      icon_value=pcoll["align_top"].icon_id)
-        row.operator("uv.align_horizontal_axis", "HCenter",
+        row.operator("uv.align_horizontal_axis", text="HCenter",
                      icon_value=pcoll["align_center_ver"].icon_id)
-        row.operator("uv.align_low_margin", "Bottom",
+        row.operator("uv.align_low_margin", text="Bottom",
                      icon_value=pcoll["align_bottom"].icon_id)
 
         row = layout.row()
-        row.operator("uv.align_rotation", "Rotation",
+        row.operator("uv.align_rotation", text="Rotation",
                      icon_value=pcoll["align_rotation"].icon_id)
-        row.operator("uv.equalize_scale", "Eq. Scale")
+        row.operator("uv.equalize_scale", text="Eq. Scale")
 
         layout.separator()
         # Another Panel??
@@ -82,28 +82,28 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
 
         box = layout.box()
 
-        row = box.row(True)
-        row.operator("uv.distribute_ledges_horizontally", "Left",
+        row = box.row(align=True)
+        row.operator("uv.distribute_ledges_horizontally", text="Left",
                      icon_value=pcoll["distribute_left"].icon_id)
 
-        row.operator("uv.distribute_center_horizontally", "Center",
+        row.operator("uv.distribute_center_horizontally", text="Center",
                      icon_value=pcoll["distribute_hcentre"].icon_id)
 
-        row.operator("uv.distribute_redges_horizontally", "Right",
+        row.operator("uv.distribute_redges_horizontally", text="Right",
                      icon_value=pcoll["distribute_right"].icon_id)
 
-        row = box.row(True)
-        row.operator("uv.distribute_tedges_vertically", "TEdges",
+        row = box.row(align=True)
+        row.operator("uv.distribute_tedges_vertically", text="TEdges",
                      icon_value=pcoll["distribute_top"].icon_id)
-        row.operator("uv.distribute_center_vertically", "VCenters",
+        row.operator("uv.distribute_center_vertically", text="VCenters",
                      icon_value=pcoll["distribute_vcentre"].icon_id)
-        row.operator("uv.distribute_bedges_vertically", "BEdges",
+        row.operator("uv.distribute_bedges_vertically", text="BEdges",
                      icon_value=pcoll["distribute_bottom"].icon_id)
 
-        row = layout.row(True)
-        row.operator("uv.equalize_horizontal_gap", "Eq. HGap",
+        row = layout.row(align=True)
+        row.operator("uv.equalize_horizontal_gap", text="Eq. HGap",
                      icon_value=pcoll["distribute_hdist"].icon_id)
-        row.operator("uv.equalize_vertical_gap", "Eq. VGap",
+        row.operator("uv.equalize_vertical_gap", text="Eq. VGap",
                      icon_value=pcoll["distribute_vdist"].icon_id)
         #
         # # wip
@@ -112,7 +112,7 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
         #
         # # TODO organize these
         layout.separator()
-        layout.label("Others:")
+        layout.label(text="Others:")
         row = layout.row()
         layout.operator("uv.snap_islands")
 
@@ -130,4 +130,4 @@ class IMAGE_PT_align_distribute(bpy.types.Panel):
 #################################
 #################################
 _om = operator_manager.om
-_om.addOperator(IMAGE_PT_align_distribute)
+_om.addClass(IMAGE_PT_align_distribute)

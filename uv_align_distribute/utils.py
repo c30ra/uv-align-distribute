@@ -35,7 +35,7 @@ def InitBMesh():
     # uvlayer = bm.loops.layers.uv.active
 
     global_def.uvlayer = global_def.bm.loops.layers.uv.verify()
-    global_def.bm.faces.layers.tex.verify()
+    # global_def.bm.faces.layers.tex.verify()
 
 
 def update():
@@ -59,7 +59,7 @@ def GBBox(islands):
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-    return rectangle.Rectangle(mathutils.Vector((minX, minY)),
+    return geometry.Rectangle(mathutils.Vector((minX, minY)),
                                mathutils.Vector((maxX, maxY)))
 
 
@@ -106,19 +106,26 @@ def _sortVertex(vertexList, BBCenter):
 
 def getTargetPoint(context, islands):
     """Return the target of uv operations."""
-    if context.scene.relativeItems == 'UV_SPACE':
+    gsettings = context.scene.uv_align_distribute
+
+    if gsettings.relativeItems == 'UV_SPACE':
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
-    elif context.scene.relativeItems == 'ACTIVE':
+    elif gsettings.relativeItems == 'ACTIVE':
         activeIsland = islands.activeIsland()
         if not activeIsland:
             return None
         else:
             return activeIsland.BBox()
-    elif context.scene.relativeItems == 'CURSOR':
-        value = bpy.context.space_data.uv_editor.show_normalized_coords
-        bpy.context.space_data.uv_editor.show_normalized_coords = value or True
+    elif gsettings.relativeItems == 'CURSOR':
+
         coords = context.space_data.cursor_location
-        bpy.context.space_data.uv_editor.show_normalized_coords = value
+        pixel_coords = bpy.context.space_data.uv_editor.show_pixel_coords
+
+        bpy.context.space_data.uv_editor.show_pixel_coords = False
+
+        coords = mathutils.Vector(context.space_data.cursor_location)
+
+        bpy.context.space_data.uv_editor.show_pixel_coords = pixel_coords
         return coords
 
 

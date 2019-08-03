@@ -83,7 +83,7 @@ class _BinTree:
 
     def __findNode(self, node, width, height):
         if node.used:
-                return self.__findNode(node.left, width, height) or \
+            return self.__findNode(node.left, width, height) or \
                     self.__findNode(node.right, width, height)
 
         elif round(width, 5) <= round(node.rect.width, 5) and \
@@ -163,13 +163,13 @@ class PackIslands_not_working(templates.UvOperatorTemplate):
     bl_label = "Pack Pile Islands"
     bl_options = {'REGISTER', 'UNDO'}
 
-    selectedOnly = BoolProperty(
+    selectedOnly: BoolProperty(
         name="Selection Only",
         description="Pack only selected islands",
         default=False
     )
 
-    islandMargin = FloatProperty(
+    islandMargin: FloatProperty(
         name="Margin",
         description="Margin between islands",
         default=0,
@@ -180,13 +180,13 @@ class PackIslands_not_working(templates.UvOperatorTemplate):
         step=1,
         precision=4)
 
-    pile = BoolProperty(
+    pile: BoolProperty(
         name="Pile",
         description="Pile similar island to save uv space",
         default=False
     )
 
-    numOfPiles = IntProperty(
+    numOfPiles: IntProperty(
         name="Number of piles",
         description="number of piles to create",
         default=1,
@@ -209,8 +209,8 @@ class PackIslands_not_working(templates.UvOperatorTemplate):
         makeIslands = make_islands.MakeIslands()
         islands = makeIslands.getIslands()
         selectedIslands = makeIslands.selectedIslands()
-        activeIsland = makeIslands.activeIsland()
-        hiddenIslands = makeIslands.hiddenIslands()
+        # activeIsland = makeIslands.activeIsland()
+        # hiddenIslands = makeIslands.hiddenIslands()
 
         # choose which island should be used
         usableIslands = islands
@@ -245,12 +245,12 @@ class PackIslands_not_working(templates.UvOperatorTemplate):
 
         for island in usableIslands:
             for face_id in island:
-                    face = global_def.bm.faces[face_id]
-                    for loop in face.loops:
-                        x = loop[global_def.bm.loops.layers.uv.active].uv.x
-                        y = loop[global_def.bm.loops.layers.uv.active].uv.y
-                        loop[global_def.bm.loops.layers.uv.active].uv.x = x * scale
-                        loop[global_def.bm.loops.layers.uv.active].uv.y = y * scale
+                face = global_def.bm.faces[face_id]
+                for loop in face.loops:
+                    x = loop[global_def.bm.loops.layers.uv.active].uv.x
+                    y = loop[global_def.bm.loops.layers.uv.active].uv.y
+                    loop[global_def.bm.loops.layers.uv.active].uv.x = x * scale
+                    loop[global_def.bm.loops.layers.uv.active].uv.y = y * scale
         utils.update()
         return{'FINISHED'}
 
@@ -271,19 +271,19 @@ class PackIslands(templates.UvOperatorTemplate):
     bl_label = "Pack Pile Islands"
     bl_options = {'REGISTER', 'UNDO'}
 
-    selectedOnly = BoolProperty(
+    selectedOnly: BoolProperty(
         name="Selection Only",
         description="Pack only selected islands",
         default=False
     )
 
-    rotate = BoolProperty(
+    rotate: BoolProperty(
         name="Rotate",
         description="Rotate island",
         default=False
     )
 
-    islandMargin = FloatProperty(
+    islandMargin: FloatProperty(
         name="Margin",
         description="Margin between islands",
         default=0,
@@ -294,13 +294,13 @@ class PackIslands(templates.UvOperatorTemplate):
         step=1,
         precision=4)
 
-    pile = BoolProperty(
+    pile: BoolProperty(
         name="Pile",
         description="Pile similar island to save uv space",
         default=False
     )
 
-    numOfPiles = IntProperty(
+    numOfPiles: IntProperty(
         name="Number of piles",
         description="Number of piles to create for each similar islands",
         default=1,
@@ -344,8 +344,8 @@ class PackIslands(templates.UvOperatorTemplate):
         makeIslands = make_islands.MakeIslands()
         islands = makeIslands.getIslands()
         selectedIslands = makeIslands.selectedIslands()
-        activeIsland = makeIslands.activeIsland()
-        hiddenIslands = makeIslands.hiddenIslands()
+        # activeIsland = makeIslands.activeIsland()
+        # hiddenIslands = makeIslands.hiddenIslands()
 
         # search for isomorphic island
         isoIslandVisited = []
@@ -420,4 +420,4 @@ class PackIslands(templates.UvOperatorTemplate):
 # REGISTRATION
 #################################
 _om = operator_manager.om
-_om.addOperator(PackIslands)
+_om.addClass(PackIslands)

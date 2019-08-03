@@ -27,7 +27,7 @@ try:
             pass
 
         def test_distribution_operations_DistributeTEdgesV(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_tedges_vertically(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().y)
@@ -45,7 +45,7 @@ try:
                     pass
 
         def test_distribution_operations_DistributeCentersV(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_center_vertically(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().y)
@@ -63,7 +63,7 @@ try:
                     pass
 
         def test_distribution_operations_DistributeBEdgesV(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_bedges_vertically(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().y)
@@ -81,7 +81,7 @@ try:
                     pass
 
         def test_distribution_operations_EqualizeVGap(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.equalize_vertical_gap(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().y)

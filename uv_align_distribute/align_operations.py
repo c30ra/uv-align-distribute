@@ -33,27 +33,28 @@ class AlignSXMargin(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 0.0
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().left()
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.x
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.x
+            targetElement = utils.getTargetPoint(context, None).x
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -78,26 +79,28 @@ class AlignRxMargin(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 1.0
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().right()
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.x
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.x
+            targetElement = utils.getTargetPoint(context, None).x
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -123,27 +126,28 @@ class AlignTopMargin(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 1.0
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().top()
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.y
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.y
+            targetElement = utils.getTargetPoint(context, None).y
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -168,26 +172,28 @@ class AlignLowMargin(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 0.0
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().bottom()
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.y
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.y
+            targetElement = utils.getTargetPoint(context, None).y
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBox = utils.GBBox(selectedIslands)
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -212,26 +218,28 @@ class AlignHAxis(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 0.5
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().center().y
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.y
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.y
+            targetElement = utils.getTargetPoint(context, None).y
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBoxCenter = utils.GBBox(selectedIslands).center()
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -256,26 +264,28 @@ class AlignVAxis(templates.UvOperatorTemplate):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        gsettings = context.scene.uv_align_distribute
         makeIslands = make_islands.MakeIslands()
         selectedIslands = makeIslands.selectedIslands()
 
         targetElement = None
 
-        if context.scene.relativeItems == 'UV_SPACE':
+        if gsettings.relativeItems == 'UV_SPACE':
             targetElement = 0.5
-        elif context.scene.relativeItems == 'ACTIVE':
+        elif gsettings.relativeItems == 'ACTIVE':
             activeIsland = makeIslands.activeIsland()
             if activeIsland:
                 targetElement = activeIsland.BBox().center().x
             else:
                 self.report({"ERROR"}, "No active face")
                 return {"CANCELLED"}
-        elif context.scene.relativeItems == 'CURSOR':
-            targetElement = context.space_data.cursor_location.x
+        elif gsettings.relativeItems == 'CURSOR':
+            # targetElement = context.space_data.cursor_location.x
+            targetElement = utils.getTargetPoint(context, None).x
 
-        if context.scene.selectionAsGroup:
+        if gsettings.selectionAsGroup:
             groupBoxCenter = utils.GBBox(selectedIslands).center()
-            if context.scene.relativeItems == 'ACTIVE':
+            if gsettings.relativeItems == 'ACTIVE':
                 selectedIslands.remove(makeIslands.activeIsland())
             for island in selectedIslands:
                 vector = mathutils.Vector(
@@ -325,10 +335,10 @@ class AlignRotation(templates.UvOperatorTemplate):
 # REGISTRATION
 #################################
 _om = operator_manager.om
-_om.addOperator(AlignHAxis)
-_om.addOperator(AlignVAxis)
-_om.addOperator(AlignRotation)
-_om.addOperator(AlignRxMargin)
-_om.addOperator(AlignSXMargin)
-_om.addOperator(AlignLowMargin)
-_om.addOperator(AlignTopMargin)
+_om.addClass(AlignHAxis)
+_om.addClass(AlignVAxis)
+_om.addClass(AlignRotation)
+_om.addClass(AlignRxMargin)
+_om.addClass(AlignSXMargin)
+_om.addClass(AlignLowMargin)
+_om.addClass(AlignTopMargin)

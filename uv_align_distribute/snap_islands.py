@@ -28,7 +28,7 @@ class SnapIsland(templates.UvOperatorTemplate):
     bl_label = "Snap Islands"
     bl_options = {'REGISTER', 'UNDO'}
 
-    threshold = FloatProperty(
+    threshold: FloatProperty(
         name="Threshold",
         description="Threshold for island matching",
         default=0.1,
@@ -76,4 +76,4 @@ class SnapIsland(templates.UvOperatorTemplate):
 # REGISTRATION
 #################################
 _om = operator_manager.om
-_om.addOperator(SnapIsland)
+_om.addClass(SnapIsland)

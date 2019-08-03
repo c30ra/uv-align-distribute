@@ -16,11 +16,12 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+
 bl_info = {
     "name": "UV Align\\Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (3, 1),
-    "blender": (2, 7, 9),
+    "version": (4, 0),
+    "blender": (2, 80, 0),
     "location": "UV\\Image editor > Tool Panel, UV\\Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\\distribution",
     "warning": "",
@@ -74,6 +75,7 @@ else:
 
 # NOTE: important: must be placed here and not on top as pep8 would, or it give
 # import erros...
+
 import bpy
 
 def register():
@@ -134,6 +136,9 @@ def register():
     for c in class_list:
         bpy.utils.register_class(c)
 
+    bpy.types.Scene.uv_align_distribute = bpy.props.PointerProperty(
+                                          type=global_def.GlobalSettings)
+
 
 def unregister():
 
@@ -142,9 +147,9 @@ def unregister():
     global_def.preview_collections.clear()
 
     class_list = operator_manager.om.classList()
-    for c in class_list:
+    for c in reversed(class_list):
         bpy.utils.unregister_class(c)
 
-
 if __name__ == "__main__":
-    register()
+    from . import operator_manager as om
+    om.register()

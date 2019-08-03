@@ -27,7 +27,7 @@ try:
             pass
 
         def test_distribution_operations_DistributeLEdgesH(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_ledges_horizontally(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().x)
@@ -45,7 +45,7 @@ try:
                     pass
 
         def test_distribution_operations_DistributeCentersH(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_center_horizontally(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().x)
@@ -63,7 +63,7 @@ try:
                     pass
 
         def test_distribution_operations_DistributeREdgesH(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.distribute_redges_horizontally(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().x)
@@ -81,7 +81,7 @@ try:
                     pass
 
         def test_distribution_operations_EqualizeHGap(self):
-            bpy.types.Scene.relativeItems = "ACTIVE"
+            bpy.context.scene.uv_align_distribute.relativeItems = "ACTIVE"
             bpy.ops.uv.equalize_horizontal_gap(self.override)
 
             self.selectedIslands.sort(key=lambda island: island.BBox().center().x)
@@ -103,6 +103,6 @@ try:
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestAddon)
     status = unittest.TextTestRunner(verbosity=0).run(suite).wasSuccessful()
     sys.exit(not int(status))
-    
+
 except ImportError:
     sys.exit(1)

@@ -354,12 +354,12 @@ class EqualizeScale(templates.UvOperatorTemplate):
     bl_label = "Equalize Scale"
     bl_options = {'REGISTER', 'UNDO'}
 
-    keepProportions = BoolProperty(
+    keepProportions: BoolProperty(
         name="Keep Proportions",
         description="Mantain proportions during scaling",
         default=False)
 
-    useYaxis = BoolProperty(
+    useYaxis: BoolProperty(
         name="Use Y axis",
         description="Use y axis as scale reference, default is x",
         default=False)
@@ -403,13 +403,13 @@ class EqualizeScale(templates.UvOperatorTemplate):
 # REGISTRATION
 #################################
 _om = operator_manager.om
-_om.addOperator(DistributeBEdgesV)
-_om.addOperator(DistributeCentersH)
-_om.addOperator(DistributeCentersV)
-_om.addOperator(DistributeLEdgesH)
-_om.addOperator(DistributeREdgesH)
-_om.addOperator(DistributeTEdgesV)
+_om.addClass(DistributeBEdgesV)
+_om.addClass(DistributeCentersH)
+_om.addClass(DistributeCentersV)
+_om.addClass(DistributeLEdgesH)
+_om.addClass(DistributeREdgesH)
+_om.addClass(DistributeTEdgesV)
 
-_om.addOperator(EqualizeHGap)
-_om.addOperator(EqualizeVGap)
-_om.addOperator(EqualizeScale)
+_om.addClass(EqualizeHGap)
+_om.addClass(EqualizeVGap)
+_om.addClass(EqualizeScale)

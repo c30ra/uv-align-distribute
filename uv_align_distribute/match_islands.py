@@ -129,4 +129,4 @@ class Match_Islands(templates.UvOperatorTemplate):
 # REGISTRATION
 #################################
 _om = operator_manager.om
-_om.addOperator(Match_Islands)
+_om.addClass(Match_Islands)
