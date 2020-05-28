@@ -22,6 +22,7 @@ def writeProgress(size, total, width=80):
     )
     print(progress_message, end="")
 
+print("starting script...")
 cwd = Path(os.path.dirname(__file__))
 # Set the URL you want to webscrape from
 url = "https://builder.blender.org/download/"
