@@ -20,7 +20,8 @@ def writeProgress(size, total, width=80):
         size,
         total,
     )
-    print(progress_message, end="")
+    # print(progress_message, end="")
+    pass
 
 print("starting script...")
 cwd = Path(os.path.dirname(__file__))
