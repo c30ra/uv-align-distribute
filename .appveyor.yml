@@ -1,12 +1,11 @@
 environment:
   matrix:
-    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python37-x64"
 
 branches:
   except:
     - gh-pages
     - adding_icons
-    - gh-pages
 
 platform:
     - x64
@@ -16,13 +15,8 @@ install:
   # - pip install coverage
   # - pip install codecov
   - cmd: cd C:\projects
-  - ps: Start-FileDownload 'https://builder.blender.org/download//blender-2.79-6fee105-win64.zip'
-  - 7z.exe x blender-2.79-75fc1c3-win64.zip
-  - ls
-  - cmd: mv blender-2.79.0-git.6fee105-windows64 blender
-  - cmd: rm blender-2.79-6fee105-win64.zip
-  - cmd: mklink /j /D C:\projects\blender\2.79\scripts\addons\uv_align_distribute C:\projects\uv-align-distribute\uv_align_distribute
   - cmd: cd C:\projects\uv-align-distribute
+  - cmd: python utils\download_blender.py
 
 build: off
 

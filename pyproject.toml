@@ -1,0 +1,17 @@
+[build-system]
+build-backend = "poetry.masonry.api"
+requires = ["poetry>=0.12"]
+
+[tool]
+[tool.poetry]
+authors = ["Luca Carella"]
+description = "Uv Align Distribute"
+name = "uv-align-distribute"
+version = "4.1"
+[tool.poetry.dependencies]
+python = "^3.8"
+[tool.poetry.dev-dependencies]
+bs4 = "^0.0.1"
+requests = "^2.23.0"
+wget = "^3.2"
+black = "^19.10b0"
