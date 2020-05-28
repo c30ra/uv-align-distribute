@@ -29,7 +29,7 @@ cwd = Path(os.path.dirname(__file__))
 url = "https://builder.blender.org/download/"
 # Connect to the URL
 response = requests.get(url)
-# Parse HTML and save to BeautifulSoup object¶
+# Parse HTML and save to BeautifulSoup object
 soup = BeautifulSoup(response.text, "html.parser")
 
 blenderDir = ""
