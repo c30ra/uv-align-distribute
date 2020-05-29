@@ -29,7 +29,7 @@ install:
   # codecoverage
   # - pip install codecov
   - poetry install --no-root
-  - uv_align_distribute/.venv/Scripts/activate
+  - .venv/Scripts/activate
   - sudo python utils/download_blender.py
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 script:
