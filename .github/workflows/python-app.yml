@@ -13,7 +13,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
@@ -21,7 +21,7 @@ jobs:
       with:
         python-version: 3.7
     - name: Install Blender
-      run: | 
+      run: |
         sudo apt-get install blender
         sudo apt-get update -qq
     - name: Install dependencies
@@ -30,7 +30,7 @@ jobs:
         pip install poetry
     - name: setup
       run: |
-        uv_align_distribute/.venv/Scripts/activate
+        .venv/Scripts/activate
     - name: Test with pytest
       run: |
         python tests.py ./blender-linux/blender

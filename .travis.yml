@@ -29,6 +29,7 @@ install:
   # codecoverage
   # - pip install codecov
   - poetry install --no-root
+  - sudo ls
   - .venv/Scripts/activate
   - sudo python utils/download_blender.py
 # Finally start our test runner passing it the blender executable from the downloaded blender release
