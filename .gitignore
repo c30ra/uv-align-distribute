@@ -4,3 +4,4 @@ docs\build\doctrees
 .venv
 .vscode
 uv_align_distribute.egg-info
+poetry.lock

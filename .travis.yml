@@ -28,10 +28,7 @@ before_install:
 install:
   # codecoverage
   # - pip install codecov
-  - poetry config virtualenvs.in-project true
   - poetry install --no-root
-  - ls
-  - .venv/Scripts/activate
   - sudo python utils/download_blender.py
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 script:
