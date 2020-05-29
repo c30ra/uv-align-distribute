@@ -37,10 +37,11 @@ jobs:
       run: |
         source $HOME/.poetry/env
         poetry install --no-root
-
-    - name: Download Blender
-      run: |
         poetry run python utils/download_blender.py
+
+    # - name: Download Blender
+    #   run: |
+
 
     - name: Test with pytest
       run: |
