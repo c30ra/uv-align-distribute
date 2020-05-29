@@ -29,10 +29,10 @@ install:
   # codecoverage
   # - pip install codecov
   - poetry install --no-root
-  - sudo python utils/download_blender.py
+  - python utils/download_blender.py
 # Finally start our test runner passing it the blender executable from the downloaded blender release
 script:
-  - python tests.py ./blender-linux/blender
+  - python tests.py ../blender-linux/blender
 
 # after_success:
 #  - bash <(curl -s https://codecov.io/bash)
