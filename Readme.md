@@ -2,20 +2,15 @@
 
 [![Github All Releases](https://img.shields.io/github/downloads/c30ra/uv-align-distribute/total.svg)]()
 
-
-
-|         | Master                                                                                                                                                                          | Development                                                                                                                                                                               |
-|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Linux   | [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=master)](https://travis-ci.org/c30ra/uv-align-distribute)                                           | [![Build Status](https://travis-ci.org/c30ra/uv-align-distribute.svg?branch=development)](https://travis-ci.org/c30ra/uv-align-distribute)                                                |
-| Windows | [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/master?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/iskxippwtys06n9q/branch/development?svg=true)](https://ci.appveyor.com/project/c30ra/uv-align-distribute/branch/development) |
+![.github/workflows/python-app.yml](https://github.com/c30ra/uv-align-distribute/workflows/Linux:%20Blender%202.83%20/badge.svg)
 
 This add-on help align and distribute uv island in the uv space
 
-## Installation:  
+## Installation:
 
-  - download the zip file:  [uv_align_distribution](https://github.com/c30ra/uv-align-distribute/releases/latest)  
-  - In blender user preference go to Add-ons page  
-  - click on install from file  
+  - download the zip file:  [uv_align_distribution](https://github.com/c30ra/uv-align-distribute/releases/latest)
+  - In blender user preference go to Add-ons page
+  - click on install from file
 
 ## Usage:
 ### Instructions:
@@ -87,7 +82,7 @@ All these distributions work correctly if the islands are partially aligned vert
 Sometimes alignment rotation doesn't work correctly, either due to floating point precision or because unwrapping makes some islands flipped or mirrored. You see this if all the islands point in the same direction, but one or more are flipped by 180°. In order to fix this, select those island and mirror them.
 
 ## Development
-If you are interested in development of this add-on follow this link:  
+If you are interested in development of this add-on follow this link:
 [Api](https://c30ra.github.io/uv-align-distribute/)
 
 ## External Links
@@ -95,11 +90,11 @@ If you are interested in development of this add-on follow this link:
 http://www.blenderartists.org/forum/showthread.php?340206-Add-On-UV-Align-Distribute
 
 ## Usage Examples:
-https://www.youtube.com/embed/7V2b1G9TpLU  
+https://www.youtube.com/embed/7V2b1G9TpLU
 
 https://www.youtube.com/embed/clgrf0DUvso
 
 ## Special Thanks to Blenderartists users:
 
-**mifth:** for the support, YouTube video(usage example), and ideas for improving this add-on  
+**mifth:** for the support, YouTube video(usage example), and ideas for improving this add-on
 **jonim8or:** for part of the code used in this add-on.
