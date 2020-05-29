@@ -19,7 +19,7 @@ def writeProgress(size, total, width=80):
         size,
         total,
     )
-    # print(progress_message, end="")
+    print(progress_message, end="")
     pass
 
 print("starting script...")
@@ -61,7 +61,7 @@ if os.name == "nt":
         zip_ref.extractall(tmpDir)
 elif os.name == "posix":
     import tarfile
-    with tarfile.TarFile(archive, "r") as tar_ref:
+    with tarfile.open(archive, "r") as tar_ref:
         tar_ref.extractall(tmpDir)
 
 outDir = os.listdir(tmpDir)[0]
