@@ -22,7 +22,7 @@ jobs:
         python-version: 3.7
     - name: Install Blender
       run: | 
-        sudo apt-install blender
+        sudo apt-get install blender
         sudo apt-get update -qq
     - name: Install dependencies
       run: |
