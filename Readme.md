@@ -2,7 +2,7 @@
 
 [![Github All Releases](https://img.shields.io/github/downloads/c30ra/uv-align-distribute/total.svg)]()
 
-![.github/workflows/python-app.yml](https://github.com/c30ra/uv-align-distribute/workflows/Linux:%20Blender%202.83%20/badge.svg)
+![Linux: Blender 2.83](https://github.com/c30ra/uv-align-distribute/workflows/Linux:%20Blender%202.83/badge.svg)
 
 This add-on help align and distribute uv island in the uv space
 
