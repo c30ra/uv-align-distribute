@@ -23,10 +23,12 @@ before_install:
   # This will most propably install an outdated blender version,
   # but it will resolve all system dependencies blender has to be able to run.
   - sudo apt-get install blender
+  - pip install poetry
 
 install:
   # codecoverage
   # - pip install codecov
+  - poetry install --no-root
   - sudo python utils/download_blender.py
 
 # Finally start our test runner passing it the blender executable from the downloaded blender release
