@@ -28,6 +28,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install poetry
+        poetry config virtualenvs.in-project true
+        poetry install --no-root
+        .venv/Scripts/activate
 
     - name: Download Blender
       run: |
