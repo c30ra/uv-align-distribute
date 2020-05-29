@@ -31,7 +31,7 @@ jobs:
         python -m pip install --upgrade pip
 
     - name: Download Poetry
-      run:
+      run: |
         curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
     - name: Prepare env
         run: |
