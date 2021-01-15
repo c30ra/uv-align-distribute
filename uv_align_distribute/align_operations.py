@@ -326,16 +326,25 @@ class AlignRotation(templates.UvOperatorTemplate):
             self.report({"ERROR"}, "No active face")
             return {"CANCELLED"}
 
+        def islandType(island):
+            islandSize = island.size()
+            if islandSize.width > islandSize.height:
+                return "wider"
+            else:
+                return "higher"
+
         if self.method:
             activeIslandSize = activeIsland.size()
             selectedIslands.remove(activeIsland)
+            activeIslandType = islandType(activeIsland)
             for island in selectedIslands:
                 islandSize = island.size()
                 if self.method:
-                    if activeIslandSize.height > islandSize.height:
-                        island.rotate(radians(90))
-                    else:  # activeIslandSize.width > islandSize.width:
-                        island.rotate(radians(90))
+                    if islandType(island) != activeIslandType:
+                        if activeIslandSize.height > islandSize.height:
+                            island.rotate(radians(90))
+                        else:  # activeIslandSize.width > islandSize.width:
+                            island.rotate(radians(90))
         else:
             activeAngle = activeIsland.angle()
             for island in selectedIslands:
