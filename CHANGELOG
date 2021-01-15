@@ -1,4 +1,8 @@
-UV ALIGN DISTRIBUTE 3.1
+UV ALIGN DISTRIBUTE 4.1
+changes since v4.0
+- update to latest blender version
+- some fix/workarond on align rotation special cases
+
 changes since v3.0
 - Fix alignment on 3D Cursor mode, failing duo to wrong coordinate system
 - Fixes on test case where blender undo operation invalidate mesh status

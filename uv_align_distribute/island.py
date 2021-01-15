@@ -37,7 +37,7 @@ class Island:
         """Compare two island."""
         return self.faceList == other
 
-# properties
+    # properties
     def BBox(self):
         """Return the bounding box of the island.
 
@@ -55,8 +55,9 @@ class Island:
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-        return geometry.Rectangle(mathutils.Vector((minX, minY)),
-                                  mathutils.Vector((maxX, maxY)))
+        return geometry.Rectangle(
+            mathutils.Vector((minX, minY)), mathutils.Vector((maxX, maxY))
+        )
 
     def angle(self):
         """Return the island angle.
@@ -81,12 +82,12 @@ class Island:
         :rtype: :class:`.Size`
         """
         bbox = self.BBox()
-        sizeX = bbox.right() - bbox.left()
-        sizeY = bbox.bottom() - bbox.top()
+        sizeX = abs(bbox.right() - bbox.left())
+        sizeY = abs(bbox.bottom() - bbox.top())
 
         return geometry.Size(sizeX, sizeY)
 
-# Transformation
+    # Transformation
     def move(self, vector):
         """Move the island by vector.
 
@@ -176,8 +177,9 @@ class Island:
                             # the ref
                             # add it to uvList
                             dist = round(
-                                utils.vectorDistance(selectedUVvert.uv,
-                                                     targetUvVert), 10)
+                                utils.vectorDistance(selectedUVvert.uv, targetUvVert),
+                                10,
+                            )
                             uvList.append((dist, targetLoop[activeUvLayer]))
 
                 # for every vert in uvList take the ones with the shortest
@@ -193,8 +195,9 @@ class Island:
                 # 2nd pass get the only ones with a match
                 for bestVert in uvList:
                     if bestVert[0] <= minDist:
-                        bestMatcherList.append((bestVert[0], selectedUVvert,
-                                                bestVert[1]))
+                        bestMatcherList.append(
+                            (bestVert[0], selectedUVvert, bestVert[1])
+                        )
 
         for bestMatcher in bestMatcherList:
             if bestMatcher[0] <= threshold:
@@ -213,6 +216,7 @@ class Island:
         :return: mapping between vertex or None
         :rtype: dict, None
         """
+
         def graphFromIsland(island):
 
             edgeVertex = set()
@@ -220,8 +224,7 @@ class Island:
                 face = global_def.bm.faces[face_id]
                 for edges in face.edges:
                     edgeVert = (edges.verts[0].index, edges.verts[1].index)
-                    edgeVertex.add(tuple(sorted(edgeVert,
-                                                key=lambda data: data)))
+                    edgeVertex.add(tuple(sorted(edgeVert, key=lambda data: data)))
 
             graph = networkx.Graph(tuple(edgeVertex))
 

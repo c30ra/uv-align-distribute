@@ -9,7 +9,7 @@ description = "Uv Align Distribute"
 name = "uv-align-distribute"
 version = "4.1"
 [tool.poetry.dependencies]
-python = "~3.7"
+python = ">=3.7"
 [tool.poetry.dev-dependencies]
 bs4 = "^0.0.1"
 requests = "^2.23.0"
