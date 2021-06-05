@@ -1,4 +1,7 @@
-UV ALIGN DISTRIBUTE 4.1
+UV ALIGN DISTRIBUTE 5.0
+changes since v4.2
+- removed local dependecie, now are installed on script activation
+
 changes since v4.0
 - update to latest blender version
 - some fix/workarond on align rotation special cases

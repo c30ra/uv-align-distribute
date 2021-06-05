@@ -20,8 +20,8 @@
 bl_info = {
     "name": "UV Align\\Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (4, 2),
-    "blender": (2, 91, 0),
+    "version": (5, 0),
+    "blender": (2, 93, 0),
     "location": "UV\\Image editor > Tool Panel, UV\\Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\\distribution",
     "warning": "",
@@ -33,18 +33,10 @@ import imp
 import os
 import platform
 import sys
+from . import install
 
-# Add vendor directory to module search path
-parent_dir = os.path.abspath(os.path.dirname(__file__))
-nx_dir = os.path.join(parent_dir, "networkx")
-decorator_dir = os.path.join(parent_dir, "decorator")
+install.ensure_site_packages([("networkx", "networkx")])
 
-if platform.system() != "Windows":
-    lib2to3Dir = os.path.join(parent_dir, "lib2to3")
-    sys.path.append(lib2to3Dir)
-
-sys.path.append(nx_dir)
-sys.path.append(decorator_dir)
 
 if "bpy" in locals():
     from importlib import reload
@@ -65,6 +57,7 @@ if "bpy" in locals():
         reload(global_def)
     if "operator_manager" in locals():
         reload(operator_manager)
+
 else:
     from . import align_operations
     from . import distribution_operations
@@ -97,12 +90,8 @@ def register():
     pcoll.load("align_right", os.path.join(my_icons_dir, "al_right_in.png"), "IMAGE")
     pcoll.load("align_top", os.path.join(my_icons_dir, "al_top_in.png"), "IMAGE")
     pcoll.load("align_bottom", os.path.join(my_icons_dir, "al_bottom_in.png"), "IMAGE")
-    pcoll.load(
-        "align_center_hor", os.path.join(my_icons_dir, "al_center_hor.png"), "IMAGE"
-    )
-    pcoll.load(
-        "align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), "IMAGE"
-    )
+    pcoll.load("align_center_hor", os.path.join(my_icons_dir, "al_center_hor.png"), "IMAGE")
+    pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), "IMAGE")
 
     pcoll.load(
         "align_rotation",
@@ -120,26 +109,16 @@ def register():
         os.path.join(my_icons_dir, "distribute_hcentre.png"),
         "IMAGE",
     )
-    pcoll.load(
-        "distribute_left", os.path.join(my_icons_dir, "distribute_left.png"), "IMAGE"
-    )
-    pcoll.load(
-        "distribute_right", os.path.join(my_icons_dir, "distribute_right.png"), "IMAGE"
-    )
-    pcoll.load(
-        "distribute_top", os.path.join(my_icons_dir, "distribute_top.png"), "IMAGE"
-    )
+    pcoll.load("distribute_left", os.path.join(my_icons_dir, "distribute_left.png"), "IMAGE")
+    pcoll.load("distribute_right", os.path.join(my_icons_dir, "distribute_right.png"), "IMAGE")
+    pcoll.load("distribute_top", os.path.join(my_icons_dir, "distribute_top.png"), "IMAGE")
     pcoll.load(
         "distribute_vcentre",
         os.path.join(my_icons_dir, "distribute_vcentre.png"),
         "IMAGE",
     )
-    pcoll.load(
-        "distribute_hdist", os.path.join(my_icons_dir, "distribute_hdist.png"), "IMAGE"
-    )
-    pcoll.load(
-        "distribute_vdist", os.path.join(my_icons_dir, "distribute_vdist.png"), "IMAGE"
-    )
+    pcoll.load("distribute_hdist", os.path.join(my_icons_dir, "distribute_hdist.png"), "IMAGE")
+    pcoll.load("distribute_vdist", os.path.join(my_icons_dir, "distribute_vdist.png"), "IMAGE")
 
     global_def.preview_collections["main"] = pcoll
 
@@ -147,9 +126,7 @@ def register():
     for c in class_list:
         bpy.utils.register_class(c)
 
-    bpy.types.Scene.uv_align_distribute = bpy.props.PointerProperty(
-        type=global_def.GlobalSettings
-    )
+    bpy.types.Scene.uv_align_distribute = bpy.props.PointerProperty(type=global_def.GlobalSettings)
 
 
 def unregister():
@@ -164,6 +141,7 @@ def unregister():
 
 
 if __name__ == "__main__":
-    from . import operator_manager as om
+    register()
+    # from . import operator_manager as om
 
-    om.register()
+    # om.register()
