@@ -1,10 +1,15 @@
+from hashlib import sha256
 import os
 import re
+import tarfile
 import time
 
 import requests
 import wget
 from bs4 import BeautifulSoup
+from operator import itemgetter
+import sys
+
 
 def merge(s1, s2):
     i = 0
@@ -22,7 +27,8 @@ def writeProgress(size, total, width=80):
     print(progress_message, end="")
     pass
 
-print("starting script...")
+
+print("Downloading blender...")
 # Set the URL you want to webscrape from
 url = "https://builder.blender.org/download/"
 # Connect to the URL
@@ -43,10 +49,34 @@ elif os.name == "posix":
     archive = blenderDir + ".tar.xz"
     os_name = "os linux"
 
-li = soup.find_all("li", class_= os_name)[0]
-a = li.find_all("a")[0]
-downloadLink = merge(url, a["href"])
-downloadSize = float(a.find("span", {"class": "size"}).text[:-2]) * 1048576
+downloadlink = None
+li = soup.find_all("li", class_=os_name, style="")
+downloadLink = ""
+downloadSize = 0
+# iterate all <li> elem
+elements = []
+for elem in li:
+    if elem.span.text != "Candidate":
+        continue
+    # get the content and remove unused text,now remain only version
+    version = elem.a.div.contents[0][8:-3]
+    maj, min_ = [int(x) for x in version.split(".")][:2]  # take only major and minor
+
+    downloadSize = float(elem.a.div.text.split(" - ")[-1][:-2]) * 1048576
+    downloadLink = elem.a["href"]
+    elements.append((maj, min_, downloadLink, downloadSize))
+
+major_ver = max(elements, key=itemgetter(0))[0]
+elements = list(filter(lambda x: x[0] == major_ver, elements))
+minor_ver = max(elements, key=itemgetter(1))[1]
+elements = list(filter(lambda x: x[1] == minor_ver, elements))
+
+element = list(elements)[0]
+print(f"version: {element[0]}.{element[1]} - {element[3]}MB")
+print(downloadLink)
+
+# downloadSize = float(a.find("span", {"class": "size"}).text[:-2]) * 1048576
+# downloadLink = merge(url, a["href"])
 time.sleep(1)
 
 
@@ -57,10 +87,12 @@ tmpDir = "../tmp/"
 
 if os.name == "nt":
     import zipfile
+
     with zipfile.ZipFile(archive, "r") as zip_ref:
         zip_ref.extractall(tmpDir)
 elif os.name == "posix":
     import tarfile
+
     with tarfile.open(archive, "r") as tar_ref:
         tar_ref.extractall(tmpDir)
 
