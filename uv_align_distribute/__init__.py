@@ -20,7 +20,7 @@
 bl_info = {
     "name": "UV Align\\Distribute",
     "author": "Rebellion (Luca Carella)",
-    "version": (5, 0),
+    "version": (5, 1),
     "blender": (2, 93, 0),
     "location": "UV\\Image editor > Tool Panel, UV\\Image editor UVs > menu",
     "description": "Set of tools to help UV alignment\\distribution",
@@ -94,28 +94,20 @@ def register():
     pcoll.load("align_center_ver", os.path.join(my_icons_dir, "al_center_ver.png"), "IMAGE")
 
     pcoll.load(
-        "align_rotation",
-        os.path.join(my_icons_dir, "ink_transform_rotate.png"),
-        "IMAGE",
+        "align_rotation", os.path.join(my_icons_dir, "ink_transform_rotate.png"), "IMAGE",
     )
 
     pcoll.load(
-        "distribute_bottom",
-        os.path.join(my_icons_dir, "distribute_bottom.png"),
-        "IMAGE",
+        "distribute_bottom", os.path.join(my_icons_dir, "distribute_bottom.png"), "IMAGE",
     )
     pcoll.load(
-        "distribute_hcentre",
-        os.path.join(my_icons_dir, "distribute_hcentre.png"),
-        "IMAGE",
+        "distribute_hcentre", os.path.join(my_icons_dir, "distribute_hcentre.png"), "IMAGE",
     )
     pcoll.load("distribute_left", os.path.join(my_icons_dir, "distribute_left.png"), "IMAGE")
     pcoll.load("distribute_right", os.path.join(my_icons_dir, "distribute_right.png"), "IMAGE")
     pcoll.load("distribute_top", os.path.join(my_icons_dir, "distribute_top.png"), "IMAGE")
     pcoll.load(
-        "distribute_vcentre",
-        os.path.join(my_icons_dir, "distribute_vcentre.png"),
-        "IMAGE",
+        "distribute_vcentre", os.path.join(my_icons_dir, "distribute_vcentre.png"), "IMAGE",
     )
     pcoll.load("distribute_hdist", os.path.join(my_icons_dir, "distribute_hdist.png"), "IMAGE")
     pcoll.load("distribute_vdist", os.path.join(my_icons_dir, "distribute_vdist.png"), "IMAGE")

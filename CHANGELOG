@@ -1,4 +1,7 @@
-UV ALIGN DISTRIBUTE 5.0
+UV ALIGN DISTRIBUTE 5.1
+changes since v5.0
+- ported to blender 3.1
+
 changes since v4.2
 - removed local dependecie, now are installed on script activation
 
