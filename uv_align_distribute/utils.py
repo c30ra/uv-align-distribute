@@ -40,7 +40,10 @@ def InitBMesh():
 
 def update():
     """Update mesh rappresentation in blender."""
-    bmesh.update_edit_mesh(bpy.context.edit_object.data, False, False)
+    if global_def.bversion <= 2.93:
+        bmesh.update_edit_mesh(bpy.context.edit_object.data, False, False)
+    else:
+        bmesh.update_edit_mesh(bpy.context.edit_object.data)
     # bm.to_mesh(bpy.context.object.data)
     # bm.free()
 
@@ -59,15 +62,12 @@ def GBBox(islands):
                 maxX = max(u, maxX)
                 maxY = max(v, maxY)
 
-    return geometry.Rectangle(mathutils.Vector((minX, minY)),
-                               mathutils.Vector((maxX, maxY)))
+    return geometry.Rectangle(mathutils.Vector((minX, minY)), mathutils.Vector((maxX, maxY)))
 
 
 def vectorDistance(vector1, vector2):
     """Return the distance between vectors."""
-    return math.sqrt(
-        math.pow((vector2.x - vector1.x), 2) +
-        math.pow((vector2.y - vector1.y), 2))
+    return math.sqrt(math.pow((vector2.x - vector1.x), 2) + math.pow((vector2.y - vector1.y), 2))
 
 
 def _sortCenter(pointList):
@@ -76,12 +76,12 @@ def _sortCenter(pointList):
     n = len(pointList)
     while scambio:
         scambio = False
-        for i in range(0, n-1):
+        for i in range(0, n - 1):
             pointA = pointList[i][0]
-            pointB = pointList[i+1][0]
+            pointB = pointList[i + 1][0]
 
             if (pointA.x <= pointB.x) and (pointA.y > pointB.y):
-                pointList[i], pointList[i+1] = pointList[i+1], pointList[i]
+                pointList[i], pointList[i + 1] = pointList[i + 1], pointList[i]
                 scambio = True
 
     return pointList
@@ -108,15 +108,15 @@ def getTargetPoint(context, islands):
     """Return the target of uv operations."""
     gsettings = context.scene.uv_align_distribute
 
-    if gsettings.relativeItems == 'UV_SPACE':
+    if gsettings.relativeItems == "UV_SPACE":
         return mathutils.Vector((0.0, 0.0)), mathutils.Vector((1.0, 1.0))
-    elif gsettings.relativeItems == 'ACTIVE':
+    elif gsettings.relativeItems == "ACTIVE":
         activeIsland = islands.activeIsland()
         if not activeIsland:
             return None
         else:
             return activeIsland.BBox()
-    elif gsettings.relativeItems == 'CURSOR':
+    elif gsettings.relativeItems == "CURSOR":
 
         coords = context.space_data.cursor_location
         pixel_coords = bpy.context.space_data.uv_editor.show_pixel_coords
@@ -155,7 +155,7 @@ def averageIslandDist(islands):
 
     for i in range(len(islands)):
         elem1 = islands[i].BBox().bottomRight()
-        try:            # island
+        try:  # island
             elem2 = islands[i + 1].BBox().topLeft()
             counter += 1
         except:

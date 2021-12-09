@@ -21,6 +21,7 @@ import bpy
 from bpy.props import BoolProperty, EnumProperty
 
 from . import operator_manager
+import re
 
 
 class GlobalSettings(bpy.types.PropertyGroup):
@@ -28,20 +29,23 @@ class GlobalSettings(bpy.types.PropertyGroup):
 
     relativeItems: EnumProperty(
         items=[
-            ('UV_SPACE', 'Uv Space', 'Align to UV space'),
-            ('ACTIVE', 'Active Face', 'Align to active face\\island'),
-            ('CURSOR', 'Cursor', 'Align to cursor')],
-        name="Relative to")
+            ("UV_SPACE", "Uv Space", "Align to UV space"),
+            ("ACTIVE", "Active Face", "Align to active face\\island"),
+            ("CURSOR", "Cursor", "Align to cursor"),
+        ],
+        name="Relative to",
+    )
 
     selectionAsGroup: BoolProperty(
-        name="Selection as group",
-        description="Treat selection as group",
-        default=False)
+        name="Selection as group", description="Treat selection as group", default=False
+    )
 
 
 bm = None
 uvlayer = None
 
 preview_collections = {}
-
+_bversion_string = bpy.app.version_string
+_bversion_reg = re.match(r"^(\d\.\d?\d)", _bversion_string)
+bversion = float(_bversion_reg.group(0))
 operator_manager.om.addClass(GlobalSettings)
