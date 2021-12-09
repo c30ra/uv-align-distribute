@@ -1,4 +1,3 @@
-from hashlib import sha256
 import os
 import re
 import tarfile
@@ -8,7 +7,7 @@ import requests
 import wget
 from bs4 import BeautifulSoup
 from operator import itemgetter
-import sys
+from pathlib import Path
 
 
 def merge(s1, s2):
@@ -19,11 +18,7 @@ def merge(s1, s2):
 
 
 def writeProgress(size, total, width=80):
-    progress_message = "\rDownloading: %d%% [%d / %d] bytes" % (
-        size / total * 100,
-        size,
-        total,
-    )
+    progress_message = "\rDownloading: %d%% [%d / %d] bytes" % (size / total * 100, size, total,)
     print(progress_message, end="")
     pass
 
@@ -56,8 +51,8 @@ downloadSize = 0
 # iterate all <li> elem
 elements = []
 for elem in li:
-    if elem.span.text != "Candidate":
-        continue
+    # if not elem.span.text.contain("Candidate"):
+    #     continue
     # get the content and remove unused text,now remain only version
     version = elem.a.div.contents[0][8:-3]
     maj, min_ = [int(x) for x in version.split(".")][:2]  # take only major and minor
@@ -79,11 +74,12 @@ print(downloadLink)
 # downloadLink = merge(url, a["href"])
 time.sleep(1)
 
+tmpDir = "../tmp/"
+if not Path(archive).exists():
+    wget.download(downloadLink, archive, writeProgress)
 
-wget.download(downloadLink, archive, writeProgress)
 
 print("\nExtracting...")
-tmpDir = "../tmp/"
 
 if os.name == "nt":
     import zipfile
@@ -101,8 +97,13 @@ os.rename(os.path.abspath(tmpDir + outDir), blenderDir)
 os.rmdir(tmpDir)
 os.remove(archive)
 
-r = re.compile("[0-9]\.[0-9]{2}")
-versionDir = [x for x in os.listdir(blenderDir) if r.match(x)][0]
+r = re.compile(r"[0-9]\.[0-9]+")
+versionDir = ""
+for path in os.listdir(blenderDir):
+    if r.match(path):
+        versionDir = path
+        break
+
 os.symlink(
     os.path.abspath("uv_align_distribute"),
     "{0}/{1}/scripts/addons/uv_align_distribute".format(blenderDir, versionDir),
